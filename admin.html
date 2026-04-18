@@ -8,27 +8,16 @@
 <title>MON MONDE — Admin & Finance</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --bg:#f5f5f0;--surface:#ffffff;--surface2:#f0efea;--surface3:#e8e7e1;
-  --border:rgba(0,0,0,0.07);--border-strong:rgba(0,0,0,0.13);
-  --accent:#3a9463;--accent-glow:rgba(92,219,149,0.1);
-  --red:#e05252;--red-glow:rgba(224,82,82,0.1);
-  --amber:#e0a352;--amber-glow:rgba(224,163,82,0.1);
-  --text:#1a1a1a;--text-mid:#555;--text-dim:#999;
-  --shadow:0 2px 12px rgba(0,0,0,0.06);--radius:12px;
-}
+:root{--bg:#f5f5f0;--surface:#ffffff;--surface2:#f0efea;--surface3:#e8e7e1;--border:rgba(0,0,0,0.07);--border-strong:rgba(0,0,0,0.13);--accent:#3a9463;--accent-glow:rgba(92,219,149,0.1);--red:#e05252;--red-glow:rgba(224,82,82,0.1);--amber:#e0a352;--amber-glow:rgba(224,163,82,0.1);--text:#1a1a1a;--text-mid:#555;--text-dim:#999;--shadow:0 2px 12px rgba(0,0,0,0.06);--radius:12px;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'DM Sans',sans-serif;font-weight:400;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;}
 .app{max-width:430px;margin:0 auto;padding-bottom:52px;}
-
 .header{padding:52px 20px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
 .back-btn{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-mid);text-decoration:none;flex-shrink:0;}
 .header-text{flex:1;}
 .header-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:2px;}
 .header-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--text);letter-spacing:-0.01em;}
-
 .sections{padding:16px 16px 0;display:flex;flex-direction:column;gap:12px;}
-
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
 .card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;transition:background 0.15s;border-bottom:1px solid var(--border);}
 .card-header:active{background:var(--surface2);}
@@ -39,11 +28,9 @@ body{font-family:'DM Sans',sans-serif;font-weight:400;background:var(--bg);color
 .card-chevron{font-size:11px;color:var(--text-dim);transition:transform 0.3s;}
 .card-chevron.open{transform:rotate(180deg);}
 .card-collapse{overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);}
-.card-collapse.open{max-height:4000px;}
+.card-collapse.open{max-height:5000px;}
 .card-body{padding:14px 16px 16px;}
 .section-label{font-size:9px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--border);}
-
-/* TABS */
 .tabs{display:flex;border-bottom:1px solid var(--border);}
 .tab{flex:1;padding:10px 6px;font-size:11px;font-weight:600;color:var(--text-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;margin-bottom:-1px;}
 .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
@@ -60,17 +47,19 @@ body{font-family:'DM Sans',sans-serif;font-weight:400;background:var(--bg);color
 .deadline-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.3;}
 .deadline-title.done{opacity:0.4;text-decoration:line-through;}
 .deadline-meta{display:flex;align-items:center;gap:8px;margin-top:3px;flex-wrap:wrap;}
-.deadline-date{font-size:11px;color:var(--text-dim);}
+.deadline-date-lbl{font-size:11px;color:var(--text-dim);}
 .deadline-urgency{font-size:10px;font-weight:600;padding:1px 6px;border-radius:20px;}
 .urgency-urgent{background:var(--red-glow);color:var(--red);}
 .urgency-soon{background:var(--amber-glow);color:var(--amber);}
 .urgency-ok{background:var(--accent-glow);color:var(--accent);}
-.deadline-btns{display:flex;gap:6px;flex-shrink:0;flex-direction:column;}
-.btn-small{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;cursor:pointer;border:none;white-space:nowrap;}
-.btn-edit{background:var(--surface2);color:var(--text-mid);border:1px solid var(--border);}
+.deadline-btns{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.btn-xs{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;cursor:pointer;border:none;white-space:nowrap;}
+.btn-edit{background:var(--surface2);color:var(--text-mid);border:1px solid var(--border)!important;}
 .btn-done{background:var(--accent-glow);color:var(--accent);}
 .btn-push{background:var(--red-glow);color:var(--red);}
-
+.overdue-banner{background:var(--red-glow);border:1px solid rgba(224,82,82,0.2);border-radius:10px;padding:12px 14px;margin:12px 16px 0;display:flex;align-items:center;gap:10px;}
+.overdue-banner-text{flex:1;font-size:12px;color:var(--red);font-weight:500;line-height:1.4;}
+.overdue-copy-btn{font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;background:var(--red);color:#fff;border:none;cursor:pointer;flex-shrink:0;}
 .add-form{padding:12px 16px 14px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;}
 .input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;width:100%;}
 .input:focus{border-color:var(--accent);}
@@ -80,13 +69,7 @@ select.input{color:var(--text-mid);}
 .btn-add{width:36px;height:36px;background:var(--accent);border:none;border-radius:8px;color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:300;flex-shrink:0;}
 .btn-primary{padding:10px 16px;background:var(--accent);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff;cursor:pointer;transition:opacity 0.2s;width:100%;}
 .btn-primary:hover{opacity:0.88;}
-.btn-primary:disabled{opacity:0.5;cursor:not-allowed;}
 .btn-secondary{padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-mid);cursor:pointer;}
-
-/* OVERDUE BANNER */
-.overdue-banner{background:var(--red-glow);border:1px solid rgba(224,82,82,0.2);border-radius:10px;padding:12px 14px;margin:12px 16px 0;display:flex;align-items:center;gap:10px;}
-.overdue-banner-text{flex:1;font-size:12px;color:var(--red);font-weight:500;line-height:1.4;}
-.overdue-copy-btn{font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;background:var(--red);color:#fff;border:none;cursor:pointer;flex-shrink:0;}
 
 /* FINANCE */
 .balance-hero{text-align:center;padding:14px 0 16px;border-bottom:1px solid var(--border);margin-bottom:14px;}
@@ -102,12 +85,10 @@ select.input{color:var(--text-mid);}
 .finance-row-value{font-size:13px;font-weight:600;color:var(--text);}
 .finance-row-value.positive{color:var(--accent);}
 .finance-row-value.negative{color:var(--red);}
-.editable-val{cursor:pointer;border-bottom:1px dashed var(--border-strong);padding-bottom:1px;}
+.editable{cursor:pointer;border-bottom:1px dashed var(--border-strong);padding-bottom:1px;}
 .month-selector{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:14px;}
 .month-btn{background:none;border:1px solid var(--border);border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:14px;color:var(--text-mid);display:flex;align-items:center;justify-content:center;}
 .month-label{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);min-width:120px;text-align:center;}
-
-/* BUDGET BARS */
 .budget-item{margin-bottom:14px;}
 .budget-item:last-child{margin-bottom:0;}
 .budget-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
@@ -118,26 +99,25 @@ select.input{color:var(--text-mid);}
 .fill-ok{background:var(--accent);}
 .fill-warn{background:var(--amber);}
 .fill-over{background:var(--red);}
-
-/* SUBS */
-.sub-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);}
-.sub-item:last-child{border-bottom:none;}
-.sub-name{font-size:13px;color:var(--text);}
-.sub-freq{font-size:11px;color:var(--text-dim);margin-top:1px;}
-.sub-amount{font-size:13px;font-weight:600;color:var(--text);cursor:pointer;border-bottom:1px dashed var(--border-strong);}
-.sub-flag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:20px;margin-left:6px;}
+.fixed-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);}
+.fixed-item:last-child{border-bottom:none;}
+.fixed-name{font-size:13px;color:var(--text);}
+.fixed-amount{font-size:13px;font-weight:600;color:var(--text);cursor:pointer;border-bottom:1px dashed var(--border-strong);}
+.fixed-flag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:20px;margin-left:6px;}
 .flag-ok{background:var(--accent-glow);color:var(--accent);}
 .flag-warn{background:var(--amber-glow);color:var(--amber);}
-.sub-total{display:flex;justify-content:space-between;padding:10px 0 0;border-top:1px solid var(--border);margin-top:4px;}
-.sub-total-label{font-size:12px;font-weight:600;color:var(--text-mid);}
-.sub-total-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);}
+.fixed-total{display:flex;justify-content:space-between;padding:10px 0 0;border-top:1px solid var(--border);margin-top:4px;}
+.fixed-total-label{font-size:12px;font-weight:600;color:var(--text-mid);}
+.fixed-total-val{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);}
 
-/* PDF UPLOAD */
-.upload-zone{border:2px dashed var(--border-strong);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2);}
+/* STATEMENT */
+.upload-zone{border:2px dashed var(--border-strong);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2);}
 .upload-zone:hover{border-color:var(--accent);background:var(--accent-glow);}
-.upload-zone p{font-size:13px;color:var(--text-dim);margin-top:8px;}
-.upload-zone input{display:none;}
-.upload-result{margin-top:12px;font-size:12px;color:var(--text-mid);line-height:1.7;background:var(--surface2);border-radius:8px;padding:12px;border:1px solid var(--border);}
+.upload-zone p{font-size:13px;color:var(--text-dim);margin-top:6px;}
+.prompt-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:12px;color:var(--text-mid);line-height:1.7;margin-top:12px;white-space:pre-wrap;word-break:break-word;}
+.paste-area{width:100%;min-height:120px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:vertical;line-height:1.5;margin-top:10px;}
+.paste-area:focus{border-color:var(--accent);}
+.paste-area::placeholder{color:var(--text-dim);font-style:italic;}
 
 /* PORTFOLIO */
 .net-worth-hero{text-align:center;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:14px;}
@@ -155,6 +135,8 @@ select.input{color:var(--text-mid);}
 .asset-change{font-size:11px;margin-top:1px;}
 .change-pos{color:var(--accent);}
 .change-neg{color:var(--red);}
+.pnl-pos{color:var(--accent);font-size:11px;}
+.pnl-neg{color:var(--red);font-size:11px;}
 
 /* STAKING */
 .staking-item{background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid var(--border);}
@@ -167,9 +149,15 @@ select.input{color:var(--text-mid);}
 .staking-detail{font-size:11px;color:var(--text-dim);line-height:1.5;}
 
 /* STRATEGY */
-.strategy-content{font-size:13px;color:var(--text-mid);line-height:1.75;}
-.strategy-content h4{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:var(--text);letter-spacing:0.05em;text-transform:uppercase;margin:14px 0 6px;}
-.strategy-content h4:first-child{margin-top:0;}
+.strategy-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;color:var(--text-mid);line-height:1.75;margin-bottom:14px;}
+.strategy-box h4{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:var(--text);letter-spacing:0.05em;text-transform:uppercase;margin:12px 0 6px;}
+.strategy-box h4:first-child{margin-top:0;}
+.strategy-actions{display:flex;gap:10px;margin-bottom:14px;}
+.strategy-btn{flex:1;padding:10px;font-size:11px;font-weight:600;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text-mid);transition:all 0.2s;text-align:center;}
+.strategy-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.strategy-btn:hover{background:var(--accent-glow);color:var(--accent);border-color:rgba(58,148,99,0.2);}
+.strategy-btn.primary:hover{opacity:0.9;background:var(--accent);}
+.copy-feedback{font-size:11px;color:var(--accent);margin-top:6px;text-align:center;height:16px;}
 
 /* VAULT */
 .pin-gate{padding:24px 20px;text-align:center;}
@@ -183,7 +171,6 @@ select.input{color:var(--text-mid);}
 .pin-key:active{background:var(--accent-glow);border-color:var(--accent);}
 .pin-key.del{font-size:14px;color:var(--text-dim);}
 .pin-error{font-size:12px;color:var(--red);margin-top:12px;height:16px;}
-
 .vault-doc{background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid var(--border);}
 .vault-doc:last-child{margin-bottom:0;}
 .vault-doc-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;}
@@ -213,7 +200,6 @@ select.input{color:var(--text-mid);}
 .modal-save{flex:2;padding:12px;font-size:13px;font-weight:600;background:var(--accent);border:none;border-radius:10px;cursor:pointer;color:#fff;}
 .modal-delete{flex:1;padding:12px;font-size:13px;font-weight:600;background:var(--red-glow);border:none;border-radius:10px;cursor:pointer;color:var(--red);}
 
-/* MISC */
 .refresh-btn{display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-size:10px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);padding:0;opacity:0.7;transition:opacity 0.2s;margin-top:14px;}
 .refresh-btn:hover{opacity:1;}
 .refresh-btn.spinning svg{animation:spin 1s linear infinite;}
@@ -246,33 +232,27 @@ select.input{color:var(--text-mid);}
   <div class="card-header" onclick="toggle('deadlines')">
     <div class="card-header-left">
       <div class="card-icon">📋</div>
-      <div class="card-title">Admin To-Do & Deadlines <span class="card-badge" id="deadline-badge" style="display:none"></span></div>
+      <div class="card-title">Admin To-Do & Deadlines <span class="card-badge" id="dl-badge" style="display:none"></span></div>
     </div>
     <div class="card-chevron open" id="chev-deadlines">▾</div>
   </div>
   <div class="card-collapse open" id="col-deadlines">
     <div id="overdue-banner"></div>
     <div class="tabs">
-      <button class="tab active" id="dtab-upcoming" onclick="switchDeadlineTab('upcoming')">Upcoming</button>
-      <button class="tab" id="dtab-overdue" onclick="switchDeadlineTab('overdue')">Overdue</button>
-      <button class="tab" id="dtab-done" onclick="switchDeadlineTab('done')">Done</button>
+      <button class="tab active" id="dtab-upcoming" onclick="switchDLTab('upcoming')">Upcoming</button>
+      <button class="tab" id="dtab-overdue" onclick="switchDLTab('overdue')">Overdue</button>
+      <button class="tab" id="dtab-done" onclick="switchDLTab('done')">Done</button>
     </div>
-    <div id="deadline-list"></div>
+    <div id="dl-list"></div>
     <div class="add-form">
       <input class="input" id="dl-text" type="text" placeholder="Add a task or deadline..."/>
       <div class="input-row">
         <input class="input" id="dl-date" type="date" style="flex:1"/>
         <select class="input" id="dl-cat" style="flex:1">
           <option value="">Category...</option>
-          <option>Tax</option>
-          <option>Rental</option>
-          <option>Health</option>
-          <option>Crypto</option>
-          <option>Admin</option>
-          <option>Finance</option>
-          <option>Insurance</option>
-          <option>Property</option>
-          <option>Other</option>
+          <option>Tax</option><option>Rental</option><option>Health</option>
+          <option>Crypto</option><option>Admin</option><option>Finance</option>
+          <option>Insurance</option><option>Property</option><option>Other</option>
         </select>
       </div>
       <button class="btn-primary" onclick="addDeadline()">+ Add deadline</button>
@@ -280,26 +260,7 @@ select.input{color:var(--text-mid);}
   </div>
 </div>
 
-<!-- ── 2. EMAIL TRIAGE ── -->
-<div class="card">
-  <div class="card-header" onclick="toggle('emails')">
-    <div class="card-header-left">
-      <div class="card-icon">✉️</div>
-      <div class="card-title">Email Triage</div>
-    </div>
-    <div class="card-chevron" id="chev-emails">▾</div>
-  </div>
-  <div class="card-collapse" id="col-emails">
-    <div class="card-body">
-      <p style="font-size:12px;color:var(--text-dim);margin-bottom:10px;line-height:1.6">Paste email content (subject, sender, body) and Claude will categorize, summarize and draft replies.</p>
-      <textarea class="input" id="email-paste" style="min-height:90px;resize:vertical;line-height:1.5" placeholder="From: newsletter@company.com&#10;Subject: Weekly digest&#10;Body: ..."></textarea>
-      <button class="btn-primary" id="triage-btn" style="margin-top:10px" onclick="triageEmails()">⚡ Triage with Claude</button>
-      <div id="email-results"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ── 3. FINANCE ── -->
+<!-- ── 2. FINANCE ── -->
 <div class="card">
   <div class="card-header" onclick="toggle('finance')">
     <div class="card-header-left">
@@ -310,23 +271,23 @@ select.input{color:var(--text-mid);}
   </div>
   <div class="card-collapse open" id="col-finance">
     <div class="tabs">
-      <button class="tab active" id="ftab-overview" onclick="switchFinanceTab('overview')">Overview</button>
-      <button class="tab" id="ftab-budget" onclick="switchFinanceTab('budget')">Budget</button>
-      <button class="tab" id="ftab-fixed" onclick="switchFinanceTab('fixed')">Fixed</button>
-      <button class="tab" id="ftab-upload" onclick="switchFinanceTab('upload')">Statement</button>
+      <button class="tab active" id="ftab-overview" onclick="switchFinTab('overview')">Overview</button>
+      <button class="tab" id="ftab-budget" onclick="switchFinTab('budget')">Budget</button>
+      <button class="tab" id="ftab-fixed" onclick="switchFinTab('fixed')">Fixed</button>
+      <button class="tab" id="ftab-statement" onclick="switchFinTab('statement')">Statement</button>
     </div>
     <div class="card-body" id="fpanel-overview">
       <div class="month-selector">
         <button class="month-btn" onclick="changeMonth(-1)">‹</button>
-        <div class="month-label" id="finance-month-label">—</div>
+        <div class="month-label" id="fin-month-label">—</div>
         <button class="month-btn" onclick="changeMonth(1)">›</button>
       </div>
       <div class="balance-hero">
         <div class="balance-label">Remaining this month</div>
-        <div class="balance-amount" id="balance-remaining">—</div>
-        <div class="balance-sub" id="balance-sub">after fixed charges</div>
+        <div class="balance-amount" id="bal-remaining">—</div>
+        <div class="balance-sub" id="bal-sub">after fixed charges</div>
       </div>
-      <div id="finance-overview-rows"></div>
+      <div id="fin-overview-rows"></div>
       <p style="font-size:11px;color:var(--text-dim);margin-top:10px">Tap any amount to edit</p>
     </div>
     <div class="card-body" id="fpanel-budget" style="display:none">
@@ -335,23 +296,28 @@ select.input{color:var(--text-mid);}
         <button class="btn-secondary" onclick="resetBudget()">Reset actuals</button>
       </div>
       <div id="budget-items"></div>
+      <div id="statement-analysis" style="margin-top:14px"></div>
     </div>
     <div class="card-body" id="fpanel-fixed" style="display:none">
       <div id="fixed-list"></div>
+      <button class="btn-primary" style="margin-top:14px" onclick="addFixedModal()">+ Add fixed charge</button>
     </div>
-    <div class="card-body" id="fpanel-upload" style="display:none">
-      <p style="font-size:13px;color:var(--text-mid);margin-bottom:12px;line-height:1.6">Upload your monthly bank statement (PDF) and Claude will extract your spending by category.</p>
+    <div class="card-body" id="fpanel-statement" style="display:none">
+      <p style="font-size:13px;color:var(--text-mid);margin-bottom:12px;line-height:1.6">
+        Upload your bank statement PDF to get a prompt for ChatGPT, then paste the analysis back to update your budget.
+      </p>
       <div class="upload-zone" onclick="document.getElementById('pdf-input').click()">
         <div style="font-size:24px">📄</div>
-        <p>Tap to upload your bank statement PDF</p>
-        <input type="file" id="pdf-input" accept=".pdf" onchange="handlePDFUpload(event)"/>
+        <p>Tap to select your bank statement PDF</p>
+        <input type="file" id="pdf-input" accept=".pdf" style="display:none" onchange="handlePDF(event)"/>
       </div>
-      <div id="upload-result"></div>
+      <div id="statement-prompt-area"></div>
+      <div id="statement-paste-area"></div>
     </div>
   </div>
 </div>
 
-<!-- ── 4. PORTFOLIO ── -->
+<!-- ── 3. PORTFOLIO ── -->
 <div class="card">
   <div class="card-header" onclick="toggle('portfolio')">
     <div class="card-header-left">
@@ -362,9 +328,9 @@ select.input{color:var(--text-mid);}
   </div>
   <div class="card-collapse" id="col-portfolio">
     <div class="tabs">
-      <button class="tab active" id="ptab-assets" onclick="switchPortfolioTab('assets')">Assets</button>
-      <button class="tab" id="ptab-staking" onclick="switchPortfolioTab('staking')">Staking</button>
-      <button class="tab" id="ptab-strategy" onclick="switchPortfolioTab('strategy')">Strategy</button>
+      <button class="tab active" id="ptab-assets" onclick="switchPortTab('assets')">Assets</button>
+      <button class="tab" id="ptab-staking" onclick="switchPortTab('staking')">Staking</button>
+      <button class="tab" id="ptab-strategy" onclick="switchPortTab('strategy')">Strategy</button>
     </div>
     <div class="card-body" id="ppanel-assets">
       <div class="net-worth-hero">
@@ -372,9 +338,9 @@ select.input{color:var(--text-mid);}
         <div class="net-worth-amount" id="net-worth">Loading...</div>
         <div class="net-worth-sub" id="net-worth-sub">Calculating all positions</div>
       </div>
-      <div class="section-label">Crypto</div>
+      <div class="section-label">Crypto — live prices via CoinGecko</div>
       <div id="crypto-list"><div class="shimmer"></div><div class="shimmer"></div></div>
-      <div class="section-label" style="margin-top:14px">ETFs & Stocks (PEA)</div>
+      <div class="section-label" style="margin-top:14px">ETFs & Stocks (PEA) — tap to update price</div>
       <div id="etf-list"></div>
       <div class="section-label" style="margin-top:14px">Real Estate</div>
       <div id="realestate-list"></div>
@@ -384,16 +350,26 @@ select.input{color:var(--text-mid);}
     </div>
     <div class="card-body" id="ppanel-strategy" style="display:none">
       <div class="section-label">Monthly Investment Strategy</div>
-      <div id="strategy-content"><div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div></div>
-      <button class="refresh-btn" id="strategy-refresh" onclick="loadStrategy(true)">
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:14px;line-height:1.6">
+        Generate a prompt with your current positions → paste into ChatGPT → paste the result back here to save.
+      </p>
+      <div class="strategy-actions">
+        <button class="strategy-btn primary" onclick="generateStrategyPrompt()">⚡ Generate prompt</button>
+        <button class="strategy-btn" onclick="showPasteStrategy()">📋 Paste result</button>
+      </div>
+      <div class="copy-feedback" id="strategy-copy-feedback"></div>
+      <div id="strategy-prompt-display"></div>
+      <div id="strategy-paste-area"></div>
+      <div id="strategy-display"></div>
+      <button class="refresh-btn" onclick="loadStrategy()">
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-        Refresh strategy
+        Refresh saved strategy
       </button>
     </div>
   </div>
 </div>
 
-<!-- ── 5. DOCUMENT VAULT ── -->
+<!-- ── 4. DOCUMENT VAULT ── -->
 <div class="card">
   <div class="card-header" onclick="toggle('vault')">
     <div class="card-header-left">
@@ -406,7 +382,7 @@ select.input{color:var(--text-mid);}
     <div id="vault-gate">
       <div class="pin-gate">
         <div class="pin-gate-title" id="pin-title">🔐 Vault locked</div>
-        <div class="pin-gate-sub" id="pin-subtitle">Enter your 4-digit PIN to access your documents</div>
+        <div class="pin-gate-sub" id="pin-subtitle">Enter your 4-digit PIN</div>
         <div class="pin-display" id="pin-display">
           <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
           <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
@@ -433,7 +409,7 @@ select.input{color:var(--text-mid);}
         <div id="vault-docs-list"></div>
         <button class="btn-primary" style="margin-top:14px" onclick="openAddDocModal()">+ Add document</button>
         <div style="display:flex;gap:10px;margin-top:10px">
-          <button class="btn-secondary" onclick="lockVault()">🔒 Lock vault</button>
+          <button class="btn-secondary" onclick="lockVault()">🔒 Lock</button>
           <button class="btn-secondary" onclick="changePinMode()">Change PIN</button>
         </div>
       </div>
@@ -449,7 +425,7 @@ select.input{color:var(--text-mid);}
 </div>
 </div>
 
-<!-- EDIT MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -462,10 +438,10 @@ select.input{color:var(--text-mid);}
 <script>
 const TODAY = new Date();
 const TODAY_STR = TODAY.toISOString().split('T')[0];
-const JSONBIN_KEY = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW';
-const JSONBIN_STRATEGY = '69e4055e856a6821894b2c8e';
-const GDRIVE_FOLDER = 'https://drive.google.com/drive/folders/1G0phvW44fjfudR6G5iIo3lpVvA0zmok9?usp=share_link';
-const ANTHROPIC_KEY = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW'; // placeholder - not used directly
+const JBKEY = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW';
+const JBSTRATEGY = '69e4055e856a6821894b2c8e';
+const GDRIVE = 'https://drive.google.com/drive/folders/1G0phvW44fjfudR6G5iIo3lpVvA0zmok9?usp=share_link';
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 // ── TOGGLE ──────────────────────────────────────────
 function toggle(id) {
@@ -477,31 +453,30 @@ function toggle(id) {
   if (id === 'vault' && col.classList.contains('open')) initPin();
 }
 
-// ── MODAL ────────────────────────────────────────────
-let modalCallback = null;
-function openModal(title, bodyHTML, actions) {
+// ── MODAL ──────────────────────────────────────────
+function openModal(title, bodyHTML, actionsHTML) {
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-body').innerHTML = bodyHTML;
-  document.getElementById('modal-actions').innerHTML = actions;
+  document.getElementById('modal-actions').innerHTML = actionsHTML;
   document.getElementById('modal-overlay').classList.add('visible');
 }
 function closeModal() { document.getElementById('modal-overlay').classList.remove('visible'); }
 function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
 
-// ── 1. DEADLINES ─────────────────────────────────────
+// ── 1. DEADLINES ────────────────────────────────────
 const DL_KEY = 'mm_admin_deadlines';
 let dlTab = 'upcoming';
 
 const PRESET_DL = [
   {id:'d1',text:'Post apartment listing on Gens de Confiance',date:'2026-04-20',cat:'Rental',done:false},
-  {id:'d2',text:'Current tenant leaving — organize état des lieux',date:'2026-05-11',cat:'Rental',done:false},
+  {id:'d2',text:'Tenant leaving — organize état des lieux',date:'2026-05-11',cat:'Rental',done:false},
   {id:'d3',text:'ETH restaking due',date:'2026-04-25',cat:'Crypto',done:false},
   {id:'d4',text:'POL restaking due',date:'2026-05-06',cat:'Crypto',done:false},
-  {id:'d5',text:'Health insurance expires — renew or find new',date:'2026-05-30',cat:'Health',done:false},
-  {id:'d6',text:'Income tax declaration (opens April, deadline ~June)',date:'2026-06-05',cat:'Tax',done:false},
-  {id:'d7',text:'Contact Italian consulate to renew expired passport',date:'2026-04-25',cat:'Admin',done:false},
+  {id:'d5',text:'Health insurance expires — renew',date:'2026-05-30',cat:'Health',done:false},
+  {id:'d6',text:'Income tax declaration',date:'2026-06-05',cat:'Tax',done:false},
+  {id:'d7',text:'Contact Italian consulate — renew passport',date:'2026-04-25',cat:'Admin',done:false},
   {id:'d8',text:'Pay accountant',date:'2026-05-15',cat:'Finance',done:false},
-  {id:'d9',text:'November apartment charges (syndic)',date:'2026-11-01',cat:'Property',done:false},
+  {id:'d9',text:'Apartment charges (syndic)',date:'2026-11-01',cat:'Property',done:false},
   {id:'d10',text:'Home insurance annual review',date:'2026-10-15',cat:'Insurance',done:false},
 ];
 
@@ -524,7 +499,7 @@ function urgLabel(days) {
   return `in ${days} days`;
 }
 
-function switchDeadlineTab(tab) {
+function switchDLTab(tab) {
   dlTab = tab;
   ['upcoming','overdue','done'].forEach(t => document.getElementById(`dtab-${t}`).classList.toggle('active', t === tab));
   renderDeadlines();
@@ -537,122 +512,104 @@ function renderDeadlines() {
   const done = dl.filter(d => d.done);
   const urgent = dl.filter(d => !d.done && daysUntil(d.date) <= 7).length;
 
-  // Badge
-  const badge = document.getElementById('deadline-badge');
+  const badge = document.getElementById('dl-badge');
   if (urgent > 0) { badge.textContent = urgent; badge.style.display = 'inline'; }
   else badge.style.display = 'none';
 
-  // Overdue banner
   const bannerEl = document.getElementById('overdue-banner');
   if (overdue.length > 0) {
-    const emailBody = overdue.map(d => `• ${d.text} (due ${d.date})`).join('\n');
+    window._overdueText = `Overdue — ${new Date().toLocaleDateString('en-GB')}\n\n` + overdue.map(d => `• ${d.text} (due ${d.date})`).join('\n');
     bannerEl.innerHTML = `<div class="overdue-banner">
-      <div class="overdue-banner-text">⚠️ ${overdue.length} overdue item${overdue.length > 1 ? 's' : ''} — tap to copy for email recap</div>
-      <button class="overdue-copy-btn" onclick="copyOverdueEmail()">Copy</button>
+      <div class="overdue-banner-text">⚠️ ${overdue.length} overdue — tap Copy to email yourself a recap</div>
+      <button class="overdue-copy-btn" onclick="copyOverdue()">Copy</button>
     </div>`;
-    window._overdueEmailBody = `Overdue Admin Items — ${new Date().toLocaleDateString('en-GB')}\n\n${emailBody}\n\nPlease review and action.`;
   } else bannerEl.innerHTML = '';
 
-  // Push today's deadlines to home tasks
   autoPushToday(dl);
 
-  // List
-  let items = dlTab === 'upcoming' ? upcoming : dlTab === 'overdue' ? overdue : done;
-  items = items.sort((a,b) => new Date(a.date) - new Date(b.date));
-  const el = document.getElementById('deadline-list');
+  const items = (dlTab === 'upcoming' ? upcoming : dlTab === 'overdue' ? overdue : done)
+    .sort((a,b) => new Date(a.date) - new Date(b.date));
+  const el = document.getElementById('dl-list');
   if (!items.length) { el.innerHTML = `<div class="empty-note">${dlTab === 'done' ? 'Nothing done yet.' : dlTab === 'overdue' ? 'No overdue items 🎉' : 'All clear! 🎉'}</div>`; return; }
   el.innerHTML = items.map(d => {
     const days = daysUntil(d.date);
     const urg = d.done ? 'done' : urgClass(days);
-    const label = urgLabel(days);
     return `<div class="deadline-item">
       <div class="deadline-dot ${urg}"></div>
       <div class="deadline-info">
-        <div class="deadline-title ${d.done ? 'done' : ''}">${d.text}</div>
+        <div class="deadline-title ${d.done?'done':''}">${d.text}</div>
         <div class="deadline-meta">
-          <span class="deadline-date">${d.date}${d.cat ? ' · ' + d.cat : ''}</span>
-          ${!d.done ? `<span class="deadline-urgency urgency-${urgClass(days)}">${label}</span>` : ''}
+          <span class="deadline-date-lbl">${d.date}${d.cat?' · '+d.cat:''}</span>
+          ${!d.done?`<span class="deadline-urgency urgency-${urgClass(days)}">${urgLabel(days)}</span>`:''}
         </div>
       </div>
       <div class="deadline-btns">
-        ${!d.done ? `<button class="btn-small btn-edit" onclick="editDeadline('${d.id}')">✎ Edit</button>` : ''}
-        ${!d.done ? `<button class="btn-small btn-done" onclick="markDone('${d.id}')">✓ Done</button>` : ''}
-        ${!d.done && days <= 1 ? `<button class="btn-small btn-push" onclick="pushToHome('${d.id}')">→ Home</button>` : ''}
+        ${!d.done?`<button class="btn-xs btn-edit" onclick="editDL('${d.id}')">✎</button>`:''}
+        ${!d.done?`<button class="btn-xs btn-done" onclick="markDone('${d.id}')">✓</button>`:''}
+        ${!d.done&&days<=1?`<button class="btn-xs btn-push" onclick="pushToHome('${d.id}')">→ Home</button>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
 function autoPushToday(dl) {
-  const lastPush = localStorage.getItem('mm_dl_push_date');
+  const lastPush = localStorage.getItem('mm_dl_push');
   if (lastPush === TODAY_STR) return;
   const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
   let pushed = false;
   dl.forEach(d => {
-    if (!d.done && d.date === TODAY_STR) {
-      if (!tasks.find(t => t.text === d.text)) { tasks.push({text: d.text, done: false, date: d.date}); pushed = true; }
+    if (!d.done && d.date === TODAY_STR && !tasks.find(t => t.text === d.text)) {
+      tasks.push({text: d.text, done: false, date: d.date}); pushed = true;
     }
   });
-  if (pushed) { localStorage.setItem('mm_tasks', JSON.stringify(tasks)); localStorage.setItem('mm_dl_push_date', TODAY_STR); }
+  if (pushed) { localStorage.setItem('mm_tasks', JSON.stringify(tasks)); localStorage.setItem('mm_dl_push', TODAY_STR); }
 }
 
-function copyOverdueEmail() {
-  navigator.clipboard?.writeText(window._overdueEmailBody || '').catch(() => {});
+function copyOverdue() {
+  navigator.clipboard?.writeText(window._overdueText || '').catch(() => {});
   const btn = document.querySelector('.overdue-copy-btn');
-  if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => btn.textContent = 'Copy', 2000); }
+  if (btn) { btn.textContent = '✓'; setTimeout(() => btn.textContent = 'Copy', 2000); }
 }
 
 function addDeadline() {
   const text = document.getElementById('dl-text').value.trim();
-  const date = document.getElementById('dl-date').value || TODAY_STR;
-  const cat = document.getElementById('dl-cat').value;
   if (!text) return;
   const dl = getDL();
-  dl.push({id: 'u' + Date.now(), text, date, cat, done: false});
+  dl.push({id:'u'+Date.now(), text, date: document.getElementById('dl-date').value||TODAY_STR, cat: document.getElementById('dl-cat').value, done:false});
   saveDL(dl); renderDeadlines();
   document.getElementById('dl-text').value = '';
 }
 
 function markDone(id) {
-  const dl = getDL();
-  const item = dl.find(d => d.id === id);
-  if (item) item.done = true;
-  saveDL(dl); renderDeadlines();
+  const dl = getDL(); const item = dl.find(d => d.id === id);
+  if (item) item.done = true; saveDL(dl); renderDeadlines();
 }
 
 function pushToHome(id) {
-  const dl = getDL();
-  const item = dl.find(d => d.id === id);
+  const dl = getDL(); const item = dl.find(d => d.id === id);
   if (!item) return;
   const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
-  if (!tasks.find(t => t.text === item.text)) tasks.push({text: item.text, done: false, date: item.date});
+  if (!tasks.find(t => t.text === item.text)) tasks.push({text: item.text, done:false, date: item.date});
   localStorage.setItem('mm_tasks', JSON.stringify(tasks));
-  event.target.textContent = '✓ Added';
-  setTimeout(() => event.target.textContent = '→ Home', 2000);
+  event.target.textContent = '✓'; setTimeout(() => event.target.textContent = '→ Home', 2000);
 }
 
-function editDeadline(id) {
-  const dl = getDL();
-  const item = dl.find(d => d.id === id);
+function editDL(id) {
+  const dl = getDL(); const item = dl.find(d => d.id === id);
   if (!item) return;
   openModal('Edit deadline',
-    `<div class="modal-field"><label class="modal-label">Task</label>
-    <input class="input" id="m-text" value="${item.text}"/></div>
-    <div class="modal-field"><label class="modal-label">Date</label>
-    <input class="input" id="m-date" type="date" value="${item.date}"/></div>
+    `<div class="modal-field"><label class="modal-label">Task</label><input class="input" id="m-text" value="${item.text}"/></div>
+    <div class="modal-field"><label class="modal-label">Date</label><input class="input" id="m-date" type="date" value="${item.date}"/></div>
     <div class="modal-field"><label class="modal-label">Category</label>
-    <select class="input" id="m-cat">
-      ${['Tax','Rental','Health','Crypto','Admin','Finance','Insurance','Property','Other'].map(c => `<option ${c === item.cat ? 'selected' : ''}>${c}</option>`).join('')}
-    </select></div>`,
+    <select class="input" id="m-cat">${['Tax','Rental','Health','Crypto','Admin','Finance','Insurance','Property','Other'].map(c=>`<option ${c===item.cat?'selected':''}>${c}</option>`).join('')}</select></div>`,
     `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
-     <button class="modal-delete" onclick="deleteDeadline('${id}')">Delete</button>
-     <button class="modal-save" onclick="saveDeadlineEdit('${id}')">Save</button>`
+     <button class="modal-delete" onclick="deleteDL('${id}')">Delete</button>
+     <button class="modal-save" onclick="saveDLEdit('${id}')">Save</button>`
   );
 }
 
-function saveDeadlineEdit(id) {
-  const dl = getDL();
-  const item = dl.find(d => d.id === id);
+function saveDLEdit(id) {
+  const dl = getDL(); const item = dl.find(d => d.id === id);
   if (!item) return;
   item.text = document.getElementById('m-text').value.trim() || item.text;
   item.date = document.getElementById('m-date').value || item.date;
@@ -660,119 +617,55 @@ function saveDeadlineEdit(id) {
   saveDL(dl); renderDeadlines(); closeModal();
 }
 
-function deleteDeadline(id) {
+function deleteDL(id) {
   if (!confirm('Delete this deadline?')) return;
-  const dl = getDL().filter(d => d.id !== id);
-  saveDL(dl); renderDeadlines(); closeModal();
+  saveDL(getDL().filter(d => d.id !== id)); renderDeadlines(); closeModal();
 }
 
-// ── 2. EMAIL TRIAGE ──────────────────────────────────
-async function triageEmails() {
-  const content = document.getElementById('email-paste').value.trim();
-  if (!content) return;
-  const btn = document.getElementById('triage-btn');
-  btn.disabled = true; btn.textContent = 'Triaging...';
-  document.getElementById('email-results').innerHTML = '<div class="shimmer"></div><div class="shimmer"></div>';
-  try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
-        system: 'You are an email triage assistant. Respond ONLY with valid JSON array. No markdown.',
-        messages: [{role: 'user', content: `Triage these emails. Classify each as: ACTION_REQUIRED, REPLY_NEEDED, UNSUBSCRIBE, or FYI_ONLY.
-For ACTION and REPLY, write a short draft response.
-Return JSON: [{"tag":"ACTION_REQUIRED","from":"","subject":"","summary":"","draft":""}]
-Emails:\n${content}`}]
-      })
-    });
-    const d = await r.json();
-    const text = d.content?.find(b => b.type === 'text')?.text || '[]';
-    const items = JSON.parse(text.replace(/```json|```/g,'').trim());
-    renderEmailResults(items);
-  } catch {
-    document.getElementById('email-results').innerHTML = '<div class="empty-note">Triage failed. Check connection.</div>';
-  }
-  btn.disabled = false; btn.textContent = '⚡ Triage with Claude';
-}
+// ── 2. FINANCE ──────────────────────────────────────
+let finTab = 'overview';
+let finMonthOffset = 0;
 
-function renderEmailResults(items) {
-  if (!items.length) { document.getElementById('email-results').innerHTML = '<div class="empty-note">No actionable emails.</div>'; return; }
-  const tagClass = {ACTION_REQUIRED:'#e05252',REPLY_NEEDED:'#e0a352',UNSUBSCRIBE:'#999',FYI_ONLY:'#3a9463'};
-  window._emailItems = items;
-  document.getElementById('email-results').innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">${items.map((item,i) => `
-    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px">
-      <span style="font-size:9px;font-weight:700;letter-spacing:0.15em;padding:2px 7px;border-radius:20px;background:${tagClass[item.tag]}20;color:${tagClass[item.tag]}">${item.tag?.replace('_',' ')}</span>
-      <div style="font-size:13px;font-weight:600;margin:6px 0 2px">${item.subject||'No subject'}</div>
-      <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px">From: ${item.from||'Unknown'}</div>
-      <div style="font-size:12px;color:var(--text-mid);margin-bottom:${item.draft?'8px':'0'}">${item.summary||''}</div>
-      ${item.draft ? `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:12px;color:var(--text-mid);line-height:1.65;font-style:italic;margin-bottom:8px">${item.draft}</div>` : ''}
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        ${item.draft ? `<button class="btn-small btn-done" onclick="copyDraft(${i})">Copy draft</button>` : ''}
-        ${item.tag === 'ACTION_REQUIRED' ? `<button class="btn-small btn-edit" onclick="addEmailTask('${item.subject?.replace(/'/g,"\\'")}')">→ Add to tasks</button>` : ''}
-      </div>
-    </div>`).join('')}</div>`;
-}
+const FIN_KEY = 'mm_finance';
+const DEFAULT_FIN = {income_salary:0, income_allocation:1995, income_rental:1200};
+function getFin() { return JSON.parse(localStorage.getItem(FIN_KEY) || JSON.stringify(DEFAULT_FIN)); }
+function saveFin(f) { localStorage.setItem(FIN_KEY, JSON.stringify(f)); }
 
-function copyDraft(i) {
-  const item = window._emailItems?.[i];
-  if (!item?.draft) return;
-  navigator.clipboard?.writeText(item.draft).catch(() => {});
-  event.target.textContent = '✓ Copied';
-  setTimeout(() => event.target.textContent = 'Copy draft', 2000);
-}
-
-function addEmailTask(subject) {
-  const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
-  tasks.push({text: `Email: ${subject}`, done: false, date: TODAY_STR});
-  localStorage.setItem('mm_tasks', JSON.stringify(tasks));
-  event.target.textContent = '✓ Added';
-  setTimeout(() => event.target.textContent = '→ Add to tasks', 2000);
-}
-
-// ── 3. FINANCE ───────────────────────────────────────
-let financeTab = 'overview';
-let financeMonthOffset = 0;
-
-const FINANCE_KEY = 'mm_finance_data';
-const DEFAULT_FINANCE = {
-  income_salary: 0,
-  income_allocation: 1995,
-  income_rental: 1200,
-  fixed_total: 2276.34
-};
-
-function getFinance() {
-  const saved = localStorage.getItem(FINANCE_KEY);
-  return saved ? JSON.parse(saved) : DEFAULT_FINANCE;
-}
-function saveFinance(f) { localStorage.setItem(FINANCE_KEY, JSON.stringify(f)); }
-
-const FIXED_CHARGES = [
-  {name:'Loyer (Paris)',amount:1357,flag:'ok'},
-  {name:'Mortgage — Prêt 930307',amount:152.32,flag:'ok'},
-  {name:'Mortgage — Prêt 930308',amount:330.23,flag:'ok'},
-  {name:'Mortgage insurance (CAAE)',amount:55.85,flag:'ok'},
-  {name:'Free Telecom (rental apt)',amount:39.99,flag:'ok'},
-  {name:'Orange (Paris apt)',amount:76.02,flag:'ok'},
-  {name:'Free Mobile',amount:9.99,flag:'ok'},
-  {name:'Octopus Energy',amount:81.15,flag:'ok'},
-  {name:'Neoness (gym)',amount:39,flag:'ok'},
-  {name:'Home insurance — apt 1',amount:31.41,flag:'ok'},
-  {name:'Home insurance — apt 2',amount:25.84,flag:'ok'},
-  {name:'Predissime 9 (life savings)',amount:40,flag:'ok'},
-  {name:'Garantie décès (Predica)',amount:4.87,flag:'ok'},
-  {name:'Protection juridique (Pacifica)',amount:8.87,flag:'ok'},
-  {name:'CA Premium offer',amount:16,flag:'warn'},
-  {name:'Paypal — Apple subscription',amount:7.99,flag:'ok'},
-  {name:'Paypal — other recurring',amount:57.67,flag:'warn'},
+const FIXED_KEY = 'mm_fixed_charges';
+const DEFAULT_FIXED = [
+  {id:'f1',name:'Loyer (Paris)',amount:1357,flag:'ok'},
+  {id:'f2',name:'Mortgage — Prêt 930307',amount:152.32,flag:'ok'},
+  {id:'f3',name:'Mortgage — Prêt 930308',amount:330.23,flag:'ok'},
+  {id:'f4',name:'Mortgage insurance (CAAE)',amount:55.85,flag:'ok'},
+  {id:'f5',name:'Free Telecom (rental)',amount:39.99,flag:'ok'},
+  {id:'f6',name:'Orange (Paris)',amount:76.02,flag:'ok'},
+  {id:'f7',name:'Free Mobile',amount:9.99,flag:'ok'},
+  {id:'f8',name:'Octopus Energy',amount:81.15,flag:'ok'},
+  {id:'f9',name:'Neoness',amount:39,flag:'ok'},
+  {id:'f10',name:'Home insurance — apt 1',amount:31.41,flag:'ok'},
+  {id:'f11',name:'Home insurance — apt 2',amount:25.84,flag:'ok'},
+  {id:'f12',name:'Predissime 9',amount:40,flag:'ok'},
+  {id:'f13',name:'Garantie décès (Predica)',amount:4.87,flag:'ok'},
+  {id:'f14',name:'Protection juridique (Pacifica)',amount:8.87,flag:'ok'},
+  {id:'f15',name:'CA Premium',amount:16,flag:'warn'},
+  {id:'f16',name:'Paypal — Apple',amount:7.99,flag:'ok'},
+  {id:'f17',name:'Paypal — other',amount:57.67,flag:'warn'},
 ];
+function getFixed() { return JSON.parse(localStorage.getItem(FIXED_KEY) || JSON.stringify(DEFAULT_FIXED)); }
+function saveFixed(f) { localStorage.setItem(FIXED_KEY, JSON.stringify(f)); }
 
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const BUDGET_KEY = 'mm_budget';
+const DEFAULT_BUDGET = [
+  {cat:'Groceries',target:200,actual:0},{cat:'Health & Physio',target:150,actual:0},
+  {cat:'Beauty & Wellbeing',target:80,actual:0},{cat:'Transport',target:100,actual:0},
+  {cat:'Restaurants',target:50,actual:0},{cat:'Shopping',target:0,actual:0},
+  {cat:'Travel',target:0,actual:0},{cat:'Misc',target:100,actual:0},
+];
+function getBudget() { return JSON.parse(localStorage.getItem(BUDGET_KEY) || JSON.stringify(DEFAULT_BUDGET)); }
 
-function switchFinanceTab(tab) {
-  financeTab = tab;
-  ['overview','budget','fixed','upload'].forEach(t => {
+function switchFinTab(tab) {
+  finTab = tab;
+  ['overview','budget','fixed','statement'].forEach(t => {
     document.getElementById(`ftab-${t}`).classList.toggle('active', t === tab);
     document.getElementById(`fpanel-${t}`).style.display = t === tab ? 'block' : 'none';
   });
@@ -781,163 +674,219 @@ function switchFinanceTab(tab) {
   if (tab === 'fixed') renderFixed();
 }
 
-function changeMonth(dir) { financeMonthOffset += dir; renderOverview(); }
+function changeMonth(dir) { finMonthOffset += dir; renderOverview(); }
 
 function renderOverview() {
-  const d = new Date(TODAY.getFullYear(), TODAY.getMonth() + financeMonthOffset, 1);
-  document.getElementById('finance-month-label').textContent = `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-  const f = getFinance();
-  const fixedTotal = FIXED_CHARGES.reduce((s,c) => s + c.amount, 0);
-  const totalIncome = (f.income_salary || 0) + (f.income_allocation || 0) + (f.income_rental || 0);
+  const d = new Date(TODAY.getFullYear(), TODAY.getMonth() + finMonthOffset, 1);
+  document.getElementById('fin-month-label').textContent = `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  const f = getFin();
+  const fixedTotal = getFixed().reduce((s,c) => s + c.amount, 0);
+  const totalIncome = (f.income_salary||0) + (f.income_allocation||0) + (f.income_rental||0);
   const remaining = totalIncome - fixedTotal;
-  const el = document.getElementById('balance-remaining');
+  const el = document.getElementById('bal-remaining');
   el.textContent = `€${remaining.toFixed(0)}`;
   el.className = 'balance-amount' + (remaining < 300 ? ' critical' : remaining < 600 ? ' tight' : '');
-  document.getElementById('balance-sub').textContent = `after €${fixedTotal.toFixed(0)} fixed charges`;
-  document.getElementById('finance-overview-rows').innerHTML = `
-    <div class="finance-row"><span class="finance-row-label income">↑ Salary</span><span class="finance-row-value positive editable-val" onclick="editFinanceField('income_salary','Salary (€/month)')">€${f.income_salary||0}</span></div>
-    <div class="finance-row"><span class="finance-row-label income">↑ France Travail</span><span class="finance-row-value positive editable-val" onclick="editFinanceField('income_allocation','France Travail allocation (€/month)')">€${f.income_allocation||0}</span></div>
-    <div class="finance-row"><span class="finance-row-label income">↑ Rental income</span><span class="finance-row-value positive editable-val" onclick="editFinanceField('income_rental','Rental income (€/month)')">€${f.income_rental||0}</span></div>
+  document.getElementById('bal-sub').textContent = `after €${fixedTotal.toFixed(0)} fixed charges`;
+  document.getElementById('fin-overview-rows').innerHTML = `
+    <div class="finance-row"><span class="finance-row-label income">↑ Salary</span><span class="finance-row-value positive editable" onclick="editFin('income_salary','Salary (€/month)')">€${f.income_salary||0}</span></div>
+    <div class="finance-row"><span class="finance-row-label income">↑ France Travail</span><span class="finance-row-value positive editable" onclick="editFin('income_allocation','France Travail (€/month)')">€${f.income_allocation||0}</span></div>
+    <div class="finance-row"><span class="finance-row-label income">↑ Rental income</span><span class="finance-row-value positive editable" onclick="editFin('income_rental','Rental income (€/month)')">€${f.income_rental||0}</span></div>
     <div class="finance-row"><span class="finance-row-label">↓ Fixed charges</span><span class="finance-row-value negative">−€${fixedTotal.toFixed(0)}</span></div>
     <div class="finance-row" style="font-weight:600;border-top:2px solid var(--border);margin-top:4px;padding-top:12px">
       <span class="finance-row-label" style="font-weight:600;color:var(--text)">Variable budget</span>
-      <span class="finance-row-value ${remaining < 0 ? 'negative' : 'positive'}">€${remaining.toFixed(0)}</span>
+      <span class="finance-row-value ${remaining<0?'negative':'positive'}">€${remaining.toFixed(0)}</span>
     </div>`;
 }
 
-function editFinanceField(field, label) {
-  const f = getFinance();
-  const val = prompt(`${label}:`, f[field] || 0);
+function editFin(field, label) {
+  const f = getFin();
+  const val = prompt(`${label}:`, f[field]||0);
   if (val === null) return;
-  f[field] = parseFloat(val) || 0;
-  saveFinance(f); renderOverview();
-}
-
-const DEFAULT_BUDGET = [
-  {cat:'Groceries',target:200,actual:0},
-  {cat:'Health & Physio',target:150,actual:0},
-  {cat:'Beauty & Wellbeing',target:80,actual:0},
-  {cat:'Transport',target:100,actual:0},
-  {cat:'Restaurants',target:50,actual:0},
-  {cat:'Shopping',target:0,actual:0},
-  {cat:'Travel',target:0,actual:0},
-  {cat:'Misc',target:100,actual:0},
-];
-
-function getBudget() {
-  const saved = localStorage.getItem('mm_budget');
-  return saved ? JSON.parse(saved) : DEFAULT_BUDGET;
+  f[field] = parseFloat(val)||0; saveFin(f); renderOverview();
 }
 
 function renderBudget() {
   const budget = getBudget();
   document.getElementById('budget-items').innerHTML = budget.map((b,i) => {
     const pct = b.target > 0 ? Math.min(100, Math.round((b.actual/b.target)*100)) : 0;
-    const fillClass = pct > 100 ? 'fill-over' : pct > 80 ? 'fill-warn' : 'fill-ok';
+    const fc = pct > 100 ? 'fill-over' : pct > 80 ? 'fill-warn' : 'fill-ok';
     return `<div class="budget-item">
       <div class="budget-header">
         <span class="budget-cat">${b.cat}</span>
-        <span class="budget-amounts" onclick="editBudgetItem(${i})">€${b.actual} / €${b.target}</span>
+        <span class="budget-amounts" onclick="editBudget(${i})">€${b.actual} / €${b.target}</span>
       </div>
-      <div class="budget-bar-bg"><div class="budget-bar-fill ${fillClass}" style="width:${pct}%"></div></div>
+      <div class="budget-bar-bg"><div class="budget-bar-fill ${fc}" style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
 }
 
-function editBudgetItem(i) {
-  const budget = getBudget();
-  const b = budget[i];
+function editBudget(i) {
+  const budget = getBudget(); const b = budget[i];
   openModal(`Edit — ${b.cat}`,
-    `<div class="modal-field"><label class="modal-label">Budget target (€)</label>
-    <input class="input" id="m-target" type="number" value="${b.target}"/></div>
-    <div class="modal-field"><label class="modal-label">Actual spent this month (€)</label>
-    <input class="input" id="m-actual" type="number" value="${b.actual}"/></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
-     <button class="modal-save" onclick="saveBudgetItem(${i})">Save</button>`
+    `<div class="modal-field"><label class="modal-label">Budget target (€)</label><input class="input" id="m-target" type="number" value="${b.target}"/></div>
+    <div class="modal-field"><label class="modal-label">Actual spent this month (€)</label><input class="input" id="m-actual" type="number" value="${b.actual}"/></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-save" onclick="saveBudget(${i})">Save</button>`
   );
 }
 
-function saveBudgetItem(i) {
+function saveBudget(i) {
   const budget = getBudget();
-  budget[i].target = parseFloat(document.getElementById('m-target').value) || 0;
-  budget[i].actual = parseFloat(document.getElementById('m-actual').value) || 0;
-  localStorage.setItem('mm_budget', JSON.stringify(budget));
+  budget[i].target = parseFloat(document.getElementById('m-target').value)||0;
+  budget[i].actual = parseFloat(document.getElementById('m-actual').value)||0;
+  localStorage.setItem(BUDGET_KEY, JSON.stringify(budget));
   renderBudget(); closeModal();
 }
 
 function resetBudget() {
   if (!confirm('Reset all actual spending to 0?')) return;
-  const budget = getBudget();
-  budget.forEach(b => b.actual = 0);
-  localStorage.setItem('mm_budget', JSON.stringify(budget));
-  renderBudget();
+  const budget = getBudget(); budget.forEach(b => b.actual = 0);
+  localStorage.setItem(BUDGET_KEY, JSON.stringify(budget)); renderBudget();
 }
 
 function renderFixed() {
-  const total = FIXED_CHARGES.reduce((s,c) => s + c.amount, 0);
+  const fixed = getFixed();
+  const total = fixed.reduce((s,c) => s + c.amount, 0);
   document.getElementById('fixed-list').innerHTML =
-    FIXED_CHARGES.map(s => `<div class="sub-item">
-      <div><div class="sub-name">${s.name}</div></div>
+    fixed.map(f => `<div class="fixed-item">
+      <div><div class="fixed-name">${f.name}</div></div>
       <div style="display:flex;align-items:center">
-        <span class="sub-amount">€${s.amount.toFixed(2)}</span>
-        <span class="sub-flag flag-${s.flag}">${s.flag === 'warn' ? '⚠ Review' : '✓'}</span>
+        <span class="fixed-amount" onclick="editFixed('${f.id}')">€${f.amount.toFixed(2)}</span>
+        <span class="fixed-flag flag-${f.flag}">${f.flag==='warn'?'⚠ Review':'✓'}</span>
+        <button onclick="deleteFixed('${f.id}')" style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:12px;padding:2px 4px;opacity:0.5;margin-left:4px">✕</button>
       </div>
     </div>`).join('') +
-    `<div class="sub-total"><span class="sub-total-label">Total / month</span><span class="sub-total-val">€${total.toFixed(2)}</span></div>`;
+    `<div class="fixed-total"><span class="fixed-total-label">Total / month</span><span class="fixed-total-val">€${total.toFixed(2)}</span></div>`;
 }
 
-// PDF UPLOAD
-async function handlePDFUpload(event) {
+function editFixed(id) {
+  const fixed = getFixed(); const item = fixed.find(f => f.id === id);
+  if (!item) return;
+  openModal('Edit fixed charge',
+    `<div class="modal-field"><label class="modal-label">Name</label><input class="input" id="m-name" value="${item.name}"/></div>
+    <div class="modal-field"><label class="modal-label">Amount (€/month)</label><input class="input" id="m-amount" type="number" step="0.01" value="${item.amount}"/></div>
+    <div class="modal-field"><label class="modal-label">Flag</label>
+    <select class="input" id="m-flag"><option value="ok" ${item.flag==='ok'?'selected':''}>✓ OK</option><option value="warn" ${item.flag==='warn'?'selected':''}>⚠ Review</option></select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-save" onclick="saveFixed('${id}')">Save</button>`
+  );
+}
+
+function saveFixed(id) {
+  const fixed = getFixed(); const item = fixed.find(f => f.id === id);
+  if (!item) return;
+  item.name = document.getElementById('m-name').value.trim() || item.name;
+  item.amount = parseFloat(document.getElementById('m-amount').value)||0;
+  item.flag = document.getElementById('m-flag').value;
+  saveFixed(fixed); renderFixed(); renderOverview(); closeModal();
+}
+
+function deleteFixed(id) {
+  if (!confirm('Delete this charge?')) return;
+  saveFixed(getFixed().filter(f => f.id !== id)); renderFixed(); renderOverview();
+}
+
+function addFixedModal() {
+  openModal('Add fixed charge',
+    `<div class="modal-field"><label class="modal-label">Name</label><input class="input" id="m-name" placeholder="e.g. Netflix"/></div>
+    <div class="modal-field"><label class="modal-label">Amount (€/month)</label><input class="input" id="m-amount" type="number" step="0.01" placeholder="9.99"/></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-save" onclick="addFixed()">Add</button>`
+  );
+}
+
+function addFixed() {
+  const name = document.getElementById('m-name').value.trim();
+  if (!name) return;
+  const fixed = getFixed();
+  fixed.push({id:'f'+Date.now(), name, amount: parseFloat(document.getElementById('m-amount').value)||0, flag:'ok'});
+  saveFixed(fixed); renderFixed(); renderOverview(); closeModal();
+}
+
+// STATEMENT PDF
+function handlePDF(event) {
   const file = event.target.files[0];
   if (!file) return;
-  const resultEl = document.getElementById('upload-result');
-  resultEl.innerHTML = '<div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div>';
-  try {
-    const base64 = await new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = () => res(r.result.split(',')[1]);
-      r.onerror = rej;
-      r.readAsDataURL(file);
-    });
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
-        system: 'You are a bank statement analyzer. Extract spending by category. Respond in French. Be concise.',
-        messages: [{role:'user',content:[
-          {type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},
-          {type:'text',text:'Analyse ce relevé bancaire. Donne-moi : 1) Total des dépenses par catégorie (alimentation, transport, santé, shopping, restaurants, abonnements, autres). 2) Total des revenus. 3) Observations importantes. Format lisible, pas de JSON.'}
-        ]}]
-      })
-    });
-    const d = await response.json();
-    const text = d.content?.find(b => b.type === 'text')?.text || 'No analysis available.';
-    resultEl.innerHTML = `<div class="upload-result">${text.replace(/\n/g,'<br/>')}</div>`;
+  const prompt = `Analyse ce relevé bancaire PDF et donne-moi :
 
-    // Offer to update budget
-    resultEl.innerHTML += `<button class="btn-primary" style="margin-top:10px" onclick="switchFinanceTab('budget')">→ Update budget from this analysis</button>`;
-  } catch(e) {
-    resultEl.innerHTML = '<div class="empty-note">Could not analyze PDF. Make sure you have API access configured.</div>';
+1. DÉPENSES PAR CATÉGORIE (avec montants totaux) :
+   - Alimentation / Courses
+   - Santé & Physio
+   - Beauté & Bien-être
+   - Transport
+   - Restaurants & Sorties
+   - Shopping / Vêtements
+   - Abonnements
+   - Autres
+
+2. TOTAL REVENUS du mois
+
+3. TOTAL DÉPENSES du mois
+
+4. OBSERVATIONS : dépenses inhabituelles ou à surveiller
+
+Termine ta réponse avec exactement :
+JSON_START
+{"groceries":0,"health":0,"beauty":0,"transport":0,"restaurants":0,"shopping":0,"subscriptions":0,"misc":0,"total_income":0,"total_expenses":0}
+JSON_END
+
+Remplace les 0 par les vrais montants trouvés dans le relevé.`;
+
+  document.getElementById('statement-prompt-area').innerHTML = `
+    <p style="font-size:12px;font-weight:600;color:var(--text-mid);margin:14px 0 6px">1. Copy this prompt and paste it + your PDF into ChatGPT :</p>
+    <div class="prompt-box">${prompt}</div>
+    <button class="btn-primary" style="margin-top:10px" onclick="copyStatementPrompt()">📋 Copy prompt</button>
+    <div class="copy-feedback" id="statement-copy-feedback"></div>`;
+  window._statementPrompt = prompt;
+
+  document.getElementById('statement-paste-area').innerHTML = `
+    <p style="font-size:12px;font-weight:600;color:var(--text-mid);margin:14px 0 6px">2. Paste ChatGPT's response here :</p>
+    <textarea class="paste-area" id="statement-paste" placeholder="Paste ChatGPT analysis here..."></textarea>
+    <button class="btn-primary" style="margin-top:10px" onclick="saveStatementAnalysis()">💾 Save & update budget</button>`;
+}
+
+function copyStatementPrompt() {
+  navigator.clipboard?.writeText(window._statementPrompt || '').catch(() => {});
+  const fb = document.getElementById('statement-copy-feedback');
+  fb.textContent = '✓ Copied! Now open ChatGPT, paste your PDF + this prompt.';
+  setTimeout(() => fb.textContent = '', 3000);
+}
+
+function saveStatementAnalysis() {
+  const text = document.getElementById('statement-paste').value;
+  try {
+    const match = text.match(/JSON_START\s*([\s\S]*?)\s*JSON_END/);
+    if (!match) throw new Error('No JSON found');
+    const data = JSON.parse(match[1]);
+    const budget = getBudget();
+    const map = {
+      'Groceries': data.groceries, 'Health & Physio': data.health,
+      'Beauty & Wellbeing': data.beauty, 'Transport': data.transport,
+      'Restaurants': data.restaurants, 'Shopping': data.shopping,
+      'Misc': (data.subscriptions||0) + (data.misc||0)
+    };
+    budget.forEach(b => { if (map[b.cat] !== undefined) b.actual = map[b.cat]; });
+    localStorage.setItem(BUDGET_KEY, JSON.stringify(budget));
+    document.getElementById('statement-paste-area').innerHTML += `<p style="color:var(--accent);font-size:12px;margin-top:8px;font-weight:600">✓ Budget updated! Go to Budget tab to see the results.</p>`;
+    renderBudget();
+  } catch {
+    alert('Could not parse the response. Make sure ChatGPT included the JSON_START / JSON_END block.');
   }
 }
 
-// ── 4. PORTFOLIO ─────────────────────────────────────
-const CRYPTO_KEY = 'mm_crypto_holdings';
-const ETF_KEY = 'mm_etf_holdings';
+// ── 3. PORTFOLIO ─────────────────────────────────────
+const CRYPTO_KEY = 'mm_crypto';
+const ETF_KEY = 'mm_etf';
 
 const DEFAULT_CRYPTO = [
-  {symbol:'BTC',name:'Bitcoin',qty:0.00706117,apr:0.29,restake:null,icon:'₿'},
-  {symbol:'ETH',name:'Ethereum',qty:0.0298884,apr:2.5,restake:'2026-04-25',icon:'Ξ'},
-  {symbol:'BNB',name:'BNB',qty:0.04391586,apr:0.16,restake:null,icon:'B'},
-  {symbol:'POL',name:'Polygon',qty:96,apr:23,restake:'2026-05-06',icon:'P'},
+  {symbol:'BTC',name:'Bitcoin',qty:0.00706117,apr:0.29,restake:null,icon:'₿',cgId:'bitcoin'},
+  {symbol:'ETH',name:'Ethereum',qty:0.0298884,apr:2.5,restake:'2026-04-25',icon:'Ξ',cgId:'ethereum'},
+  {symbol:'BNB',name:'BNB',qty:0.04391586,apr:0.16,restake:null,icon:'B',cgId:'binancecoin'},
+  {symbol:'POL',name:'Polygon',qty:96,apr:23,restake:'2026-05-06',icon:'P',cgId:'matic-network'},
 ];
 
 const DEFAULT_ETF = [
-  {ticker:'MLUX',name:'Amundi PEA Luxe Monde UCITS',qty:9,price:10.93,value:87.13,type:'ETF'},
-  {ticker:'CAC40',name:'Amundi Core CAC 40 UC ETF',qty:2,price:38.43,value:83.63,type:'ETF'},
-  {ticker:'WPEA',name:'iShares MSCI World Swap PEA',qty:13,price:6.54,value:83.11,type:'ETF'},
-  {ticker:'ORA',name:'Orange SA',qty:1,price:14.77,value:17.14,type:'Stock'},
+  {ticker:'MLUX',name:'Amundi PEA Luxe Monde',qty:9,avgPrice:10.93,currentPrice:10.93},
+  {ticker:'CAC40',name:'Amundi Core CAC 40',qty:2,avgPrice:38.43,currentPrice:38.43},
+  {ticker:'WPEA',name:'iShares MSCI World Swap PEA',qty:13,avgPrice:6.54,currentPrice:6.54},
+  {ticker:'ORA',name:'Orange SA',qty:1,avgPrice:14.77,currentPrice:14.77},
 ];
 
 function getCrypto() { return JSON.parse(localStorage.getItem(CRYPTO_KEY) || JSON.stringify(DEFAULT_CRYPTO)); }
@@ -945,7 +894,7 @@ function getETF() { return JSON.parse(localStorage.getItem(ETF_KEY) || JSON.stri
 
 let portfolioLoaded = false;
 
-function switchPortfolioTab(tab) {
+function switchPortTab(tab) {
   ['assets','staking','strategy'].forEach(t => {
     document.getElementById(`ptab-${t}`).classList.toggle('active', t === tab);
     document.getElementById(`ppanel-${t}`).style.display = t === tab ? 'block' : 'none';
@@ -958,14 +907,13 @@ async function loadPortfolio() {
   if (portfolioLoaded) return;
   portfolioLoaded = true;
   try {
-    const ids = 'bitcoin,ethereum,binancecoin,matic-network';
+    const ids = getCrypto().map(c => c.cgId).join(',');
     const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=eur&include_24hr_change=true`);
     const prices = await r.json();
-    const map = {BTC:prices.bitcoin,ETH:prices.ethereum,BNB:prices.binancecoin,POL:prices['matic-network']};
     const crypto = getCrypto();
     let cryptoTotal = 0;
     document.getElementById('crypto-list').innerHTML = crypto.map((c,i) => {
-      const p = map[c.symbol];
+      const p = prices[c.cgId];
       const price = p?.eur || 0;
       const change = p?.eur_24h_change || 0;
       const value = price * c.qty;
@@ -977,107 +925,93 @@ async function loadPortfolio() {
           <div class="asset-detail">${c.qty} ${c.symbol} · APR ${c.apr}%${c.restake?' · Restake: '+c.restake:''}</div>
         </div>
         <div class="asset-value">
-          <div class="asset-eur" onclick="editCryptoHolding(${i})">€${value.toFixed(2)}</div>
-          <div class="asset-change ${change>=0?'change-pos':'change-neg'}">${change>=0?'+':''}${change.toFixed(1)}%</div>
+          <div class="asset-eur" onclick="editCrypto(${i})">€${value.toFixed(2)}</div>
+          <div class="asset-change ${change>=0?'change-pos':'change-neg'}">${change>=0?'+':''}${change.toFixed(1)}% 24h</div>
         </div>
       </div>`;
     }).join('');
-    renderETFList(cryptoTotal);
+    renderETFs(cryptoTotal);
   } catch {
-    document.getElementById('crypto-list').innerHTML = '<div class="empty-note">Could not load crypto prices.</div>';
-    renderETFList(0);
+    document.getElementById('crypto-list').innerHTML = '<div class="empty-note">Could not load crypto prices. Check connection.</div>';
+    renderETFs(0);
   }
 }
 
-function renderETFList(cryptoTotal) {
+function renderETFs(cryptoTotal) {
   const etf = getETF();
-  let etfTotal = 0;
+  let etfInvested = 0; let etfCurrent = 0;
   document.getElementById('etf-list').innerHTML = etf.map((e,i) => {
-    etfTotal += e.value;
+    const invested = e.avgPrice * e.qty;
+    const current = e.currentPrice * e.qty;
+    const pnl = current - invested;
+    const pnlPct = invested > 0 ? ((pnl / invested) * 100).toFixed(1) : 0;
+    etfInvested += invested; etfCurrent += current;
     return `<div class="asset-item">
       <div class="asset-icon" style="font-size:10px;font-weight:700">${e.ticker}</div>
       <div class="asset-info">
         <div class="asset-name">${e.name}</div>
-        <div class="asset-detail">${e.qty} units · PEA · avg €${e.price}/unit</div>
+        <div class="asset-detail">${e.qty} units · avg €${e.avgPrice} · now €${e.currentPrice}</div>
       </div>
       <div class="asset-value">
-        <div class="asset-eur" onclick="editETFHolding(${i})">€${e.value.toFixed(2)}</div>
-        <div class="asset-change" style="color:var(--text-dim)">tap to edit</div>
+        <div class="asset-eur" onclick="editETF(${i})">€${current.toFixed(2)}</div>
+        <div class="asset-change ${pnl>=0?'change-pos':'change-neg'}">${pnl>=0?'+':''}${pnlPct}% (${pnl>=0?'+':''}€${pnl.toFixed(2)})</div>
       </div>
     </div>`;
   }).join('');
 
-  const property = 270000;
-  const mortgage = (152.32 + 330.23) * 12 * 15;
   document.getElementById('realestate-list').innerHTML = `<div class="asset-item">
     <div class="asset-icon">🏠</div>
-    <div class="asset-info">
-      <div class="asset-name">Apartment (owned)</div>
-      <div class="asset-detail">~270,000€ market value · rented 1,200€/mo</div>
-    </div>
-    <div class="asset-value">
-      <div class="asset-eur">€270,000</div>
-      <div class="asset-change change-pos">+rental yield</div>
-    </div>
+    <div class="asset-info"><div class="asset-name">Apartment (owned)</div><div class="asset-detail">~270,000€ · rented 1,200€/mo</div></div>
+    <div class="asset-value"><div class="asset-eur">€270,000</div><div class="asset-change change-pos">+rental yield</div></div>
   </div>`;
 
-  const total = cryptoTotal + etfTotal + property - mortgage;
+  const mortgage = (152.32 + 330.23) * 12 * 15;
+  const total = cryptoTotal + etfCurrent + 270000 - mortgage;
   document.getElementById('net-worth').textContent = `€${Math.round(total).toLocaleString()}`;
-  document.getElementById('net-worth-sub').textContent = `Crypto + ETFs (${etfTotal.toFixed(0)}€) + property − mortgage`;
+  document.getElementById('net-worth-sub').textContent = `ETF invested €${etfInvested.toFixed(0)} → now €${etfCurrent.toFixed(0)} (${etfCurrent>etfInvested?'+':''}€${(etfCurrent-etfInvested).toFixed(0)})`;
 }
 
-function editCryptoHolding(i) {
-  const crypto = getCrypto();
-  const c = crypto[i];
+function editCrypto(i) {
+  const crypto = getCrypto(); const c = crypto[i];
   openModal(`Edit — ${c.name}`,
-    `<div class="modal-field"><label class="modal-label">Quantity</label>
-    <input class="input" id="m-qty" type="number" step="0.000001" value="${c.qty}"/></div>
-    <div class="modal-field"><label class="modal-label">APR (%)</label>
-    <input class="input" id="m-apr" type="number" step="0.01" value="${c.apr}"/></div>
-    <div class="modal-field"><label class="modal-label">Restake date (optional)</label>
-    <input class="input" id="m-restake" type="date" value="${c.restake||''}"/></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
-     <button class="modal-save" onclick="saveCryptoEdit(${i})">Save</button>`
+    `<div class="modal-field"><label class="modal-label">Quantity</label><input class="input" id="m-qty" type="number" step="0.000001" value="${c.qty}"/></div>
+    <div class="modal-field"><label class="modal-label">APR (%)</label><input class="input" id="m-apr" type="number" step="0.01" value="${c.apr}"/></div>
+    <div class="modal-field"><label class="modal-label">Restake date</label><input class="input" id="m-restake" type="date" value="${c.restake||''}"/></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-save" onclick="saveCrypto(${i})">Save</button>`
   );
 }
 
-function saveCryptoEdit(i) {
+function saveCrypto(i) {
   const crypto = getCrypto();
-  crypto[i].qty = parseFloat(document.getElementById('m-qty').value) || 0;
-  crypto[i].apr = parseFloat(document.getElementById('m-apr').value) || 0;
-  crypto[i].restake = document.getElementById('m-restake').value || null;
+  crypto[i].qty = parseFloat(document.getElementById('m-qty').value)||0;
+  crypto[i].apr = parseFloat(document.getElementById('m-apr').value)||0;
+  crypto[i].restake = document.getElementById('m-restake').value||null;
   localStorage.setItem(CRYPTO_KEY, JSON.stringify(crypto));
   portfolioLoaded = false; loadPortfolio(); closeModal();
 }
 
-function editETFHolding(i) {
-  const etf = getETF();
-  const e = etf[i];
+function editETF(i) {
+  const etf = getETF(); const e = etf[i];
   openModal(`Edit — ${e.ticker}`,
-    `<div class="modal-field"><label class="modal-label">Quantity (units)</label>
-    <input class="input" id="m-qty" type="number" value="${e.qty}"/></div>
-    <div class="modal-field"><label class="modal-label">Average price per unit (€)</label>
-    <input class="input" id="m-price" type="number" step="0.01" value="${e.price}"/></div>
-    <div class="modal-field"><label class="modal-label">Current value (€)</label>
-    <input class="input" id="m-value" type="number" step="0.01" value="${e.value}"/></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
-     <button class="modal-save" onclick="saveETFEdit(${i})">Save</button>`
+    `<div class="modal-field"><label class="modal-label">Quantity (units)</label><input class="input" id="m-qty" type="number" value="${e.qty}"/></div>
+    <div class="modal-field"><label class="modal-label">Average buy price (€/unit)</label><input class="input" id="m-avg" type="number" step="0.01" value="${e.avgPrice}"/></div>
+    <div class="modal-field"><label class="modal-label">Current price (€/unit) — update monthly</label><input class="input" id="m-cur" type="number" step="0.01" value="${e.currentPrice}"/></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-save" onclick="saveETF(${i})">Save</button>`
   );
 }
 
-function saveETFEdit(i) {
+function saveETF(i) {
   const etf = getETF();
-  etf[i].qty = parseFloat(document.getElementById('m-qty').value) || 0;
-  etf[i].price = parseFloat(document.getElementById('m-price').value) || 0;
-  etf[i].value = parseFloat(document.getElementById('m-value').value) || 0;
+  etf[i].qty = parseFloat(document.getElementById('m-qty').value)||0;
+  etf[i].avgPrice = parseFloat(document.getElementById('m-avg').value)||0;
+  etf[i].currentPrice = parseFloat(document.getElementById('m-cur').value)||0;
   localStorage.setItem(ETF_KEY, JSON.stringify(etf));
   portfolioLoaded = false; loadPortfolio(); closeModal();
 }
 
 function renderStaking() {
-  const crypto = getCrypto();
-  const stakeable = crypto.filter(c => c.restake);
-  document.getElementById('staking-list').innerHTML = stakeable.map(c => {
+  const crypto = getCrypto().filter(c => c.restake);
+  document.getElementById('staking-list').innerHTML = crypto.map(c => {
     const days = Math.round((new Date(c.restake) - new Date()) / 86400000);
     const urg = days <= 0 ? 'urgent' : days <= 3 ? 'urgent' : days <= 7 ? 'soon' : 'ok';
     const label = days < 0 ? `${Math.abs(days)}d overdue` : days === 0 ? 'Today!' : `${days} days`;
@@ -1087,107 +1021,136 @@ function renderStaking() {
         <span class="staking-countdown ${urg}">${label}</span>
       </div>
       <div class="staking-detail">${c.qty} ${c.symbol} · APR ${c.apr}% · Restake by ${c.restake}<br/>
-        Est. daily: ${(c.qty * c.apr / 100 / 365).toFixed(6)} ${c.symbol}</div>
-      <button class="btn-small btn-done" style="margin-top:8px" onclick="pushStaking('${c.symbol}','${c.restake}')">→ Push to tasks</button>
+        Est. daily: ${(c.qty*c.apr/100/365).toFixed(6)} ${c.symbol}</div>
+      <button class="btn-xs btn-done" style="margin-top:8px" onclick="pushStaking('${c.symbol}','${c.restake}')">→ Push to tasks</button>
     </div>`;
-  }).join('');
+  }).join('') || '<div class="empty-note">No upcoming restaking.</div>';
 }
 
 function pushStaking(symbol, date) {
   const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
-  tasks.push({text: `Restake ${symbol}`, done: false, date});
+  tasks.push({text:`Restake ${symbol}`, done:false, date});
   localStorage.setItem('mm_tasks', JSON.stringify(tasks));
-  event.target.textContent = '✓ Added';
-  setTimeout(() => event.target.textContent = '→ Push to tasks', 2000);
+  event.target.textContent = '✓ Added'; setTimeout(() => event.target.textContent = '→ Push to tasks', 2000);
 }
 
 // STRATEGY
-async function loadStrategy(force=false) {
-  const cached = localStorage.getItem('mm_strategy');
-  const cachedMonth = localStorage.getItem('mm_strategy_month');
-  const monthKey = new Date().toISOString().slice(0,7);
-  if (cached && cachedMonth === monthKey && !force) { renderStrategy(cached); return; }
+function generateStrategyPrompt() {
+  const crypto = getCrypto();
+  const etf = getETF();
+  const monthYear = `${MONTHS[TODAY.getMonth()]} ${TODAY.getFullYear()}`;
 
-  document.getElementById('strategy-content').innerHTML = '<div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div>';
-  document.getElementById('strategy-refresh').classList.add('spinning');
+  const cryptoLines = crypto.map(c => `- ${c.name} (${c.symbol}): ${c.qty} units${c.restake?' · staking '+c.apr+'% APR':''}`).join('\n');
+  const etfLines = etf.map(e => `- ${e.ticker} (${e.name}): ${e.qty} units · avg buy price €${e.avgPrice}/unit · last known price €${e.currentPrice}/unit`).join('\n');
 
+  const prompt = `You are my personal investment strategist. Today is ${TODAY_STR}. Generate my investment strategy for ${monthYear}.
+
+MY PORTFOLIO:
+
+CRYPTO — search current EUR prices on CoinGecko:
+${cryptoLines}
+
+ETFs & STOCKS (PEA) — search current prices:
+${etfLines}
+
+REAL ESTATE: 1 apartment, ~€270,000 value, rented €1,200/month. Outstanding mortgage ~€90,000.
+
+PROFILE:
+- Risk: 7/10, long horizon, goal: build wealth
+- Monthly investment budget: €50
+- I want to diversify and grow
+
+INSTRUCTIONS:
+1. Search current market prices for all my positions
+2. For each position calculate: current value vs what I paid → P&L in € and %
+3. Total portfolio value vs total invested
+4. Where to invest my €50 this month — be specific (which asset, why, how much)
+5. One diversification suggestion I haven't considered
+6. One key risk to watch this month
+
+Be specific and data-driven. Reference real current prices. Max 400 words.`;
+
+  document.getElementById('strategy-prompt-display').innerHTML = `
+    <div class="prompt-box">${prompt.replace(/\n/g,'<br/>')}</div>
+    <button class="btn-primary" style="margin-top:10px" onclick="copyStrategyPrompt()">📋 Copy prompt</button>
+    <div class="copy-feedback" id="strategy-copy-feedback"></div>`;
+  window._strategyPrompt = prompt;
+}
+
+function copyStrategyPrompt() {
+  navigator.clipboard?.writeText(window._strategyPrompt || '').catch(() => {});
+  document.getElementById('strategy-copy-feedback').textContent = '✓ Copied! Paste into ChatGPT.';
+  setTimeout(() => document.getElementById('strategy-copy-feedback').textContent = '', 3000);
+}
+
+function showPasteStrategy() {
+  document.getElementById('strategy-paste-area').innerHTML = `
+    <p style="font-size:12px;font-weight:600;color:var(--text-mid);margin:14px 0 6px">Paste ChatGPT's response :</p>
+    <textarea class="paste-area" id="strategy-paste" placeholder="Paste the strategy here..."></textarea>
+    <button class="btn-primary" style="margin-top:10px" onclick="saveStrategy()">💾 Save to JSONBin</button>`;
+}
+
+async function saveStrategy() {
+  const text = document.getElementById('strategy-paste').value.trim();
+  if (!text) return;
+  const btn = event.target;
+  btn.textContent = 'Saving...'; btn.disabled = true;
   try {
-    // First get JSONBin context
-    const binR = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_STRATEGY}/latest`, {
-      headers: {'X-Master-Key': JSONBIN_KEY}
+    await fetch(`https://api.jsonbin.io/v3/b/${JBSTRATEGY}`, {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json','X-Master-Key':JBKEY,'X-Bin-Versioning':'false'},
+      body: JSON.stringify({strategy: text, updated: TODAY_STR})
     });
-    const binD = await binR.json();
-    const profile = binD?.record;
-
-    // Then get strategy from Claude with web search
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
-        tools: [{type:'web_search_20250305',name:'web_search'}],
-        system: 'You are a personal investment strategist. Be specific, actionable, and anchor your advice to real current market data. Never generic.',
-        messages: [{role:'user',content:`Give me my monthly investment strategy for ${monthKey}.
-
-My profile:
-- Risk: 7/10 (growth-oriented, long horizon, wants to build wealth)
-- Current positions: BTC 0.00706, ETH 0.0299 (staking 2.5% APR), BNB 0.044, POL 96 (staking 23% APR)
-- ETFs (PEA): MLUX x9, CAC40 x2, WPEA x13, Orange x1
-- Real estate: 1 apartment owned, rented 1200€/month
-- Monthly variable budget after fixed: ~500-800€ to potentially invest
-
-Search for current market context (crypto trends, ETF performance, macro outlook for ${monthKey}) then give me:
-1. What to do this month with any spare capital
-2. Any positions to review or rebalance
-3. Staking optimization opportunities
-4. One key risk to watch
-
-Be specific and personalized. Max 300 words.`}]
-      })
-    });
-    const d = await r.json();
-    const text = d.content?.filter(b => b.type === 'text').map(b => b.text).join('\n') || 'No strategy available.';
     localStorage.setItem('mm_strategy', text);
-    localStorage.setItem('mm_strategy_month', monthKey);
+    localStorage.setItem('mm_strategy_date', TODAY_STR);
+    document.getElementById('strategy-paste-area').innerHTML = '<p style="color:var(--accent);font-size:12px;margin-top:8px;font-weight:600">✓ Strategy saved!</p>';
     renderStrategy(text);
   } catch {
-    document.getElementById('strategy-content').innerHTML = '<div class="empty-note">Could not load strategy. Check connection.</div>';
+    alert('Could not save. Check connection.');
   }
-  document.getElementById('strategy-refresh').classList.remove('spinning');
+  btn.textContent = '💾 Save to JSONBin'; btn.disabled = false;
+}
+
+function loadStrategy() {
+  const cached = localStorage.getItem('mm_strategy');
+  if (cached) { renderStrategy(cached); return; }
+  fetch(`https://api.jsonbin.io/v3/b/${JBSTRATEGY}/latest`, {headers:{'X-Master-Key':JBKEY}})
+    .then(r => r.json())
+    .then(d => {
+      const text = d?.record?.strategy || '';
+      if (text) { localStorage.setItem('mm_strategy', text); renderStrategy(text); }
+      else document.getElementById('strategy-display').innerHTML = '<div class="empty-note">No strategy yet. Generate a prompt and paste the result.</div>';
+    })
+    .catch(() => document.getElementById('strategy-display').innerHTML = '<div class="empty-note">Could not load strategy.</div>');
 }
 
 function renderStrategy(text) {
-  document.getElementById('strategy-content').innerHTML =
-    `<div class="strategy-content">${text.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br/>').replace(/^/,'<p>').replace(/$/,'</p>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>`;
+  document.getElementById('strategy-display').innerHTML =
+    `<div class="strategy-box">${text.replace(/\n\n/g,'</p><p style="margin-top:10px">').replace(/\n/g,'<br/>').replace(/^/,'<p>').replace(/$/,'</p>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>`;
 }
 
-// ── 5. VAULT ────────────────────────────────────────
+// ── 4. VAULT ────────────────────────────────────────
 let pinBuffer = '';
 let pinMode = 'unlock';
 let pinSetupFirst = '';
-
 const VAULT_KEY = 'mm_vault_docs';
 
 const DEFAULT_DOCS = [
-  {id:'doc1',name:'Italian Passport',detail:'EXPIRED — Italian Consulate Paris: 01 49 54 03 00 · consolato-parigi.esteri.it',status:'expired',driveLink:GDRIVE_FOLDER,action:'Book consulate appointment'},
-  {id:'doc2',name:'French Passport',detail:'Expires 07 November 2029',status:'ok',driveLink:GDRIVE_FOLDER,action:null},
-  {id:'doc3',name:'Health Insurance (Mutuelle)',detail:'Expires 30 May 2026 · Renew via employer or independently',status:'urgent',driveLink:GDRIVE_FOLDER,action:'Renew before May 30'},
-  {id:'doc4',name:'Apartment — owned',detail:'~270,000€ · 13 Rue des Petits Carreaux 75002 · Crédit Agricole mortgage',status:'ok',driveLink:GDRIVE_FOLDER,action:null},
-  {id:'doc5',name:'Home Insurance × 2',detail:'Both apartments — Pacifica (CA) · Auto-renews',status:'ok',driveLink:GDRIVE_FOLDER,action:null},
-  {id:'doc6',name:'Life Insurance — Predissime 9',detail:'Contrat 86000809482561 · 40€/month',status:'ok',driveLink:GDRIVE_FOLDER,action:null},
-  {id:'doc7',name:'Carte Vitale',detail:'CPAM 75 · Update if job/status changes',status:'soon',driveLink:GDRIVE_FOLDER,action:'Update after new job starts'},
-  {id:'doc8',name:'Accountant',detail:'Lorient agency · Annual tax filing',status:'soon',driveLink:GDRIVE_FOLDER,action:'Schedule April/May meeting'},
+  {id:'doc1',name:'Italian Passport',detail:'EXPIRED — Italian Consulate Paris: 01 49 54 03 00 · consolato-parigi.esteri.it',status:'expired',driveLink:GDRIVE,action:'Book consulate appointment'},
+  {id:'doc2',name:'French Passport',detail:'Expires 07 November 2029',status:'ok',driveLink:GDRIVE,action:null},
+  {id:'doc3',name:'Health Insurance (Mutuelle)',detail:'Expires 30 May 2026 · Renew via employer or independently',status:'urgent',driveLink:GDRIVE,action:'Renew before May 30'},
+  {id:'doc4',name:'Apartment — owned',detail:'~270,000€ · Crédit Agricole mortgage',status:'ok',driveLink:GDRIVE,action:null},
+  {id:'doc5',name:'Home Insurance × 2',detail:'Both apartments — Pacifica (CA) · Auto-renews',status:'ok',driveLink:GDRIVE,action:null},
+  {id:'doc6',name:'Life Insurance — Predissime 9',detail:'Contrat 86000809482561 · 40€/month',status:'ok',driveLink:GDRIVE,action:null},
+  {id:'doc7',name:'Carte Vitale',detail:'CPAM 75 · Update if job/status changes',status:'soon',driveLink:GDRIVE,action:'Update after new job starts'},
+  {id:'doc8',name:'Accountant',detail:'Lorient agency · Annual tax filing',status:'soon',driveLink:GDRIVE,action:'Schedule April/May meeting'},
 ];
 
-function getDocs() {
-  const saved = localStorage.getItem(VAULT_KEY);
-  return saved ? JSON.parse(saved) : DEFAULT_DOCS;
-}
+function getDocs() { return JSON.parse(localStorage.getItem(VAULT_KEY) || JSON.stringify(DEFAULT_DOCS)); }
 function saveDocs(docs) { localStorage.setItem(VAULT_KEY, JSON.stringify(docs)); }
 
 function initPin() {
-  const hasPin = !!localStorage.getItem('mm_vault_pin');
-  if (!hasPin) {
+  if (!localStorage.getItem('mm_vault_pin')) {
     pinMode = 'setup';
     document.getElementById('pin-title').textContent = '🔐 Create your PIN';
     document.getElementById('pin-subtitle').textContent = 'Choose a 4-digit PIN to protect your documents';
@@ -1196,185 +1159,133 @@ function initPin() {
 
 function pinPress(digit) {
   if (pinBuffer.length >= 4) return;
-  pinBuffer += digit;
-  updatePinDisplay();
-  if (pinBuffer.length === 4) setTimeout(processPinInput, 200);
+  pinBuffer += digit; updatePinDots();
+  if (pinBuffer.length === 4) setTimeout(processPin, 200);
 }
+function pinDel() { pinBuffer = pinBuffer.slice(0,-1); updatePinDots(); }
+function updatePinDots() { for (let i=0;i<4;i++) document.getElementById(`pd${i}`).classList.toggle('filled', i<pinBuffer.length); }
 
-function pinDel() { pinBuffer = pinBuffer.slice(0,-1); updatePinDisplay(); }
-
-function updatePinDisplay() {
-  for (let i = 0; i < 4; i++) document.getElementById(`pd${i}`).classList.toggle('filled', i < pinBuffer.length);
-}
-
-function processPinInput() {
+function processPin() {
   if (pinMode === 'setup') {
-    pinSetupFirst = pinBuffer; pinBuffer = '';
-    pinMode = 'confirm';
+    pinSetupFirst = pinBuffer; pinBuffer = ''; pinMode = 'confirm';
     document.getElementById('pin-title').textContent = 'Confirm your PIN';
     document.getElementById('pin-subtitle').textContent = 'Enter the same PIN again';
-    updatePinDisplay();
+    updatePinDots();
   } else if (pinMode === 'confirm') {
     if (pinBuffer === pinSetupFirst) {
       localStorage.setItem('mm_vault_pin', hashPin(pinBuffer));
       pinBuffer = ''; pinMode = 'unlock'; openVault();
     } else {
-      showPinError("PINs don't match. Try again.");
+      showPinErr("PINs don't match. Try again.");
       pinBuffer = ''; pinSetupFirst = ''; pinMode = 'setup';
       document.getElementById('pin-title').textContent = '🔐 Create your PIN';
       document.getElementById('pin-subtitle').textContent = 'Choose a 4-digit PIN';
-      updatePinDisplay();
+      updatePinDots();
     }
   } else {
-    if (hashPin(pinBuffer) === localStorage.getItem('mm_vault_pin')) {
-      pinBuffer = ''; openVault();
-    } else {
-      showPinError('Incorrect PIN. Try again.');
-      pinBuffer = ''; updatePinDisplay();
-    }
+    if (hashPin(pinBuffer) === localStorage.getItem('mm_vault_pin')) { pinBuffer = ''; openVault(); }
+    else { showPinErr('Incorrect PIN.'); pinBuffer = ''; updatePinDots(); }
   }
 }
 
 function hashPin(pin) {
-  let h = 0;
-  for (let i = 0; i < pin.length; i++) { h = ((h<<5)-h) + pin.charCodeAt(i); h |= 0; }
-  return h.toString(36);
+  let h=0; for (let i=0;i<pin.length;i++){h=((h<<5)-h)+pin.charCodeAt(i);h|=0;} return h.toString(36);
 }
-
-function showPinError(msg) {
-  const el = document.getElementById('pin-error');
-  el.textContent = msg;
+function showPinErr(msg) {
+  const el = document.getElementById('pin-error'); el.textContent = msg;
   setTimeout(() => el.textContent = '', 2500);
 }
-
 function openVault() {
   document.getElementById('vault-gate').style.display = 'none';
   document.getElementById('vault-content').style.display = 'block';
-  renderVaultDocs();
+  renderVault();
 }
-
 function lockVault() {
   document.getElementById('vault-gate').style.display = 'block';
   document.getElementById('vault-content').style.display = 'none';
-  pinBuffer = ''; updatePinDisplay();
+  pinBuffer = ''; updatePinDots(); pinMode = 'unlock';
   document.getElementById('pin-title').textContent = '🔐 Vault locked';
-  document.getElementById('pin-subtitle').textContent = 'Enter your 4-digit PIN to access your documents';
-  pinMode = 'unlock';
+  document.getElementById('pin-subtitle').textContent = 'Enter your 4-digit PIN';
 }
+function changePinMode() { lockVault(); pinMode = 'setup'; document.getElementById('pin-title').textContent = '🔐 Change PIN'; }
 
-function changePinMode() {
-  lockVault();
-  pinMode = 'setup';
-  document.getElementById('pin-title').textContent = '🔐 Change PIN';
-  document.getElementById('pin-subtitle').textContent = 'Choose a new 4-digit PIN';
-}
-
-function renderVaultDocs() {
-  const docs = getDocs();
-  const statusOrder = {expired:0,urgent:1,soon:2,ok:3};
-  const sorted = [...docs].sort((a,b) => (statusOrder[a.status]||3) - (statusOrder[b.status]||3));
-  document.getElementById('vault-docs-list').innerHTML = sorted.map(d => `
+function renderVault() {
+  const docs = getDocs().sort((a,b) => ({expired:0,urgent:1,soon:2,ok:3}[a.status]||3) - ({expired:0,urgent:1,soon:2,ok:3}[b.status]||3));
+  document.getElementById('vault-docs-list').innerHTML = docs.map(d => `
     <div class="vault-doc">
       <div class="vault-doc-header">
         <div class="vault-doc-name">${d.name}</div>
         <span class="vault-doc-status status-${d.status}">${d.status.toUpperCase()}</span>
       </div>
       <div class="vault-doc-detail">${d.detail}</div>
-      <div class="vault-doc-actions" style="margin-top:8px">
-        <a class="vault-link-btn" href="${d.driveLink||GDRIVE_FOLDER}" target="_blank">📁 Google Drive</a>
+      <div class="vault-doc-actions">
+        <a class="vault-link-btn" href="${d.driveLink||GDRIVE}" target="_blank">📁 Drive</a>
         <button class="vault-edit-btn" onclick="editDoc('${d.id}')">✎ Edit</button>
-        ${d.action ? `<button class="vault-task-btn" onclick="addVaultTask('${d.action.replace(/'/g,"\\'")}')">→ ${d.action}</button>` : ''}
+        ${d.action?`<button class="vault-task-btn" onclick="addVaultTask('${d.action.replace(/'/g,"\\'")}')">→ ${d.action}</button>`:''}
       </div>
     </div>`).join('');
 }
 
 function editDoc(id) {
-  const docs = getDocs();
-  const doc = docs.find(d => d.id === id);
+  const docs = getDocs(); const doc = docs.find(d => d.id === id);
   if (!doc) return;
   openModal('Edit document',
-    `<div class="modal-field"><label class="modal-label">Document name</label>
-    <input class="input" id="m-name" value="${doc.name}"/></div>
-    <div class="modal-field"><label class="modal-label">Details / notes</label>
-    <textarea class="input" id="m-detail" style="min-height:70px">${doc.detail}</textarea></div>
+    `<div class="modal-field"><label class="modal-label">Name</label><input class="input" id="m-name" value="${doc.name}"/></div>
+    <div class="modal-field"><label class="modal-label">Details</label><textarea class="input" id="m-detail" style="min-height:70px">${doc.detail}</textarea></div>
     <div class="modal-field"><label class="modal-label">Status</label>
-    <select class="input" id="m-status">
-      ${['ok','soon','urgent','expired'].map(s => `<option value="${s}" ${s===doc.status?'selected':''}>${s.toUpperCase()}</option>`).join('')}
-    </select></div>
-    <div class="modal-field"><label class="modal-label">Google Drive link (optional)</label>
-    <input class="input" id="m-link" value="${doc.driveLink||''}"/></div>
-    <div class="modal-field"><label class="modal-label">Action button text (optional)</label>
-    <input class="input" id="m-action" value="${doc.action||''}"/></div>`,
+    <select class="input" id="m-status">${['ok','soon','urgent','expired'].map(s=>`<option value="${s}" ${s===doc.status?'selected':''}>${s.toUpperCase()}</option>`).join('')}</select></div>
+    <div class="modal-field"><label class="modal-label">Google Drive link</label><input class="input" id="m-link" value="${doc.driveLink||''}"/></div>
+    <div class="modal-field"><label class="modal-label">Action button (optional)</label><input class="input" id="m-action" value="${doc.action||''}"/></div>`,
     `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
      <button class="modal-delete" onclick="deleteDoc('${id}')">Delete</button>
-     <button class="modal-save" onclick="saveDocEdit('${id}')">Save</button>`
+     <button class="modal-save" onclick="saveDoc('${id}')">Save</button>`
   );
 }
 
-function saveDocEdit(id) {
-  const docs = getDocs();
-  const doc = docs.find(d => d.id === id);
+function saveDoc(id) {
+  const docs = getDocs(); const doc = docs.find(d => d.id === id);
   if (!doc) return;
-  doc.name = document.getElementById('m-name').value.trim() || doc.name;
+  doc.name = document.getElementById('m-name').value.trim()||doc.name;
   doc.detail = document.getElementById('m-detail').value.trim();
   doc.status = document.getElementById('m-status').value;
-  doc.driveLink = document.getElementById('m-link').value.trim() || GDRIVE_FOLDER;
-  doc.action = document.getElementById('m-action').value.trim() || null;
-  saveDocs(docs); renderVaultDocs(); closeModal();
+  doc.driveLink = document.getElementById('m-link').value.trim()||GDRIVE;
+  doc.action = document.getElementById('m-action').value.trim()||null;
+  saveDocs(docs); renderVault(); closeModal();
 }
 
 function deleteDoc(id) {
   if (!confirm('Delete this document?')) return;
-  const docs = getDocs().filter(d => d.id !== id);
-  saveDocs(docs); renderVaultDocs(); closeModal();
+  saveDocs(getDocs().filter(d => d.id !== id)); renderVault(); closeModal();
 }
 
 function openAddDocModal() {
   openModal('Add document',
-    `<div class="modal-field"><label class="modal-label">Document name</label>
-    <input class="input" id="m-name" placeholder="e.g. French Driving License"/></div>
-    <div class="modal-field"><label class="modal-label">Details / notes</label>
-    <textarea class="input" id="m-detail" style="min-height:70px" placeholder="Expiry date, notes, contacts..."></textarea></div>
+    `<div class="modal-field"><label class="modal-label">Name</label><input class="input" id="m-name" placeholder="e.g. French Driving License"/></div>
+    <div class="modal-field"><label class="modal-label">Details</label><textarea class="input" id="m-detail" style="min-height:70px" placeholder="Expiry, notes, contacts..."></textarea></div>
     <div class="modal-field"><label class="modal-label">Status</label>
-    <select class="input" id="m-status">
-      <option value="ok">OK</option>
-      <option value="soon">SOON</option>
-      <option value="urgent">URGENT</option>
-      <option value="expired">EXPIRED</option>
-    </select></div>
-    <div class="modal-field"><label class="modal-label">Google Drive link (optional)</label>
-    <input class="input" id="m-link" placeholder="https://drive.google.com/..."/></div>
-    <div class="modal-field"><label class="modal-label">Action button text (optional)</label>
-    <input class="input" id="m-action" placeholder="e.g. Renew by June 2026"/></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
-     <button class="modal-save" onclick="saveNewDoc()">Add document</button>`
+    <select class="input" id="m-status"><option value="ok">OK</option><option value="soon">SOON</option><option value="urgent">URGENT</option><option value="expired">EXPIRED</option></select></div>
+    <div class="modal-field"><label class="modal-label">Google Drive link (optional)</label><input class="input" id="m-link" placeholder="https://drive.google.com/..."/></div>
+    <div class="modal-field"><label class="modal-label">Action button text (optional)</label><input class="input" id="m-action" placeholder="e.g. Renew by June 2026"/></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button><button class="modal-save" onclick="saveNewDoc()">Add</button>`
   );
 }
 
 function saveNewDoc() {
   const name = document.getElementById('m-name').value.trim();
-  if (!name) { alert('Please enter a document name.'); return; }
+  if (!name) { alert('Please enter a name.'); return; }
   const docs = getDocs();
-  docs.push({
-    id: 'doc' + Date.now(),
-    name,
-    detail: document.getElementById('m-detail').value.trim(),
-    status: document.getElementById('m-status').value,
-    driveLink: document.getElementById('m-link').value.trim() || GDRIVE_FOLDER,
-    action: document.getElementById('m-action').value.trim() || null
-  });
-  saveDocs(docs); renderVaultDocs(); closeModal();
+  docs.push({id:'doc'+Date.now(),name,detail:document.getElementById('m-detail').value.trim(),status:document.getElementById('m-status').value,driveLink:document.getElementById('m-link').value.trim()||GDRIVE,action:document.getElementById('m-action').value.trim()||null});
+  saveDocs(docs); renderVault(); closeModal();
 }
 
 function addVaultTask(text) {
   const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
-  tasks.push({text, done: false, date: TODAY_STR});
+  tasks.push({text, done:false, date:TODAY_STR});
   localStorage.setItem('mm_tasks', JSON.stringify(tasks));
-  event.target.textContent = '✓ Added to tasks';
-  setTimeout(() => event.target.textContent = `→ ${text}`, 2000);
+  event.target.textContent = '✓ Added'; setTimeout(() => event.target.textContent = `→ ${text}`, 2000);
 }
 
-// ── INIT ─────────────────────────────────────────────
+// ── INIT ────────────────────────────────────────────
 renderDeadlines();
 renderOverview();
 renderFixed();
