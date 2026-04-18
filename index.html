@@ -56,13 +56,11 @@
     padding: 52px 20px 20px;
     border-bottom: 1px solid var(--border);
   }
-
   .header-eyebrow {
     font-size: 9px; font-weight: 400;
     letter-spacing: 0.35em; text-transform: uppercase;
     color: var(--accent-dim); margin-bottom: 8px;
   }
-
   .header-date {
     font-family: 'Syne', sans-serif;
     font-weight: 800; font-size: 30px;
@@ -70,7 +68,6 @@
     letter-spacing: -0.02em;
   }
   .header-date span { color: var(--accent); }
-
   .header-sub {
     margin-top: 8px; font-size: 11px; font-weight: 300;
     letter-spacing: 0.18em; text-transform: uppercase;
@@ -95,13 +92,20 @@
     color: var(--text-mid);
   }
   .weather-loc { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; margin-top: 2px; }
+  .weather-uv {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 2px;
+    border: 1px solid var(--border-strong);
+    color: var(--accent); background: var(--accent-glow);
+    white-space: nowrap; flex-shrink: 0;
+  }
 
   .day-view {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 14px 20px 16px;
   }
-
   .day-view-label {
     font-family: 'Syne', sans-serif;
     font-size: 8px; font-weight: 700;
@@ -109,18 +113,14 @@
     color: var(--accent-dim); margin-bottom: 12px;
     display: flex; align-items: center; justify-content: space-between;
   }
-
   .day-view-sync {
     font-size: 8px; font-weight: 400;
     letter-spacing: 0.15em; color: var(--text-dim);
     cursor: pointer; transition: color 0.2s;
   }
   .day-view-sync:hover { color: var(--accent-dim); }
-
   .day-events { display: flex; flex-direction: column; gap: 8px; }
-
   .day-event { display: flex; align-items: flex-start; gap: 12px; }
-
   .event-time {
     font-family: 'Syne', sans-serif;
     font-size: 10px; font-weight: 700;
@@ -128,41 +128,15 @@
     flex-shrink: 0; padding-top: 1px;
     letter-spacing: 0.05em;
   }
-
   .event-bar {
     width: 2px; background: var(--border-strong);
     border-radius: 2px; flex-shrink: 0;
     align-self: stretch; min-height: 16px;
   }
-
   .event-detail { flex: 1; }
-
-  .event-title {
-    font-size: 13px; font-weight: 400;
-    color: var(--text); line-height: 1.3;
-  }
-
-  .event-sub {
-    font-size: 11px; font-weight: 300;
-    color: var(--text-dim); margin-top: 2px;
-  }
-
-  .day-empty {
-    font-size: 12px; font-weight: 300; font-style: italic;
-    color: var(--text-dim); padding: 2px 0;
-  }
-
-  .day-connect-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    margin-top: 10px; padding: 8px 14px;
-    background: transparent;
-    border: 1px solid var(--border-strong); border-radius: 2px;
-    font-family: 'Syne', sans-serif;
-    font-size: 8px; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-dim); cursor: pointer; transition: background 0.2s;
-  }
-  .day-connect-btn:hover { background: var(--accent-glow); }
+  .event-title { font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.3; }
+  .event-sub { font-size: 11px; font-weight: 300; color: var(--text-dim); margin-top: 2px; }
+  .day-empty { font-size: 12px; font-weight: 300; font-style: italic; color: var(--text-dim); padding: 2px 0; }
 
   .widgets {
     padding: 16px 12px 0;
@@ -187,7 +161,6 @@
   .widget-header:active { background: var(--surface2); }
 
   .wh-left { display: flex; align-items: center; gap: 10px; }
-
   .wh-icon {
     width: 24px; height: 24px;
     border: 1px solid var(--border-strong); border-radius: 2px;
@@ -195,14 +168,12 @@
     font-size: 11px; color: var(--accent);
     background: var(--accent-glow); flex-shrink: 0;
   }
-
   .wh-title {
     font-family: 'Syne', sans-serif;
     font-size: 11px; font-weight: 700;
     letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--text);
   }
-
   .wh-chevron {
     font-size: 10px; color: var(--accent-dim);
     transition: transform 0.3s ease;
@@ -227,7 +198,6 @@
   .brief-body { padding: 16px 16px 18px; }
   .brief-section { margin-bottom: 16px; }
   .brief-section:last-child { margin-bottom: 0; }
-
   .brief-section-label {
     font-family: 'Syne', sans-serif;
     font-size: 8px; font-weight: 700;
@@ -236,42 +206,28 @@
     padding-bottom: 7px; margin-bottom: 9px;
     border-bottom: 1px solid var(--border);
   }
-
-  .brief-section p {
-    font-size: 13px; font-weight: 300;
-    line-height: 1.75; color: var(--text-mid);
-  }
-
+  .brief-section p { font-size: 13px; font-weight: 300; line-height: 1.75; color: var(--text-mid); }
   .brief-energy {
     font-family: 'Syne', sans-serif;
     font-size: 18px; font-weight: 800;
     color: var(--accent); letter-spacing: -0.01em;
   }
 
-  .news-item {
-    padding: 11px 0;
-    border-bottom: 1px solid rgba(92,219,149,0.06);
-  }
+  .news-item { padding: 11px 0; border-bottom: 1px solid rgba(92,219,149,0.06); }
   .news-item:last-child { border-bottom: none; }
-
   .news-category {
     font-family: 'Syne', sans-serif;
     font-size: 8px; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--accent-dim); margin-bottom: 4px;
   }
-
   .news-headline {
     font-family: 'Syne', sans-serif;
     font-size: 14px; font-weight: 800;
     color: var(--text); line-height: 1.25;
     letter-spacing: -0.01em; margin-bottom: 5px;
   }
-
-  .news-summary {
-    font-size: 12px; font-weight: 300;
-    line-height: 1.7; color: var(--text-mid);
-  }
+  .news-summary { font-size: 12px; font-weight: 300; line-height: 1.7; color: var(--text-mid); }
 
   .refresh-btn {
     display: flex; align-items: center; gap: 6px;
@@ -303,49 +259,43 @@
   }
   .meal-cta:hover { background: var(--accent-glow); }
 
-  .tasks-body { padding: 10px 16px 14px; }
-  .task-empty {
+  .tasks-body, .courses-body { padding: 10px 16px 14px; }
+  .task-empty, .course-empty {
     font-size: 12px; font-weight: 300; font-style: italic;
     color: var(--text-dim); padding: 4px 0 8px;
   }
-  .task-item {
+  .task-item, .course-item {
     display: flex; align-items: center; gap: 11px;
     padding: 8px 0; border-bottom: 1px solid rgba(92,219,149,0.05);
     animation: fadeUp 0.22s ease;
   }
-  .task-item:last-of-type { border-bottom: none; }
-
+  .task-item:last-of-type, .course-item:last-of-type { border-bottom: none; }
   @keyframes fadeUp {
     from{opacity:0;transform:translateY(-3px);}
     to{opacity:1;transform:translateY(0);}
   }
-
-  .task-box {
+  .task-box, .course-box {
     width: 16px; height: 16px;
     border: 1px solid var(--border-strong); border-radius: 2px;
     flex-shrink: 0; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: all 0.15s; background: transparent;
   }
-  .task-box.done { background: var(--accent); border-color: var(--accent); }
-  .task-box.done::after { content:'✓'; font-size:9px; color:var(--bg); font-weight:700; }
-
-  .task-label {
+  .task-box.done, .course-box.done { background: var(--accent); border-color: var(--accent); }
+  .task-box.done::after, .course-box.done::after { content:'✓'; font-size:9px; color:var(--bg); font-weight:700; }
+  .task-label, .course-label {
     font-size: 13px; font-weight: 300;
     color: var(--text); flex: 1; transition: all 0.2s;
   }
-  .task-label.done { opacity:0.3; text-decoration:line-through; text-decoration-color:var(--accent-dim); }
-
-  .task-del {
+  .task-label.done, .course-label.done { opacity:0.3; text-decoration:line-through; text-decoration-color:var(--accent-dim); }
+  .task-del, .course-del {
     font-size: 10px; color: var(--text-dim); cursor: pointer;
     opacity: 0.5; padding: 4px; transition: opacity 0.2s;
     background: none; border: none;
   }
-  .task-del:hover { opacity: 1; color: var(--text); }
-
-  .task-input-row { display:flex; gap:8px; margin-top:10px; align-items:center; }
-
-  .task-input {
+  .task-del:hover, .course-del:hover { opacity: 1; color: var(--text); }
+  .task-input-row, .course-input-row { display:flex; gap:8px; margin-top:10px; align-items:center; }
+  .task-input, .course-input {
     flex: 1; background: var(--surface2);
     border: 1px solid var(--border); border-radius: 2px;
     padding: 9px 12px;
@@ -353,10 +303,9 @@
     font-size: 13px; font-weight: 300;
     color: var(--text); outline: none; transition: border-color 0.2s;
   }
-  .task-input::placeholder { font-style:italic; color:var(--text-dim); }
-  .task-input:focus { border-color: var(--border-strong); }
-
-  .task-add {
+  .task-input::placeholder, .course-input::placeholder { font-style:italic; color:var(--text-dim); }
+  .task-input:focus, .course-input:focus { border-color: var(--border-strong); }
+  .task-add, .course-add {
     width: 34px; height: 34px;
     background: var(--accent); border: none; border-radius: 2px;
     color: var(--bg); font-size: 20px; cursor: pointer;
@@ -364,7 +313,17 @@
     flex-shrink: 0; transition: opacity 0.2s;
     line-height: 1; padding-bottom: 1px; font-weight: 300;
   }
-  .task-add:hover { opacity: 0.85; }
+  .task-add:hover, .course-add:hover { opacity: 0.85; }
+  .course-clear-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-dim); padding: 0;
+    opacity: 0.5; transition: opacity 0.2s; margin-top: 12px;
+  }
+  .course-clear-btn:hover { opacity: 1; color: var(--accent-dim); }
 
   .mantra-body { padding: 22px 20px 26px; text-align: center; }
   .mantra-text {
@@ -394,19 +353,13 @@
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px;
   }
-
   .install-text {
     font-family: 'Syne', sans-serif;
     font-size: 10px; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--accent);
   }
-
-  .install-sub {
-    font-size: 11px; font-weight: 300;
-    color: var(--text-mid); margin-top: 3px; line-height: 1.4;
-  }
-
+  .install-sub { font-size: 11px; font-weight: 300; color: var(--text-mid); margin-top: 3px; line-height: 1.4; }
   .install-dismiss {
     font-size: 16px; color: var(--text-dim); cursor: pointer;
     background: none; border: none; flex-shrink: 0; padding: 4px;
@@ -424,11 +377,7 @@
     font-size: 8px; font-weight: 700;
     letter-spacing: 0.4em; text-transform: uppercase; color: var(--text-dim);
   }
-
-  .error-note {
-    font-size: 12px; font-style: italic;
-    color: var(--text-dim); line-height: 1.6;
-  }
+  .error-note { font-size: 12px; font-style: italic; color: var(--text-dim); line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -448,19 +397,18 @@
       <div class="weather-loc" id="w-loc">Paris, France</div>
     </div>
     <div class="weather-temp" id="w-temp">—°</div>
+    <div class="weather-uv" id="w-uv" style="display:none">UV —</div>
   </div>
 
+  <!-- CALENDAR -->
   <div class="day-view">
     <div class="day-view-label">
       Today's Schedule
-      <span class="day-view-sync" onclick="showCalendarInfo()">+ Connect calendar</span>
+      <span class="day-view-sync" onclick="showCalendarInfo()">ℹ sync info</span>
     </div>
     <div class="day-events" id="day-events">
       <div class="day-empty">Loading schedule...</div>
     </div>
-    <button class="day-connect-btn" id="connect-btn" style="display:none" onclick="showCalendarInfo()">
-      ⟶ Set up calendar sync
-    </button>
   </div>
 
   <div class="install-banner" id="install-banner" style="display:none">
@@ -508,7 +456,7 @@
         <div class="wh-chevron" id="chev-news">▾</div>
       </div>
       <div class="brief-preview" onclick="toggle('news')">
-        <div class="brief-preview-text" id="news-preview">Tap to load today's world news ↓</div>
+        <div class="brief-preview-text" id="news-preview">Tap to load your personal news brief ↓</div>
       </div>
       <div class="widget-collapse" id="col-news">
         <div class="brief-body">
@@ -536,6 +484,29 @@
         <div class="meal-body">
           <div class="meal-placeholder">Meal plan available once<br/>the weekly planner is set up.</div>
           <button class="meal-cta">+ Plan the week</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COURSES -->
+    <div class="widget">
+      <div class="widget-header" onclick="toggle('courses')">
+        <div class="wh-left">
+          <div class="wh-icon">🛒</div>
+          <div class="wh-title">Courses</div>
+        </div>
+        <div class="wh-chevron open" id="chev-courses">▾</div>
+      </div>
+      <div class="widget-collapse open" id="col-courses">
+        <div class="courses-body">
+          <div id="course-list"></div>
+          <div class="course-input-row">
+            <input class="course-input" id="course-input" type="text"
+              placeholder="Ajouter un article..."
+              onkeydown="if(event.key==='Enter')addCourse()"/>
+            <button class="course-add" onclick="addCourse()">+</button>
+          </div>
+          <button class="course-clear-btn" onclick="clearDoneCourses()">✕ Effacer les cochés</button>
         </div>
       </div>
     </div>
@@ -591,12 +562,14 @@
 <script>
 const S = {
   tasks: JSON.parse(localStorage.getItem('mm_tasks') || '[]'),
+  courses: JSON.parse(localStorage.getItem('mm_courses') || '[]'),
   astroLoaded: false,
   newsLoaded: false
 };
 const TODAY = new Date().toDateString();
-const JSONBIN_ID = '69e33fad36566621a8c749ba';
 const JSONBIN_KEY = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW';
+const JSONBIN_CAL  = '69e33fad36566621a8c749ba';
+const JSONBIN_NEWS = '69e35a3f36566621a8c7a244';
 
 // ── DATE ──────────────────────────────────────────────
 function initDate() {
@@ -610,12 +583,10 @@ function initDate() {
     h<12 ? 'Good morning' : h<18 ? 'Good afternoon' : 'Good evening';
 }
 
-// ── WEATHER ───────────────────────────────────────────
+// ── WEATHER + UV ──────────────────────────────────────
 async function loadWeather() {
   try {
     let lat = 48.8566, lon = 2.3522, city = 'Paris, France';
-
-    // Try geolocation first
     const cached = localStorage.getItem('mm_geo');
     const cachedTs = localStorage.getItem('mm_geo_ts');
     if (cached && cachedTs && (Date.now() - parseInt(cachedTs)) < 3600000) {
@@ -624,8 +595,7 @@ async function loadWeather() {
     } else if (navigator.geolocation) {
       await new Promise(res => {
         navigator.geolocation.getCurrentPosition(async p => {
-          lat = p.coords.latitude;
-          lon = p.coords.longitude;
+          lat = p.coords.latitude; lon = p.coords.longitude;
           try {
             const gc = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
             const gd = await gc.json();
@@ -637,52 +607,47 @@ async function loadWeather() {
         }, () => res(), {timeout: 5000});
       });
     }
-
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto`);
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode,uv_index&daily=uv_index_max&timezone=auto`);
     const d = await r.json();
     document.getElementById('w-temp').textContent = `${Math.round(d.current.temperature_2m)}°C`;
     document.getElementById('w-icon').textContent = wIcon(d.current.weathercode);
     document.getElementById('w-desc').textContent = wDesc(d.current.weathercode);
     document.getElementById('w-loc').textContent = city;
-  } catch {
-    document.getElementById('w-desc').textContent = 'Weather unavailable';
-  }
+    const uv = d.daily?.uv_index_max?.[0] ?? d.current?.uv_index;
+    if (uv !== undefined && uv !== null) {
+      const uvEl = document.getElementById('w-uv');
+      uvEl.textContent = `UV ${Math.round(uv)}`;
+      uvEl.style.display = 'block';
+      if (uv >= 8) uvEl.style.color = '#e05252';
+      else if (uv >= 5) uvEl.style.color = '#e0a352';
+      else uvEl.style.color = 'var(--accent)';
+    }
+  } catch { document.getElementById('w-desc').textContent = 'Weather unavailable'; }
 }
 
 function wIcon(c){if(c===0)return'☀️';if(c<=2)return'🌤️';if(c<=3)return'☁️';if(c<=48)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌦️';return'⛈️';}
 function wDesc(c){if(c===0)return'Clear sky';if(c<=2)return'Partly cloudy';if(c<=3)return'Overcast';if(c<=48)return'Foggy';if(c<=57)return'Drizzle';if(c<=67)return'Rain';if(c<=77)return'Snow';if(c<=82)return'Showers';return'Thunderstorm';}
 
-// ── CALENDAR (JSONBin) ─────────────────────────────────
+// ── CALENDAR (JSONBin) ────────────────────────────────
 async function loadDayEvents() {
   try {
-    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`, {
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CAL}/latest`, {
       headers: { 'X-Master-Key': JSONBIN_KEY }
     });
     const d = await r.json();
     const events = d?.record?.events || [];
     renderEvents(events);
   } catch {
-    // Fall back to localStorage if JSONBin fails
-    const saved = localStorage.getItem('mm_events');
-    const savedDate = localStorage.getItem('mm_events_date');
-    if (saved && savedDate === TODAY) {
-      renderEvents(JSON.parse(saved));
-    } else {
-      document.getElementById('day-events').innerHTML = '<div class="day-empty">No events today.</div>';
-      document.getElementById('connect-btn').style.display = 'inline-flex';
-    }
+    document.getElementById('day-events').innerHTML = '<div class="day-empty">No events today.</div>';
   }
 }
 
 function renderEvents(events) {
   const el = document.getElementById('day-events');
-  const btn = document.getElementById('connect-btn');
   if (!events || !events.length) {
     el.innerHTML = '<div class="day-empty">No events today.</div>';
-    btn.style.display = 'inline-flex';
     return;
   }
-  btn.style.display = 'none';
   el.innerHTML = events.map(e => `
     <div class="day-event">
       <div class="event-time">${e.time}</div>
@@ -696,10 +661,10 @@ function renderEvents(events) {
 }
 
 function showCalendarInfo() {
-  alert('Calendar sync:\n\nAn iOS Shortcut runs every morning at 7:15 AM and pushes your Google Calendar events to this dashboard automatically.');
+  alert('Calendar sync:\n\nAn iOS Shortcut runs every morning at 7:15 AM and pushes your Google Calendar events to this dashboard automatically.\n\nBin ID: 69e33fad36566621a8c749ba');
 }
 
-// ── MANTRA (30 hardcoded, rotates by day of month) ────
+// ── MANTRA ────────────────────────────────────────────
 const MANTRAS = [
   'Darkness is not the enemy — it is where I forge my power.',
   'I rise through what would break others; depth is my gift.',
@@ -734,8 +699,7 @@ const MANTRAS = [
 ];
 
 function loadMantra() {
-  const day = new Date().getDate();
-  const mantra = MANTRAS[(day - 1) % MANTRAS.length];
+  const mantra = MANTRAS[(new Date().getDate() - 1) % MANTRAS.length];
   renderMantra(mantra);
 }
 
@@ -747,7 +711,7 @@ function renderMantra(text) {
     <div class="mantra-rule"></div>`;
 }
 
-// ── ASTRO (Aztro API — free, no key) ──────────────────
+// ── ASTRO ─────────────────────────────────────────────
 async function loadAstro(force=false) {
   if(S.astroLoaded && !force) return;
   S.astroLoaded = true;
@@ -755,26 +719,19 @@ async function loadAstro(force=false) {
   const cd = localStorage.getItem('mm_astro_date');
   if(c && cd === TODAY && !force) { renderAstro(JSON.parse(c)); return; }
   setLoading('astro-content', 'astro-refresh');
-
   try {
-    // Aztro API — free horoscope for Scorpio
-    const r = await fetch('https://aztro.sameerkumar.website/?sign=scorpio&day=today', {
-      method: 'POST'
-    });
+    const r = await fetch('https://aztro.sameerkumar.website/?sign=scorpio&day=today', { method: 'POST' });
     const d = await r.json();
-
     const parsed = {
       preview: d.description ? d.description.split('.')[0] + '.' : 'The stars speak to your Scorpionic depths today.',
-      horoscope: d.description || 'Your Scorpio Sun, anchored by Capricorn Moon conjunct Neptune, calls you to trust your instincts today. The path forward requires both your signature intensity and your quiet resilience.',
-      moonphase: `${d.current_date} · Moon in ${d.mood} energy. Lucky time: ${d.lucky_time}.`,
+      horoscope: d.description || 'Your Scorpio Sun calls you to trust your instincts today.',
+      moonphase: `${d.current_date} · Mood: ${d.mood}. Lucky time: ${d.lucky_time}.`,
       energy: d.color || 'Transformative'
     };
-
     localStorage.setItem('mm_astro', JSON.stringify(parsed));
     localStorage.setItem('mm_astro_date', TODAY);
     renderAstro(parsed);
-  } catch(e) {
-    // Fallback: day-of-week rotation
+  } catch {
     const fallbacks = [
       { preview: 'Sunday calls for inner stillness and deep reflection.', horoscope: 'Your Scorpio Sun invites you to retreat inward today. With Capricorn Moon conjunct Neptune, your intuition is razor-sharp — trust what arrives in silence.', moonphase: 'Waning light favors release and introspection.', energy: 'Reflective' },
       { preview: 'Monday ignites ambition in your Capricorn ascendant.', horoscope: 'The week opens with drive. Your Capricorn Rising pushes you to structure your intentions with precision. Neptune softens the edges — let vision lead.', moonphase: 'Building energy supports new beginnings.', energy: 'Driven' },
@@ -788,8 +745,8 @@ async function loadAstro(force=false) {
     localStorage.setItem('mm_astro', JSON.stringify(fallback));
     localStorage.setItem('mm_astro_date', TODAY);
     renderAstro(fallback);
-    document.getElementById('astro-refresh').classList.remove('spinning');
   }
+  document.getElementById('astro-refresh').classList.remove('spinning');
 }
 
 function renderAstro(d) {
@@ -810,7 +767,7 @@ function renderAstro(d) {
   document.getElementById('astro-refresh').classList.remove('spinning');
 }
 
-// ── NEWS (Courrier International RSS — free) ───────────
+// ── NEWS (ton JSONBin perso) ───────────────────────────
 async function loadNews(force=false) {
   if(S.newsLoaded && !force) return;
   S.newsLoaded = true;
@@ -818,26 +775,22 @@ async function loadNews(force=false) {
   const cd = localStorage.getItem('mm_news_date');
   if(c && cd === TODAY && !force) { renderNews(JSON.parse(c)); return; }
   setLoading('news-content', 'news-refresh');
-  document.getElementById('news-preview').textContent = 'Loading news...';
+  document.getElementById('news-preview').textContent = 'Loading your brief...';
   try {
-    const r = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://feeds.bbci.co.uk/news/world/rss.xml'));
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_NEWS}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
     const d = await r.json();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(d.contents, 'text/xml');
-    const items = [...xml.querySelectorAll('item')].slice(0, 4).map(item => ({
-      category: 'MONDE',
-      headline: item.querySelector('title')?.textContent || '',
-      summary: (item.querySelector('description')?.textContent || '').replace(/<[^>]*>/g, '').slice(0, 160).trim() + '…'
-    }));
-    if (!items.length) throw new Error('No items');
+    const items = d?.record?.items;
+    if (!items || !items.length) throw new Error('No items');
     const parsed = { preview: items[0].headline, items };
     localStorage.setItem('mm_news', JSON.stringify(parsed));
     localStorage.setItem('mm_news_date', TODAY);
     renderNews(parsed);
-  } catch(e) {
+  } catch {
     S.newsLoaded = false;
-    document.getElementById('news-preview').textContent = "Tap to load today's world news ↓";
-    document.getElementById('news-content').innerHTML = '<div class="error-note">Could not load news. Tap refresh to try again.</div>';
+    document.getElementById('news-preview').textContent = 'Tap to load your personal news brief ↓';
+    document.getElementById('news-content').innerHTML = '<div class="error-note">No news yet — update your JSONBin to add today\'s brief.</div>';
     document.getElementById('news-refresh').classList.remove('spinning');
   }
 }
@@ -874,6 +827,28 @@ function addTask(){
 function toggleTask(i){S.tasks[i].done=!S.tasks[i].done;saveTasks();renderTasks();}
 function delTask(i){S.tasks.splice(i,1);saveTasks();renderTasks();}
 
+// ── COURSES ───────────────────────────────────────────
+function saveCourses(){localStorage.setItem('mm_courses',JSON.stringify(S.courses));}
+function renderCourses(){
+  const el=document.getElementById('course-list');
+  if(!S.courses.length){el.innerHTML='<div class="course-empty">La liste est vide.</div>';return;}
+  el.innerHTML=S.courses.map((c,i)=>`
+    <div class="course-item">
+      <div class="course-box ${c.done?'done':''}" onclick="toggleCourse(${i})"></div>
+      <div class="course-label ${c.done?'done':''}">${c.text}</div>
+      <button class="course-del" onclick="delCourse(${i})">✕</button>
+    </div>`).join('');
+}
+function addCourse(){
+  const inp=document.getElementById('course-input');
+  const v=inp.value.trim();if(!v)return;
+  S.courses.push({text:v,done:false});saveCourses();renderCourses();
+  inp.value='';inp.focus();
+}
+function toggleCourse(i){S.courses[i].done=!S.courses[i].done;saveCourses();renderCourses();}
+function delCourse(i){S.courses.splice(i,1);saveCourses();renderCourses();}
+function clearDoneCourses(){S.courses=S.courses.filter(c=>!c.done);saveCourses();renderCourses();}
+
 // ── TOGGLE ────────────────────────────────────────────
 function toggle(id){
   const col=document.getElementById(`col-${id}`);
@@ -897,7 +872,6 @@ function initInstallBanner() {
     document.getElementById('install-banner').style.display = 'flex';
   }
 }
-
 function dismissInstall() {
   localStorage.setItem('mm_install_dismissed', '1');
   document.getElementById('install-banner').style.display = 'none';
@@ -914,6 +888,7 @@ loadWeather();
 loadMantra();
 loadDayEvents();
 renderTasks();
+renderCourses();
 initInstallBanner();
 </script>
 </body>
