@@ -789,8 +789,16 @@ function saveMealMove() {
   if (!meal?.name) { alert('Nothing to move from this slot.'); return; }
   const [targetDay, targetSlot] = target.split('|');
   if (!S.meals.meals[targetDay]) S.meals.meals[targetDay] = {};
+
+  // Swap — save destination meal first
+  const destinationMeal = S.meals.meals[targetDay][targetSlot] || null;
+
+  // Put original meal in destination
   S.meals.meals[targetDay][targetSlot] = { ...meal };
-  S.meals.meals[S.editingDay][S.editingSlot] = null;
+
+  // Put destination meal in original slot (swap!)
+  S.meals.meals[S.editingDay][S.editingSlot] = destinationMeal;
+
   localStorage.setItem('mm_meals', JSON.stringify(S.meals));
   pushTodayToHome();
   renderDayTabs();
