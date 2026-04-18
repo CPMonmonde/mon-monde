@@ -681,19 +681,25 @@ function renderOverview() {
   document.getElementById('fin-month-label').textContent = `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
   const f = getFin();
   const fixedTotal = getFixed().reduce((s,c) => s + c.amount, 0);
+  const budgetSpent = getBudget().reduce((s,b) => s + (b.actual||0), 0);
+  const budgetTarget = getBudget().reduce((s,b) => s + (b.target||0), 0);
   const totalIncome = (f.income_salary||0) + (f.income_allocation||0) + (f.income_rental||0);
-  const remaining = totalIncome - fixedTotal;
+  const remaining = totalIncome - fixedTotal - budgetSpent;
   const el = document.getElementById('bal-remaining');
   el.textContent = `€${remaining.toFixed(0)}`;
   el.className = 'balance-amount' + (remaining < 300 ? ' critical' : remaining < 600 ? ' tight' : '');
-  document.getElementById('bal-sub').textContent = `after €${fixedTotal.toFixed(0)} fixed charges`;
+  document.getElementById('bal-sub').textContent = `after fixed + variable spending`;
+  const budgetPct = budgetTarget > 0 ? Math.round((budgetSpent/budgetTarget)*100) : 0;
+  const budgetColor = budgetPct > 100 ? 'var(--red)' : budgetPct > 80 ? 'var(--amber)' : 'var(--accent)';
   document.getElementById('fin-overview-rows').innerHTML = `
     <div class="finance-row"><span class="finance-row-label income">↑ Salary</span><span class="finance-row-value positive editable" onclick="editFin('income_salary','Salary (€/month)')">€${f.income_salary||0}</span></div>
     <div class="finance-row"><span class="finance-row-label income">↑ France Travail</span><span class="finance-row-value positive editable" onclick="editFin('income_allocation','France Travail (€/month)')">€${f.income_allocation||0}</span></div>
     <div class="finance-row"><span class="finance-row-label income">↑ Rental income</span><span class="finance-row-value positive editable" onclick="editFin('income_rental','Rental income (€/month)')">€${f.income_rental||0}</span></div>
     <div class="finance-row"><span class="finance-row-label">↓ Fixed charges</span><span class="finance-row-value negative">−€${fixedTotal.toFixed(0)}</span></div>
-    <div class="finance-row" style="font-weight:600;border-top:2px solid var(--border);margin-top:4px;padding-top:12px">
-      <span class="finance-row-label" style="font-weight:600;color:var(--text)">Variable budget</span>
+    <div class="finance-row"><span class="finance-row-label">↓ Variable spending <span style="font-size:10px;color:${budgetColor}">${budgetPct}% of budget</span></span><span class="finance-row-value negative">−€${budgetSpent.toFixed(0)}</span></div>
+    <div style="height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin:2px 0 10px"><div style="height:100%;width:${Math.min(100,budgetPct)}%;background:${budgetColor};border-radius:2px;transition:width 0.5s"></div></div>
+    <div class="finance-row" style="font-weight:600;border-top:2px solid var(--border);padding-top:12px">
+      <span class="finance-row-label" style="font-weight:600;color:var(--text)">Left this month</span>
       <span class="finance-row-value ${remaining<0?'negative':'positive'}">€${remaining.toFixed(0)}</span>
     </div>`;
 }
