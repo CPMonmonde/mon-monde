@@ -4,339 +4,467 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="theme-color" content="#0a0a0a"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="theme-color" content="#ffffff"/>
 <link rel="manifest" href="manifest.json"/>
 <title>MON MONDE</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --surface2: #181818;
-    --border: rgba(92,219,149,0.12);
-    --border-strong: rgba(92,219,149,0.28);
-    --accent: #5CDB95;
-    --accent-dim: #3a9463;
-    --accent-glow: rgba(92,219,149,0.08);
-    --text: #E0E0E0;
-    --text-mid: #888888;
-    --text-dim: #444444;
-    --shadow: 0 8px 40px rgba(0,0,0,0.6);
+    --bg: #f5f5f0;
+    --surface: #ffffff;
+    --surface2: #f0efea;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.15);
+    --accent: #3a9463;
+    --accent-light: #5CDB95;
+    --accent-glow: rgba(92,219,149,0.12);
+    --text: #1a1a1a;
+    --text-mid: #666666;
+    --text-dim: #999999;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --radius: 12px;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
   body {
     font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     background: var(--bg);
     color: var(--text);
     min-height: 100dvh;
     overflow-x: hidden;
   }
 
-  body::before {
-    content:'';
-    position: fixed; inset: 0; z-index: 0;
-    background-image:
-      linear-gradient(rgba(92,219,149,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(92,219,149,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-  }
-
   .app {
-    position: relative; z-index: 1;
     max-width: 430px; margin: 0 auto;
     padding-bottom: 52px;
   }
 
+  /* ── HEADER ── */
   .header {
-    padding: 52px 20px 20px;
+    padding: 56px 20px 16px;
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
   }
+
   .header-eyebrow {
-    font-size: 9px; font-weight: 400;
+    font-size: 9px; font-weight: 500;
     letter-spacing: 0.35em; text-transform: uppercase;
-    color: var(--accent-dim); margin-bottom: 8px;
+    color: var(--accent); margin-bottom: 4px;
   }
+
+  .header-row {
+    display: flex; align-items: flex-end;
+    justify-content: space-between;
+  }
+
   .header-date {
     font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 30px;
+    font-weight: 800; font-size: 28px;
     color: var(--text); line-height: 1;
     letter-spacing: -0.02em;
   }
   .header-date span { color: var(--accent); }
-  .header-sub {
-    margin-top: 8px; font-size: 11px; font-weight: 300;
-    letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--text-dim);
+
+  .header-greeting {
+    font-size: 12px; font-weight: 400;
+    color: var(--text-dim); letter-spacing: 0.05em;
+    padding-bottom: 3px;
   }
 
+  /* ── WEATHER BAR ── */
   .weather-bar {
-    display: flex; align-items: center; gap: 16px;
-    padding: 12px 20px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 20px;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
   }
-  .weather-icon { font-size: 22px; }
+  .weather-icon { font-size: 20px; }
   .weather-temp {
     font-family: 'Syne', sans-serif;
-    font-weight: 700; font-size: 24px; color: var(--text);
+    font-weight: 700; font-size: 20px; color: var(--text);
   }
   .weather-info { flex: 1; }
   .weather-desc {
-    font-size: 11px; font-weight: 300;
-    letter-spacing: 0.12em; text-transform: uppercase;
+    font-size: 11px; font-weight: 400;
     color: var(--text-mid);
   }
-  .weather-loc { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; margin-top: 2px; }
+  .weather-loc {
+    font-size: 10px; color: var(--text-dim); margin-top: 1px;
+  }
   .weather-uv {
     font-family: 'Syne', sans-serif;
     font-size: 10px; font-weight: 700;
-    padding: 3px 8px; border-radius: 2px;
-    border: 1px solid var(--border-strong);
+    padding: 3px 8px; border-radius: 20px;
     color: var(--accent); background: var(--accent-glow);
+    border: 1px solid rgba(58,148,99,0.2);
     white-space: nowrap; flex-shrink: 0;
   }
 
-  .day-view {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px 16px;
-  }
-  .day-view-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 8px; font-weight: 700;
-    letter-spacing: 0.32em; text-transform: uppercase;
-    color: var(--accent-dim); margin-bottom: 12px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .day-view-sync {
-    font-size: 8px; font-weight: 400;
-    letter-spacing: 0.15em; color: var(--text-dim);
-    cursor: pointer; transition: color 0.2s;
-  }
-  .day-view-sync:hover { color: var(--accent-dim); }
-  .day-events { display: flex; flex-direction: column; gap: 8px; }
-  .day-event { display: flex; align-items: flex-start; gap: 12px; }
-  .event-time {
-    font-family: 'Syne', sans-serif;
-    font-size: 10px; font-weight: 700;
-    color: var(--accent); width: 42px;
-    flex-shrink: 0; padding-top: 1px;
-    letter-spacing: 0.05em;
-  }
-  .event-bar {
-    width: 2px; background: var(--border-strong);
-    border-radius: 2px; flex-shrink: 0;
-    align-self: stretch; min-height: 16px;
-  }
-  .event-detail { flex: 1; }
-  .event-title { font-size: 13px; font-weight: 400; color: var(--text); line-height: 1.3; }
-  .event-sub { font-size: 11px; font-weight: 300; color: var(--text-dim); margin-top: 2px; }
-  .day-empty { font-size: 12px; font-weight: 300; font-style: italic; color: var(--text-dim); padding: 2px 0; }
-
-  .widgets {
-    padding: 16px 12px 0;
+  /* ── SECTIONS ── */
+  .sections {
+    padding: 16px 16px 0;
     display: flex; flex-direction: column; gap: 12px;
   }
 
-  .widget {
+  /* ── CARD BASE ── */
+  .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 2px;
+    border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
   }
 
-  .widget-header {
+  .card-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 13px 16px 11px;
+    padding: 14px 16px 12px;
     cursor: pointer; user-select: none;
-    border-bottom: 1px solid var(--border);
     transition: background 0.15s;
   }
-  .widget-header:active { background: var(--surface2); }
+  .card-header:active { background: var(--surface2); }
 
-  .wh-left { display: flex; align-items: center; gap: 10px; }
-  .wh-icon {
-    width: 24px; height: 24px;
-    border: 1px solid var(--border-strong); border-radius: 2px;
+  .card-header-left { display: flex; align-items: center; gap: 10px; }
+
+  .card-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; color: var(--accent);
-    background: var(--accent-glow); flex-shrink: 0;
+    font-size: 13px; background: var(--accent-glow);
+    flex-shrink: 0;
   }
-  .wh-title {
+
+  .card-title {
     font-family: 'Syne', sans-serif;
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--text);
   }
-  .wh-chevron {
-    font-size: 10px; color: var(--accent-dim);
+
+  .card-chevron {
+    font-size: 10px; color: var(--text-dim);
     transition: transform 0.3s ease;
   }
-  .wh-chevron.open { transform: rotate(180deg); }
+  .card-chevron.open { transform: rotate(180deg); }
 
-  .widget-collapse {
+  .card-collapse {
     overflow: hidden; max-height: 0;
     transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
   }
-  .widget-collapse.open { max-height: 1400px; }
+  .card-collapse.open { max-height: 2000px; }
 
-  .brief-preview {
-    padding: 11px 16px; cursor: pointer;
+  /* ── MANTRA ── */
+  .mantra-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    text-align: center;
+  }
+  .mantra-label {
+    font-size: 9px; font-weight: 500;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
+  }
+  .mantra-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 16px;
+    line-height: 1.5; color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .mantra-text span { color: var(--accent); }
+  .mantra-rule {
+    width: 28px; height: 2px;
+    background: var(--accent-light);
+    border-radius: 2px; margin: 12px auto 0;
+    opacity: 0.5;
+  }
+
+  /* ── DON'T FORGET ── */
+  .tasks-tabs {
+    display: flex; gap: 0;
     border-bottom: 1px solid var(--border);
   }
-  .brief-preview-text {
-    font-size: 12px; font-weight: 300;
-    color: var(--text-mid); line-height: 1.5; font-style: italic;
+  .tasks-tab {
+    flex: 1; padding: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-dim); background: none;
+    border: none; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s; margin-bottom: -1px;
+  }
+  .tasks-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
   }
 
-  .brief-body { padding: 16px 16px 18px; }
+  .tasks-body { padding: 10px 16px 14px; }
+
+  .task-empty {
+    font-size: 12px; font-style: italic;
+    color: var(--text-dim); padding: 8px 0;
+    text-align: center;
+  }
+
+  .task-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .task-item:last-of-type { border-bottom: none; }
+
+  .task-box {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border-strong); border-radius: 5px;
+    flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; background: transparent;
+  }
+  .task-box.done {
+    background: var(--accent); border-color: var(--accent);
+  }
+  .task-box.done::after {
+    content:'✓'; font-size:10px; color:#fff; font-weight:700;
+  }
+
+  .task-info { flex: 1; }
+  .task-label {
+    font-size: 13px; font-weight: 400;
+    color: var(--text); transition: all 0.2s;
+  }
+  .task-label.done {
+    opacity: 0.35;
+    text-decoration: line-through;
+    text-decoration-color: var(--accent);
+  }
+  .task-date-badge {
+    font-size: 10px; color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .task-date-badge.today {
+    color: var(--accent); font-weight: 500;
+  }
+  .task-date-badge.overdue {
+    color: #e05252; font-weight: 500;
+  }
+
+  .task-del {
+    font-size: 12px; color: var(--text-dim); cursor: pointer;
+    opacity: 0.4; padding: 4px; transition: opacity 0.2s;
+    background: none; border: none; flex-shrink: 0;
+  }
+  .task-del:hover { opacity: 1; }
+
+  /* Add task form */
+  .task-add-form {
+    padding: 10px 16px 14px;
+    border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .task-input-row { display: flex; gap: 8px; align-items: center; }
+  .task-input {
+    flex: 1; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: var(--text);
+    outline: none; transition: border-color 0.2s;
+  }
+  .task-input::placeholder { color: var(--text-dim); }
+  .task-input:focus { border-color: var(--accent); }
+
+  .task-date-input {
+    background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px; color: var(--text-mid);
+    outline: none; transition: border-color 0.2s;
+    width: 100%;
+  }
+  .task-date-input:focus { border-color: var(--accent); }
+
+  .task-add-btn {
+    width: 36px; height: 36px;
+    background: var(--accent); border: none; border-radius: 8px;
+    color: #fff; font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: opacity 0.2s;
+    font-weight: 300;
+  }
+  .task-add-btn:hover { opacity: 0.85; }
+
+  /* ── BRIEF SHARED ── */
+  .brief-preview {
+    padding: 10px 16px; cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .brief-preview-text {
+    font-size: 12px; color: var(--text-mid);
+    line-height: 1.5; font-style: italic;
+  }
+
+  .brief-body { padding: 16px; }
   .brief-section { margin-bottom: 16px; }
   .brief-section:last-child { margin-bottom: 0; }
+
   .brief-section-label {
     font-family: 'Syne', sans-serif;
     font-size: 8px; font-weight: 700;
-    letter-spacing: 0.28em; text-transform: uppercase;
-    color: var(--accent-dim);
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent);
     padding-bottom: 7px; margin-bottom: 9px;
     border-bottom: 1px solid var(--border);
   }
-  .brief-section p { font-size: 13px; font-weight: 300; line-height: 1.75; color: var(--text-mid); }
-  .brief-energy {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px; font-weight: 800;
-    color: var(--accent); letter-spacing: -0.01em;
+
+  .brief-section p {
+    font-size: 13px; line-height: 1.75; color: var(--text-mid);
   }
 
-  .news-item { padding: 11px 0; border-bottom: 1px solid rgba(92,219,149,0.06); }
+  .brief-energy {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 800;
+    color: var(--accent);
+  }
+
+  /* ── NEWS ── */
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
   .news-item:last-child { border-bottom: none; }
+
   .news-category {
     font-family: 'Syne', sans-serif;
     font-size: 8px; font-weight: 700;
-    letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--accent-dim); margin-bottom: 4px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 4px;
   }
+
   .news-headline {
     font-family: 'Syne', sans-serif;
     font-size: 14px; font-weight: 800;
     color: var(--text); line-height: 1.25;
     letter-spacing: -0.01em; margin-bottom: 5px;
   }
-  .news-summary { font-size: 12px; font-weight: 300; line-height: 1.7; color: var(--text-mid); }
 
+  .news-summary {
+    font-size: 12px; line-height: 1.7; color: var(--text-mid);
+  }
+
+  /* ── TODAY'S MEALS ── */
+  .meals-row {
+    display: flex; gap: 10px;
+    padding: 14px 16px;
+  }
+  .meal-card {
+    flex: 1;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid var(--border);
+  }
+  .meal-time-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .meal-name {
+    font-size: 13px; font-weight: 500;
+    color: var(--text); line-height: 1.3;
+    margin-bottom: 3px;
+  }
+  .meal-details {
+    font-size: 11px; color: var(--text-dim);
+    line-height: 1.4;
+  }
+  .meal-kcal {
+    font-size: 10px; font-weight: 500;
+    color: var(--accent); margin-top: 6px;
+  }
+  .meal-empty {
+    font-size: 12px; font-style: italic;
+    color: var(--text-dim);
+  }
+
+  /* ── COURSES ── */
+  .courses-body { padding: 10px 16px 14px; }
+  .course-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 0; border-bottom: 1px solid var(--border);
+  }
+  .course-item:last-of-type { border-bottom: none; }
+  .course-box {
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border-strong); border-radius: 5px;
+    flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; background: transparent;
+  }
+  .course-box.done { background: var(--accent); border-color: var(--accent); }
+  .course-box.done::after { content:'✓'; font-size:10px; color:#fff; font-weight:700; }
+  .course-label {
+    font-size: 13px; color: var(--text); flex: 1; transition: all 0.2s;
+  }
+  .course-label.done { opacity:0.35; text-decoration:line-through; text-decoration-color:var(--accent); }
+  .course-del {
+    font-size: 12px; color: var(--text-dim); cursor: pointer;
+    opacity: 0.4; padding: 4px; transition: opacity 0.2s;
+    background: none; border: none;
+  }
+  .course-del:hover { opacity: 1; }
+  .course-empty { font-size: 12px; font-style: italic; color: var(--text-dim); padding: 8px 0; text-align: center; }
+  .course-input-row { display:flex; gap:8px; margin-top:10px; align-items:center; }
+  .course-input {
+    flex: 1; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: var(--text);
+    outline: none; transition: border-color 0.2s;
+  }
+  .course-input::placeholder { color: var(--text-dim); }
+  .course-input:focus { border-color: var(--accent); }
+  .course-add {
+    width: 36px; height: 36px;
+    background: var(--accent); border: none; border-radius: 8px;
+    color: #fff; font-size: 22px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-weight: 300;
+  }
+  .course-clear-btn {
+    display: flex; align-items: center;
+    background: none; border: none; cursor: pointer;
+    font-size: 11px; color: var(--text-dim);
+    padding: 8px 0 0; opacity: 0.7; transition: opacity 0.2s;
+  }
+  .course-clear-btn:hover { opacity: 1; color: var(--accent); }
+
+  /* ── REFRESH ── */
   .refresh-btn {
     display: flex; align-items: center; gap: 6px;
     background: none; border: none; cursor: pointer;
     font-family: 'Syne', sans-serif;
     font-size: 8px; font-weight: 700;
-    letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--accent-dim); padding: 0;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); padding: 0;
     opacity: 0.7; transition: opacity 0.2s; margin-top: 14px;
   }
   .refresh-btn:hover { opacity: 1; }
   .refresh-btn.spinning svg { animation: spin 1s linear infinite; }
   @keyframes spin { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
 
-  .meal-body { padding: 14px 16px 18px; }
-  .meal-placeholder {
-    font-size: 13px; font-weight: 300; font-style: italic;
-    color: var(--text-dim); line-height: 1.65;
-    text-align: center; padding: 6px 0 8px;
-  }
-  .meal-cta {
-    display: block; width: 100%; margin-top: 12px; padding: 10px;
-    background: transparent; border: 1px solid var(--border-strong);
-    border-radius: 2px;
-    font-family: 'Syne', sans-serif;
-    font-size: 9px; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent-dim); cursor: pointer; transition: background 0.2s;
-  }
-  .meal-cta:hover { background: var(--accent-glow); }
-
-  .tasks-body, .courses-body { padding: 10px 16px 14px; }
-  .task-empty, .course-empty {
-    font-size: 12px; font-weight: 300; font-style: italic;
-    color: var(--text-dim); padding: 4px 0 8px;
-  }
-  .task-item, .course-item {
-    display: flex; align-items: center; gap: 11px;
-    padding: 8px 0; border-bottom: 1px solid rgba(92,219,149,0.05);
-    animation: fadeUp 0.22s ease;
-  }
-  .task-item:last-of-type, .course-item:last-of-type { border-bottom: none; }
-  @keyframes fadeUp {
-    from{opacity:0;transform:translateY(-3px);}
-    to{opacity:1;transform:translateY(0);}
-  }
-  .task-box, .course-box {
-    width: 16px; height: 16px;
-    border: 1px solid var(--border-strong); border-radius: 2px;
-    flex-shrink: 0; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s; background: transparent;
-  }
-  .task-box.done, .course-box.done { background: var(--accent); border-color: var(--accent); }
-  .task-box.done::after, .course-box.done::after { content:'✓'; font-size:9px; color:var(--bg); font-weight:700; }
-  .task-label, .course-label {
-    font-size: 13px; font-weight: 300;
-    color: var(--text); flex: 1; transition: all 0.2s;
-  }
-  .task-label.done, .course-label.done { opacity:0.3; text-decoration:line-through; text-decoration-color:var(--accent-dim); }
-  .task-del, .course-del {
-    font-size: 10px; color: var(--text-dim); cursor: pointer;
-    opacity: 0.5; padding: 4px; transition: opacity 0.2s;
-    background: none; border: none;
-  }
-  .task-del:hover, .course-del:hover { opacity: 1; color: var(--text); }
-  .task-input-row, .course-input-row { display:flex; gap:8px; margin-top:10px; align-items:center; }
-  .task-input, .course-input {
-    flex: 1; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 2px;
-    padding: 9px 12px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px; font-weight: 300;
-    color: var(--text); outline: none; transition: border-color 0.2s;
-  }
-  .task-input::placeholder, .course-input::placeholder { font-style:italic; color:var(--text-dim); }
-  .task-input:focus, .course-input:focus { border-color: var(--border-strong); }
-  .task-add, .course-add {
-    width: 34px; height: 34px;
-    background: var(--accent); border: none; border-radius: 2px;
-    color: var(--bg); font-size: 20px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: opacity 0.2s;
-    line-height: 1; padding-bottom: 1px; font-weight: 300;
-  }
-  .task-add:hover, .course-add:hover { opacity: 0.85; }
-  .course-clear-btn {
-    display: flex; align-items: center; gap: 6px;
-    background: none; border: none; cursor: pointer;
-    font-family: 'Syne', sans-serif;
-    font-size: 8px; font-weight: 700;
-    letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--text-dim); padding: 0;
-    opacity: 0.5; transition: opacity 0.2s; margin-top: 12px;
-  }
-  .course-clear-btn:hover { opacity: 1; color: var(--accent-dim); }
-
-  .mantra-body { padding: 22px 20px 26px; text-align: center; }
-  .mantra-text {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 17px;
-    line-height: 1.5; letter-spacing: -0.01em; color: var(--text);
-  }
-  .mantra-accent { display:block; margin-top:4px; color: var(--accent); }
-  .mantra-rule { width:32px; height:1px; background:var(--accent); opacity:0.4; margin:14px auto 0; }
-
+  /* ── SHIMMER ── */
   .shimmer {
-    height: 12px; border-radius: 2px;
-    background: linear-gradient(90deg, var(--surface2) 25%, var(--surface) 50%, var(--surface2) 75%);
+    height: 12px; border-radius: 6px;
+    background: linear-gradient(90deg, var(--surface2) 25%, #e8e8e4 50%, var(--surface2) 75%);
     background-size: 200% 100%;
     animation: shim 1.4s infinite; margin-bottom: 8px;
   }
@@ -344,29 +472,29 @@
   .shimmer:nth-child(3){width:52%;animation-delay:0.2s;}
   @keyframes shim{0%{background-position:200% center;}100%{background-position:-200% center;}}
 
+  /* ── INSTALL BANNER ── */
   .install-banner {
-    margin: 16px 12px 0;
+    margin: 0 16px;
     padding: 12px 16px;
     background: var(--accent-glow);
-    border: 1px solid var(--border-strong);
-    border-radius: 2px;
+    border: 1px solid rgba(58,148,99,0.2);
+    border-radius: var(--radius);
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px;
   }
   .install-text {
     font-family: 'Syne', sans-serif;
     font-size: 10px; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
+    letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--accent);
   }
-  .install-sub { font-size: 11px; font-weight: 300; color: var(--text-mid); margin-top: 3px; line-height: 1.4; }
+  .install-sub { font-size: 11px; color: var(--text-mid); margin-top: 3px; line-height: 1.4; }
   .install-dismiss {
     font-size: 16px; color: var(--text-dim); cursor: pointer;
     background: none; border: none; flex-shrink: 0; padding: 4px;
-    transition: color 0.2s;
   }
-  .install-dismiss:hover { color: var(--text); }
 
+  /* ── FOOTER ── */
   .footer {
     padding: 28px 20px 10px;
     display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -377,6 +505,7 @@
     font-size: 8px; font-weight: 700;
     letter-spacing: 0.4em; text-transform: uppercase; color: var(--text-dim);
   }
+
   .error-note { font-size: 12px; font-style: italic; color: var(--text-dim); line-height: 1.6; }
 </style>
 </head>
@@ -384,12 +513,16 @@
 
 <div class="app">
 
+  <!-- HEADER -->
   <div class="header">
     <div class="header-eyebrow">Mon Monde</div>
-    <div class="header-date" id="header-date">—</div>
-    <div class="header-sub" id="header-greeting">Good morning</div>
+    <div class="header-row">
+      <div class="header-date" id="header-date">—</div>
+      <div class="header-greeting" id="header-greeting">Good morning</div>
+    </div>
   </div>
 
+  <!-- WEATHER -->
   <div class="weather-bar">
     <div class="weather-icon" id="w-icon">—</div>
     <div class="weather-info">
@@ -400,40 +533,62 @@
     <div class="weather-uv" id="w-uv" style="display:none">UV —</div>
   </div>
 
-  <!-- CALENDAR -->
-  <div class="day-view">
-    <div class="day-view-label">
-      Today's Schedule
-      <span class="day-view-sync" onclick="showCalendarInfo()">ℹ sync info</span>
-    </div>
-    <div class="day-events" id="day-events">
-      <div class="day-empty">Loading schedule...</div>
-    </div>
-  </div>
+  <div class="sections">
 
-  <div class="install-banner" id="install-banner" style="display:none">
-    <div>
-      <div class="install-text">Add to Home Screen</div>
-      <div class="install-sub">Tap Share → "Add to Home Screen" in Safari to install</div>
+    <!-- INSTALL BANNER -->
+    <div class="install-banner" id="install-banner" style="display:none">
+      <div>
+        <div class="install-text">Add to Home Screen</div>
+        <div class="install-sub">Tap Share → "Add to Home Screen" in Safari</div>
+      </div>
+      <button class="install-dismiss" onclick="dismissInstall()">✕</button>
     </div>
-    <button class="install-dismiss" onclick="dismissInstall()">✕</button>
-  </div>
 
-  <div class="widgets">
+    <!-- MANTRA -->
+    <div class="mantra-card">
+      <div class="mantra-label">✦ Daily Mantra</div>
+      <div class="mantra-text" id="mantra-text">—</div>
+      <div class="mantra-rule"></div>
+    </div>
+
+    <!-- DON'T FORGET -->
+    <div class="card">
+      <div class="card-header" onclick="toggle('tasks')">
+        <div class="card-header-left">
+          <div class="card-icon">◇</div>
+          <div class="card-title">Don't Forget</div>
+        </div>
+        <div class="card-chevron open" id="chev-tasks">▾</div>
+      </div>
+      <div class="card-collapse open" id="col-tasks">
+        <div class="tasks-tabs">
+          <button class="tasks-tab active" id="tab-today" onclick="switchTab('today')">Today</button>
+          <button class="tasks-tab" id="tab-later" onclick="switchTab('later')">Later</button>
+        </div>
+        <div class="tasks-body" id="task-list"></div>
+        <div class="task-add-form">
+          <div class="task-input-row">
+            <input class="task-input" id="task-input" type="text" placeholder="Add a task..."/>
+            <button class="task-add-btn" onclick="addTask()">+</button>
+          </div>
+          <input class="task-date-input" id="task-date" type="date" />
+        </div>
+      </div>
+    </div>
 
     <!-- ASTRO BRIEF -->
-    <div class="widget">
-      <div class="widget-header" onclick="toggle('astro')">
-        <div class="wh-left">
-          <div class="wh-icon">♏</div>
-          <div class="wh-title">Astro Brief</div>
+    <div class="card">
+      <div class="card-header" onclick="toggle('astro')">
+        <div class="card-header-left">
+          <div class="card-icon">♏</div>
+          <div class="card-title">Astro Brief</div>
         </div>
-        <div class="wh-chevron" id="chev-astro">▾</div>
+        <div class="card-chevron" id="chev-astro">▾</div>
       </div>
       <div class="brief-preview" onclick="toggle('astro')">
         <div class="brief-preview-text" id="astro-preview">Tap to reveal your astro brief ↓</div>
       </div>
-      <div class="widget-collapse" id="col-astro">
+      <div class="card-collapse" id="col-astro">
         <div class="brief-body">
           <div id="astro-content"></div>
           <button class="refresh-btn" id="astro-refresh" onclick="loadAstro(true)">
@@ -447,18 +602,18 @@
     </div>
 
     <!-- NEWS BRIEF -->
-    <div class="widget">
-      <div class="widget-header" onclick="toggle('news')">
-        <div class="wh-left">
-          <div class="wh-icon">◎</div>
-          <div class="wh-title">News Brief</div>
+    <div class="card">
+      <div class="card-header" onclick="toggle('news')">
+        <div class="card-header-left">
+          <div class="card-icon">◎</div>
+          <div class="card-title">News Brief</div>
         </div>
-        <div class="wh-chevron" id="chev-news">▾</div>
+        <div class="card-chevron" id="chev-news">▾</div>
       </div>
       <div class="brief-preview" onclick="toggle('news')">
         <div class="brief-preview-text" id="news-preview">Tap to load your personal news brief ↓</div>
       </div>
-      <div class="widget-collapse" id="col-news">
+      <div class="card-collapse" id="col-news">
         <div class="brief-body">
           <div id="news-content"></div>
           <button class="refresh-btn" id="news-refresh" onclick="loadNews(true)">
@@ -471,33 +626,39 @@
       </div>
     </div>
 
-    <!-- MEAL -->
-    <div class="widget">
-      <div class="widget-header" onclick="toggle('meal')">
-        <div class="wh-left">
-          <div class="wh-icon">◈</div>
-          <div class="wh-title">Today's Meals</div>
+    <!-- TODAY'S MEALS -->
+    <div class="card">
+      <div class="card-header" onclick="toggle('meals')">
+        <div class="card-header-left">
+          <div class="card-icon">◈</div>
+          <div class="card-title">Today's Meals</div>
         </div>
-        <div class="wh-chevron open" id="chev-meal">▾</div>
+        <div class="card-chevron open" id="chev-meals">▾</div>
       </div>
-      <div class="widget-collapse open" id="col-meal">
-        <div class="meal-body">
-          <div class="meal-placeholder">Meal plan available once<br/>the weekly planner is set up.</div>
-          <button class="meal-cta">+ Plan the week</button>
+      <div class="card-collapse open" id="col-meals">
+        <div class="meals-row">
+          <div class="meal-card" id="meal-lunch">
+            <div class="meal-time-label">Midi</div>
+            <div class="meal-empty">Not planned yet</div>
+          </div>
+          <div class="meal-card" id="meal-dinner">
+            <div class="meal-time-label">Soir</div>
+            <div class="meal-empty">Not planned yet</div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- COURSES -->
-    <div class="widget">
-      <div class="widget-header" onclick="toggle('courses')">
-        <div class="wh-left">
-          <div class="wh-icon">🛒</div>
-          <div class="wh-title">Courses</div>
+    <div class="card">
+      <div class="card-header" onclick="toggle('courses')">
+        <div class="card-header-left">
+          <div class="card-icon">🛒</div>
+          <div class="card-title">Courses</div>
         </div>
-        <div class="wh-chevron open" id="chev-courses">▾</div>
+        <div class="card-chevron open" id="chev-courses">▾</div>
       </div>
-      <div class="widget-collapse open" id="col-courses">
+      <div class="card-collapse open" id="col-courses">
         <div class="courses-body">
           <div id="course-list"></div>
           <div class="course-input-row">
@@ -507,44 +668,6 @@
             <button class="course-add" onclick="addCourse()">+</button>
           </div>
           <button class="course-clear-btn" onclick="clearDoneCourses()">✕ Effacer les cochés</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- DON'T FORGET -->
-    <div class="widget">
-      <div class="widget-header" onclick="toggle('tasks')">
-        <div class="wh-left">
-          <div class="wh-icon">◇</div>
-          <div class="wh-title">Don't Forget</div>
-        </div>
-        <div class="wh-chevron open" id="chev-tasks">▾</div>
-      </div>
-      <div class="widget-collapse open" id="col-tasks">
-        <div class="tasks-body">
-          <div id="task-list"></div>
-          <div class="task-input-row">
-            <input class="task-input" id="task-input" type="text"
-              placeholder="Add something to remember..."
-              onkeydown="if(event.key==='Enter')addTask()"/>
-            <button class="task-add" onclick="addTask()">+</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MANTRA -->
-    <div class="widget">
-      <div class="widget-header" onclick="toggle('mantra')">
-        <div class="wh-left">
-          <div class="wh-icon">✦</div>
-          <div class="wh-title">Daily Mantra</div>
-        </div>
-        <div class="wh-chevron open" id="chev-mantra">▾</div>
-      </div>
-      <div class="widget-collapse open" id="col-mantra">
-        <div class="mantra-body" id="mantra-body">
-          <div class="shimmer"></div><div class="shimmer"></div>
         </div>
       </div>
     </div>
@@ -560,16 +683,19 @@
 </div>
 
 <script>
+const JSONBIN_KEY  = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW';
+const JSONBIN_NEWS = '69e35a3f36566621a8c7a244';
+
+const TODAY_STR = new Date().toDateString();
+const TODAY_DATE = new Date().toISOString().split('T')[0];
+
 const S = {
   tasks: JSON.parse(localStorage.getItem('mm_tasks') || '[]'),
   courses: JSON.parse(localStorage.getItem('mm_courses') || '[]'),
+  currentTab: 'today',
   astroLoaded: false,
   newsLoaded: false
 };
-const TODAY = new Date().toDateString();
-const JSONBIN_KEY = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW';
-const JSONBIN_CAL  = '69e33fad36566621a8c749ba';
-const JSONBIN_NEWS = '69e35a3f36566621a8c7a244';
 
 // ── DATE ──────────────────────────────────────────────
 function initDate() {
@@ -580,10 +706,11 @@ function initDate() {
     `${days[now.getDay()].toUpperCase()} <span>${now.getDate()} ${months[now.getMonth()]}</span>`;
   const h = now.getHours();
   document.getElementById('header-greeting').textContent =
-    h<12 ? 'Good morning' : h<18 ? 'Good afternoon' : 'Good evening';
+    h < 12 ? 'Good morning ☀️' : h < 18 ? 'Good afternoon' : 'Good evening 🌙';
+  document.getElementById('task-date').value = TODAY_DATE;
 }
 
-// ── WEATHER + UV ──────────────────────────────────────
+// ── WEATHER ───────────────────────────────────────────
 async function loadWeather() {
   try {
     let lat = 48.8566, lon = 2.3522, city = 'Paris, France';
@@ -609,12 +736,12 @@ async function loadWeather() {
     }
     const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode,uv_index&daily=uv_index_max&timezone=auto`);
     const d = await r.json();
-    document.getElementById('w-temp').textContent = `${Math.round(d.current.temperature_2m)}°C`;
+    document.getElementById('w-temp').textContent = `${Math.round(d.current.temperature_2m)}°`;
     document.getElementById('w-icon').textContent = wIcon(d.current.weathercode);
     document.getElementById('w-desc').textContent = wDesc(d.current.weathercode);
     document.getElementById('w-loc').textContent = city;
     const uv = d.daily?.uv_index_max?.[0] ?? d.current?.uv_index;
-    if (uv !== undefined && uv !== null) {
+    if (uv !== undefined) {
       const uvEl = document.getElementById('w-uv');
       uvEl.textContent = `UV ${Math.round(uv)}`;
       uvEl.style.display = 'block';
@@ -624,45 +751,8 @@ async function loadWeather() {
     }
   } catch { document.getElementById('w-desc').textContent = 'Weather unavailable'; }
 }
-
 function wIcon(c){if(c===0)return'☀️';if(c<=2)return'🌤️';if(c<=3)return'☁️';if(c<=48)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌦️';return'⛈️';}
 function wDesc(c){if(c===0)return'Clear sky';if(c<=2)return'Partly cloudy';if(c<=3)return'Overcast';if(c<=48)return'Foggy';if(c<=57)return'Drizzle';if(c<=67)return'Rain';if(c<=77)return'Snow';if(c<=82)return'Showers';return'Thunderstorm';}
-
-// ── CALENDAR (JSONBin) ────────────────────────────────
-async function loadDayEvents() {
-  try {
-    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CAL}/latest`, {
-      headers: { 'X-Master-Key': JSONBIN_KEY }
-    });
-    const d = await r.json();
-    const events = d?.record?.events || [];
-    renderEvents(events);
-  } catch {
-    document.getElementById('day-events').innerHTML = '<div class="day-empty">No events today.</div>';
-  }
-}
-
-function renderEvents(events) {
-  const el = document.getElementById('day-events');
-  if (!events || !events.length) {
-    el.innerHTML = '<div class="day-empty">No events today.</div>';
-    return;
-  }
-  el.innerHTML = events.map(e => `
-    <div class="day-event">
-      <div class="event-time">${e.time}</div>
-      <div class="event-bar"></div>
-      <div class="event-detail">
-        <div class="event-title">${e.title}</div>
-        ${e.location ? `<div class="event-sub">${e.location}</div>` : ''}
-      </div>
-    </div>
-  `).join('');
-}
-
-function showCalendarInfo() {
-  alert('Calendar sync:\n\nAn iOS Shortcut runs every morning at 7:15 AM and pushes your Google Calendar events to this dashboard automatically.\n\nBin ID: 69e33fad36566621a8c749ba');
-}
 
 // ── MANTRA ────────────────────────────────────────────
 const MANTRAS = [
@@ -700,24 +790,109 @@ const MANTRAS = [
 
 function loadMantra() {
   const mantra = MANTRAS[(new Date().getDate() - 1) % MANTRAS.length];
-  renderMantra(mantra);
+  const words = mantra.split(' ');
+  const mid = Math.floor(words.length / 2);
+  document.getElementById('mantra-text').innerHTML =
+    `${words.slice(0,mid).join(' ')} <span>${words.slice(mid).join(' ')}</span>`;
 }
 
-function renderMantra(text) {
-  const words = text.split(' ');
-  const mid = Math.floor(words.length / 2);
-  document.getElementById('mantra-body').innerHTML = `
-    <div class="mantra-text">${words.slice(0,mid).join(' ')}<span class="mantra-accent">${words.slice(mid).join(' ')}</span></div>
-    <div class="mantra-rule"></div>`;
+// ── TASKS ─────────────────────────────────────────────
+function saveTasks() { localStorage.setItem('mm_tasks', JSON.stringify(S.tasks)); }
+
+function getTaskDate(t) {
+  if (!t.date) return null;
+  return new Date(t.date + 'T00:00:00');
 }
+
+function isToday(t) {
+  if (!t.date) return true;
+  const d = getTaskDate(t);
+  const now = new Date();
+  return d <= new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T00:00:00');
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const taskDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const diff = Math.round((taskDay - today) / 86400000);
+  if (diff < 0) return 'Overdue';
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  return d.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'});
+}
+
+function getDateClass(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T00:00:00');
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const taskDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const diff = Math.round((taskDay - today) / 86400000);
+  if (diff < 0) return 'overdue';
+  if (diff === 0) return 'today';
+  return '';
+}
+
+function switchTab(tab) {
+  S.currentTab = tab;
+  document.getElementById('tab-today').classList.toggle('active', tab === 'today');
+  document.getElementById('tab-later').classList.toggle('active', tab === 'later');
+  renderTasks();
+}
+
+function renderTasks() {
+  const el = document.getElementById('task-list');
+  const filtered = S.tasks.filter(t => S.currentTab === 'today' ? isToday(t) : !isToday(t));
+  if (!filtered.length) {
+    el.innerHTML = `<div class="task-empty">${S.currentTab === 'today' ? 'Nothing for today 🎉' : 'Nothing scheduled later'}</div>`;
+    return;
+  }
+  el.innerHTML = filtered.map((t, _) => {
+    const i = S.tasks.indexOf(t);
+    const dateLabel = formatDate(t.date);
+    const dateClass = getDateClass(t.date);
+    return `<div class="task-item">
+      <div class="task-box ${t.done?'done':''}" onclick="toggleTask(${i})"></div>
+      <div class="task-info">
+        <div class="task-label ${t.done?'done':''}">${t.text}</div>
+        ${dateLabel ? `<div class="task-date-badge ${dateClass}">${dateLabel}</div>` : ''}
+      </div>
+      <button class="task-del" onclick="delTask(${i})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function addTask() {
+  const inp = document.getElementById('task-input');
+  const dateInp = document.getElementById('task-date');
+  const v = inp.value.trim();
+  if (!v) return;
+  S.tasks.push({ text: v, done: false, date: dateInp.value || TODAY_DATE });
+  saveTasks();
+  renderTasks();
+  inp.value = '';
+  inp.focus();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('task-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addTask();
+  });
+});
+
+function toggleTask(i) { S.tasks[i].done = !S.tasks[i].done; saveTasks(); renderTasks(); }
+function delTask(i) { S.tasks.splice(i, 1); saveTasks(); renderTasks(); }
 
 // ── ASTRO ─────────────────────────────────────────────
 async function loadAstro(force=false) {
-  if(S.astroLoaded && !force) return;
+  if (S.astroLoaded && !force) return;
   S.astroLoaded = true;
   const c = localStorage.getItem('mm_astro');
   const cd = localStorage.getItem('mm_astro_date');
-  if(c && cd === TODAY && !force) { renderAstro(JSON.parse(c)); return; }
+  if (c && cd === TODAY_STR && !force) { renderAstro(JSON.parse(c)); return; }
   setLoading('astro-content', 'astro-refresh');
   try {
     const r = await fetch('https://aztro.sameerkumar.website/?sign=scorpio&day=today', { method: 'POST' });
@@ -729,21 +904,21 @@ async function loadAstro(force=false) {
       energy: d.color || 'Transformative'
     };
     localStorage.setItem('mm_astro', JSON.stringify(parsed));
-    localStorage.setItem('mm_astro_date', TODAY);
+    localStorage.setItem('mm_astro_date', TODAY_STR);
     renderAstro(parsed);
   } catch {
     const fallbacks = [
-      { preview: 'Sunday calls for inner stillness and deep reflection.', horoscope: 'Your Scorpio Sun invites you to retreat inward today. With Capricorn Moon conjunct Neptune, your intuition is razor-sharp — trust what arrives in silence.', moonphase: 'Waning light favors release and introspection.', energy: 'Reflective' },
-      { preview: 'Monday ignites ambition in your Capricorn ascendant.', horoscope: 'The week opens with drive. Your Capricorn Rising pushes you to structure your intentions with precision. Neptune softens the edges — let vision lead.', moonphase: 'Building energy supports new beginnings.', energy: 'Driven' },
+      { preview: 'Sunday calls for inner stillness.', horoscope: 'Your Scorpio Sun invites you to retreat inward today. With Capricorn Moon conjunct Neptune, your intuition is razor-sharp — trust what arrives in silence.', moonphase: 'Waning light favors release and introspection.', energy: 'Reflective' },
+      { preview: 'Monday ignites your Capricorn ambition.', horoscope: 'The week opens with drive. Your Capricorn Rising pushes you to structure your intentions with precision. Neptune softens the edges — let vision lead.', moonphase: 'Building energy supports new beginnings.', energy: 'Driven' },
       { preview: 'Tuesday sharpens your Scorpionic perception.', horoscope: 'You see what others miss today. Your Scorpio Sun pierces through surface appearances. Use this clarity to make decisions you have been postponing.', moonphase: 'Active moon supports decisive action.', energy: 'Perceptive' },
-      { preview: 'Wednesday bridges your inner world and outer ambition.', horoscope: 'A rare alignment between your emotional depth and practical drive. Capricorn Moon grounds your Neptunian visions into workable form today.', moonphase: 'Balanced energy supports integration.', energy: 'Integrating' },
-      { preview: 'Thursday favors long-term thinking and quiet power.', horoscope: 'Your Capricorn Rising commands respect without a word spoken. Focus on what you are building for the long term — your patience is your competitive edge.', moonphase: 'Expansive energy rewards bold vision.', energy: 'Strategic' },
-      { preview: 'Friday opens space for depth and connection.', horoscope: 'Your Scorpio nature craves authentic connection over surface pleasantries. Today favors meaningful exchanges and creative expression born from your Neptune influence.', moonphase: 'Flowing energy supports creative release.', energy: 'Magnetic' },
-      { preview: 'Saturday anchors your vision in earthly form.', horoscope: 'Capricorn Moon grounds your dreams today. What has felt intangible begins to take shape. Your discipline and your imagination are finally speaking the same language.', moonphase: 'Grounding energy supports manifestation.', energy: 'Grounded' }
+      { preview: 'Wednesday bridges depth and ambition.', horoscope: 'A rare alignment between your emotional depth and practical drive. Capricorn Moon grounds your Neptunian visions into workable form today.', moonphase: 'Balanced energy supports integration.', energy: 'Integrating' },
+      { preview: 'Thursday favors long-term thinking.', horoscope: 'Your Capricorn Rising commands respect without a word spoken. Focus on what you are building for the long term — your patience is your competitive edge.', moonphase: 'Expansive energy rewards bold vision.', energy: 'Strategic' },
+      { preview: 'Friday opens space for depth and connection.', horoscope: 'Your Scorpio nature craves authentic connection. Today favors meaningful exchanges and creative expression born from your Neptune influence.', moonphase: 'Flowing energy supports creative release.', energy: 'Magnetic' },
+      { preview: 'Saturday anchors your vision in earthly form.', horoscope: 'Capricorn Moon grounds your dreams today. What has felt intangible begins to take shape. Your discipline and imagination speak the same language.', moonphase: 'Grounding energy supports manifestation.', energy: 'Grounded' }
     ];
     const fallback = fallbacks[new Date().getDay()];
     localStorage.setItem('mm_astro', JSON.stringify(fallback));
-    localStorage.setItem('mm_astro_date', TODAY);
+    localStorage.setItem('mm_astro_date', TODAY_STR);
     renderAstro(fallback);
   }
   document.getElementById('astro-refresh').classList.remove('spinning');
@@ -767,13 +942,13 @@ function renderAstro(d) {
   document.getElementById('astro-refresh').classList.remove('spinning');
 }
 
-// ── NEWS (ton JSONBin perso) ───────────────────────────
+// ── NEWS ──────────────────────────────────────────────
 async function loadNews(force=false) {
-  if(S.newsLoaded && !force) return;
+  if (S.newsLoaded && !force) return;
   S.newsLoaded = true;
   const c = localStorage.getItem('mm_news');
   const cd = localStorage.getItem('mm_news_date');
-  if(c && cd === TODAY && !force) { renderNews(JSON.parse(c)); return; }
+  if (c && cd === TODAY_STR && !force) { renderNews(JSON.parse(c)); return; }
   setLoading('news-content', 'news-refresh');
   document.getElementById('news-preview').textContent = 'Loading your brief...';
   try {
@@ -785,12 +960,12 @@ async function loadNews(force=false) {
     if (!items || !items.length) throw new Error('No items');
     const parsed = { preview: items[0].headline, items };
     localStorage.setItem('mm_news', JSON.stringify(parsed));
-    localStorage.setItem('mm_news_date', TODAY);
+    localStorage.setItem('mm_news_date', TODAY_STR);
     renderNews(parsed);
   } catch {
     S.newsLoaded = false;
     document.getElementById('news-preview').textContent = 'Tap to load your personal news brief ↓';
-    document.getElementById('news-content').innerHTML = '<div class="error-note">No news yet — update your JSONBin to add today\'s brief.</div>';
+    document.getElementById('news-content').innerHTML = '<div class="error-note">No news yet — run your shortcut to update.</div>';
     document.getElementById('news-refresh').classList.remove('spinning');
   }
 }
@@ -806,62 +981,41 @@ function renderNews(d) {
   document.getElementById('news-refresh').classList.remove('spinning');
 }
 
-// ── TASKS ─────────────────────────────────────────────
-function saveTasks(){localStorage.setItem('mm_tasks',JSON.stringify(S.tasks));}
-function renderTasks(){
-  const el=document.getElementById('task-list');
-  if(!S.tasks.length){el.innerHTML='<div class="task-empty">Nothing on the list yet.</div>';return;}
-  el.innerHTML=S.tasks.map((t,i)=>`
-    <div class="task-item">
-      <div class="task-box ${t.done?'done':''}" onclick="toggleTask(${i})"></div>
-      <div class="task-label ${t.done?'done':''}">${t.text}</div>
-      <button class="task-del" onclick="delTask(${i})">✕</button>
-    </div>`).join('');
-}
-function addTask(){
-  const inp=document.getElementById('task-input');
-  const v=inp.value.trim();if(!v)return;
-  S.tasks.push({text:v,done:false});saveTasks();renderTasks();
-  inp.value='';inp.focus();
-}
-function toggleTask(i){S.tasks[i].done=!S.tasks[i].done;saveTasks();renderTasks();}
-function delTask(i){S.tasks.splice(i,1);saveTasks();renderTasks();}
-
 // ── COURSES ───────────────────────────────────────────
-function saveCourses(){localStorage.setItem('mm_courses',JSON.stringify(S.courses));}
-function renderCourses(){
-  const el=document.getElementById('course-list');
-  if(!S.courses.length){el.innerHTML='<div class="course-empty">La liste est vide.</div>';return;}
-  el.innerHTML=S.courses.map((c,i)=>`
+function saveCourses() { localStorage.setItem('mm_courses', JSON.stringify(S.courses)); }
+function renderCourses() {
+  const el = document.getElementById('course-list');
+  if (!S.courses.length) { el.innerHTML = '<div class="course-empty">La liste est vide.</div>'; return; }
+  el.innerHTML = S.courses.map((c, i) => `
     <div class="course-item">
       <div class="course-box ${c.done?'done':''}" onclick="toggleCourse(${i})"></div>
       <div class="course-label ${c.done?'done':''}">${c.text}</div>
       <button class="course-del" onclick="delCourse(${i})">✕</button>
     </div>`).join('');
 }
-function addCourse(){
-  const inp=document.getElementById('course-input');
-  const v=inp.value.trim();if(!v)return;
-  S.courses.push({text:v,done:false});saveCourses();renderCourses();
-  inp.value='';inp.focus();
+function addCourse() {
+  const inp = document.getElementById('course-input');
+  const v = inp.value.trim(); if (!v) return;
+  S.courses.push({text: v, done: false}); saveCourses(); renderCourses();
+  inp.value = ''; inp.focus();
 }
-function toggleCourse(i){S.courses[i].done=!S.courses[i].done;saveCourses();renderCourses();}
-function delCourse(i){S.courses.splice(i,1);saveCourses();renderCourses();}
-function clearDoneCourses(){S.courses=S.courses.filter(c=>!c.done);saveCourses();renderCourses();}
+function toggleCourse(i) { S.courses[i].done = !S.courses[i].done; saveCourses(); renderCourses(); }
+function delCourse(i) { S.courses.splice(i, 1); saveCourses(); renderCourses(); }
+function clearDoneCourses() { S.courses = S.courses.filter(c => !c.done); saveCourses(); renderCourses(); }
 
 // ── TOGGLE ────────────────────────────────────────────
-function toggle(id){
-  const col=document.getElementById(`col-${id}`);
-  const chev=document.getElementById(`chev-${id}`);
-  const opening=!col.classList.contains('open');
-  col.classList.toggle('open');chev.classList.toggle('open');
-  if(opening&&id==='astro'&&!S.astroLoaded)loadAstro();
-  if(opening&&id==='news'&&!S.newsLoaded)loadNews();
+function toggle(id) {
+  const col = document.getElementById(`col-${id}`);
+  const chev = document.getElementById(`chev-${id}`);
+  const opening = !col.classList.contains('open');
+  col.classList.toggle('open'); chev.classList.toggle('open');
+  if (opening && id === 'astro' && !S.astroLoaded) loadAstro();
+  if (opening && id === 'news' && !S.newsLoaded) loadNews();
 }
 
-function setLoading(cid,bid){
-  document.getElementById(cid).innerHTML='<div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div>';
-  const btn=document.getElementById(bid);if(btn)btn.classList.add('spinning');
+function setLoading(cid, bid) {
+  document.getElementById(cid).innerHTML = '<div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div>';
+  const btn = document.getElementById(bid); if (btn) btn.classList.add('spinning');
 }
 
 // ── INSTALL BANNER ────────────────────────────────────
@@ -886,7 +1040,6 @@ if ('serviceWorker' in navigator) {
 initDate();
 loadWeather();
 loadMantra();
-loadDayEvents();
 renderTasks();
 renderCourses();
 initInstallBanner();
