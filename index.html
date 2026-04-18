@@ -445,7 +445,6 @@
       <div class="weather-loc" id="w-loc">Paris, France</div>
     </div>
     <div class="weather-temp" id="w-temp">—°</div>
-    <div class="weather-uv" id="w-uv" style="display:none">UV —</div>
   </div>
 
   <div class="sections">
@@ -655,15 +654,6 @@ async function loadWeather() {
     document.getElementById('w-icon').textContent = wIcon(d.current.weathercode);
     document.getElementById('w-desc').textContent = wDesc(d.current.weathercode);
     document.getElementById('w-loc').textContent = city;
-    const uv = d.daily?.uv_index_max?.[0] ?? d.current?.uv_index;
-    if (uv !== undefined) {
-      const uvEl = document.getElementById('w-uv');
-      uvEl.textContent = `UV ${Math.round(uv)}`;
-      uvEl.style.display = 'block';
-      if (uv >= 8) uvEl.style.color = '#e05252';
-      else if (uv >= 5) uvEl.style.color = '#e0a352';
-      else uvEl.style.color = 'var(--accent)';
-    }
   } catch { document.getElementById('w-desc').textContent = 'Weather unavailable'; }
 }
 function wIcon(c){if(c===0)return'☀️';if(c<=2)return'🌤️';if(c<=3)return'☁️';if(c<=48)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌦️';return'⛈️';}
