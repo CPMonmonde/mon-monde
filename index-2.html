@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<link rel="manifest" href="manifest.json"/>
+<title>MON MONDE</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: rgba(92,219,149,0.12);
+    --border-strong: rgba(92,219,149,0.28);
+    --accent: #5CDB95;
+    --accent-dim: #3a9463;
+    --accent-glow: rgba(92,219,149,0.08);
+    --text: #E0E0E0;
+    --text-mid: #888888;
+    --text-dim: #444444;
+    --shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content:'';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(92,219,149,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(92,219,149,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .app {
+    position: relative; z-index: 1;
+    max-width: 430px; margin: 0 auto;
+    padding-bottom: 52px;
+  }
+
+  .header {
+    padding: 52px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-eyebrow {
+    font-size: 9px; font-weight: 400;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--accent-dim); margin-bottom: 8px;
+  }
+
+  .header-date {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 30px;
+    color: var(--text); line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .header-date span { color: var(--accent); }
+
+  .header-sub {
+    margin-top: 8px; font-size: 11px; font-weight: 300;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .weather-bar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .weather-icon { font-size: 22px; }
+  .weather-temp {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 24px; color: var(--text);
+  }
+  .weather-info { flex: 1; }
+  .weather-desc {
+    font-size: 11px; font-weight: 300;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-mid);
+  }
+  .weather-loc { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; margin-top: 2px; }
+
+  .day-view {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px 16px;
+  }
+
+  .day-view-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--accent-dim); margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .day-view-sync {
+    font-size: 8px; font-weight: 400;
+    letter-spacing: 0.15em; color: var(--text-dim);
+    cursor: pointer; transition: color 0.2s;
+  }
+  .day-view-sync:hover { color: var(--accent-dim); }
+
+  .day-events { display: flex; flex-direction: column; gap: 8px; }
+
+  .day-event { display: flex; align-items: flex-start; gap: 12px; }
+
+  .event-time {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px; font-weight: 700;
+    color: var(--accent); width: 42px;
+    flex-shrink: 0; padding-top: 1px;
+    letter-spacing: 0.05em;
+  }
+
+  .event-bar {
+    width: 2px; background: var(--border-strong);
+    border-radius: 2px; flex-shrink: 0;
+    align-self: stretch; min-height: 16px;
+  }
+
+  .event-detail { flex: 1; }
+
+  .event-title {
+    font-size: 13px; font-weight: 400;
+    color: var(--text); line-height: 1.3;
+  }
+
+  .event-sub {
+    font-size: 11px; font-weight: 300;
+    color: var(--text-dim); margin-top: 2px;
+  }
+
+  .day-empty {
+    font-size: 12px; font-weight: 300; font-style: italic;
+    color: var(--text-dim); padding: 2px 0;
+  }
+
+  .day-connect-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 10px; padding: 8px 14px;
+    background: transparent;
+    border: 1px solid var(--border-strong); border-radius: 2px;
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent-dim); cursor: pointer; transition: background 0.2s;
+  }
+  .day-connect-btn:hover { background: var(--accent-glow); }
+
+  .widgets {
+    padding: 16px 12px 0;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .widget {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .widget-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 13px 16px 11px;
+    cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .widget-header:active { background: var(--surface2); }
+
+  .wh-left { display: flex; align-items: center; gap: 10px; }
+
+  .wh-icon {
+    width: 24px; height: 24px;
+    border: 1px solid var(--border-strong); border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--accent);
+    background: var(--accent-glow); flex-shrink: 0;
+  }
+
+  .wh-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .wh-chevron {
+    font-size: 10px; color: var(--accent-dim);
+    transition: transform 0.3s ease;
+  }
+  .wh-chevron.open { transform: rotate(180deg); }
+
+  .widget-collapse {
+    overflow: hidden; max-height: 0;
+    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .widget-collapse.open { max-height: 1400px; }
+
+  .brief-preview {
+    padding: 11px 16px; cursor: pointer;
+    border-bottom: 1px solid var(--border);
+  }
+  .brief-preview-text {
+    font-size: 12px; font-weight: 300;
+    color: var(--text-mid); line-height: 1.5; font-style: italic;
+  }
+
+  .brief-body { padding: 16px 16px 18px; }
+  .brief-section { margin-bottom: 16px; }
+  .brief-section:last-child { margin-bottom: 0; }
+
+  .brief-section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--accent-dim);
+    padding-bottom: 7px; margin-bottom: 9px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brief-section p {
+    font-size: 13px; font-weight: 300;
+    line-height: 1.75; color: var(--text-mid);
+  }
+
+  .brief-energy {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 800;
+    color: var(--accent); letter-spacing: -0.01em;
+  }
+
+  .news-item {
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(92,219,149,0.06);
+  }
+  .news-item:last-child { border-bottom: none; }
+
+  .news-category {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent-dim); margin-bottom: 4px;
+  }
+
+  .news-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 800;
+    color: var(--text); line-height: 1.25;
+    letter-spacing: -0.01em; margin-bottom: 5px;
+  }
+
+  .news-summary {
+    font-size: 12px; font-weight: 300;
+    line-height: 1.7; color: var(--text-mid);
+  }
+
+  .refresh-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent-dim); padding: 0;
+    opacity: 0.7; transition: opacity 0.2s; margin-top: 14px;
+  }
+  .refresh-btn:hover { opacity: 1; }
+  .refresh-btn.spinning svg { animation: spin 1s linear infinite; }
+  @keyframes spin { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
+
+  .meal-body { padding: 14px 16px 18px; }
+  .meal-placeholder {
+    font-size: 13px; font-weight: 300; font-style: italic;
+    color: var(--text-dim); line-height: 1.65;
+    text-align: center; padding: 6px 0 8px;
+  }
+  .meal-cta {
+    display: block; width: 100%; margin-top: 12px; padding: 10px;
+    background: transparent; border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    font-family: 'Syne', sans-serif;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent-dim); cursor: pointer; transition: background 0.2s;
+  }
+  .meal-cta:hover { background: var(--accent-glow); }
+
+  .tasks-body { padding: 10px 16px 14px; }
+  .task-empty {
+    font-size: 12px; font-weight: 300; font-style: italic;
+    color: var(--text-dim); padding: 4px 0 8px;
+  }
+  .task-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 8px 0; border-bottom: 1px solid rgba(92,219,149,0.05);
+    animation: fadeUp 0.22s ease;
+  }
+  .task-item:last-of-type { border-bottom: none; }
+
+  @keyframes fadeUp {
+    from{opacity:0;transform:translateY(-3px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  .task-box {
+    width: 16px; height: 16px;
+    border: 1px solid var(--border-strong); border-radius: 2px;
+    flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; background: transparent;
+  }
+  .task-box.done { background: var(--accent); border-color: var(--accent); }
+  .task-box.done::after { content:'✓'; font-size:9px; color:var(--bg); font-weight:700; }
+
+  .task-label {
+    font-size: 13px; font-weight: 300;
+    color: var(--text); flex: 1; transition: all 0.2s;
+  }
+  .task-label.done { opacity:0.3; text-decoration:line-through; text-decoration-color:var(--accent-dim); }
+
+  .task-del {
+    font-size: 10px; color: var(--text-dim); cursor: pointer;
+    opacity: 0.5; padding: 4px; transition: opacity 0.2s;
+    background: none; border: none;
+  }
+  .task-del:hover { opacity: 1; color: var(--text); }
+
+  .task-input-row { display:flex; gap:8px; margin-top:10px; align-items:center; }
+
+  .task-input {
+    flex: 1; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 2px;
+    padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 300;
+    color: var(--text); outline: none; transition: border-color 0.2s;
+  }
+  .task-input::placeholder { font-style:italic; color:var(--text-dim); }
+  .task-input:focus { border-color: var(--border-strong); }
+
+  .task-add {
+    width: 34px; height: 34px;
+    background: var(--accent); border: none; border-radius: 2px;
+    color: var(--bg); font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: opacity 0.2s;
+    line-height: 1; padding-bottom: 1px; font-weight: 300;
+  }
+  .task-add:hover { opacity: 0.85; }
+
+  .mantra-body { padding: 22px 20px 26px; text-align: center; }
+  .mantra-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 17px;
+    line-height: 1.5; letter-spacing: -0.01em; color: var(--text);
+  }
+  .mantra-accent { display:block; margin-top:4px; color: var(--accent); }
+  .mantra-rule { width:32px; height:1px; background:var(--accent); opacity:0.4; margin:14px auto 0; }
+
+  .shimmer {
+    height: 12px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--surface2) 25%, var(--surface) 50%, var(--surface2) 75%);
+    background-size: 200% 100%;
+    animation: shim 1.4s infinite; margin-bottom: 8px;
+  }
+  .shimmer:nth-child(2){width:72%;animation-delay:0.1s;}
+  .shimmer:nth-child(3){width:52%;animation-delay:0.2s;}
+  @keyframes shim{0%{background-position:200% center;}100%{background-position:-200% center;}}
+
+  .install-banner {
+    margin: 16px 12px 0;
+    padding: 12px 16px;
+    background: var(--accent-glow);
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+  }
+
+  .install-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .install-sub {
+    font-size: 11px; font-weight: 300;
+    color: var(--text-mid); margin-top: 3px; line-height: 1.4;
+  }
+
+  .install-dismiss {
+    font-size: 16px; color: var(--text-dim); cursor: pointer;
+    background: none; border: none; flex-shrink: 0; padding: 4px;
+    transition: color 0.2s;
+  }
+  .install-dismiss:hover { color: var(--text); }
+
+  .footer {
+    padding: 28px 20px 10px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .footer-line { width:20px; height:1px; background:var(--accent); opacity:0.2; }
+  .footer-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase; color: var(--text-dim);
+  }
+
+  .error-note {
+    font-size: 12px; font-style: italic;
+    color: var(--text-dim); line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <div class="header-eyebrow">Mon Monde</div>
+    <div class="header-date" id="header-date">—</div>
+    <div class="header-sub" id="header-greeting">Good morning</div>
+  </div>
+
+  <div class="weather-bar">
+    <div class="weather-icon" id="w-icon">—</div>
+    <div class="weather-info">
+      <div class="weather-desc" id="w-desc">Loading...</div>
+      <div class="weather-loc" id="w-loc">Paris, France</div>
+    </div>
+    <div class="weather-temp" id="w-temp">—°</div>
+  </div>
+
+  <div class="day-view">
+    <div class="day-view-label">
+      Today's Schedule
+      <span class="day-view-sync" onclick="showCalendarInfo()">+ Connect calendar</span>
+    </div>
+    <div class="day-events" id="day-events">
+      <div class="day-empty">Loading schedule...</div>
+    </div>
+    <button class="day-connect-btn" id="connect-btn" style="display:none" onclick="showCalendarInfo()">
+      ⟶ Set up calendar sync
+    </button>
+  </div>
+
+  <div class="install-banner" id="install-banner" style="display:none">
+    <div>
+      <div class="install-text">Add to Home Screen</div>
+      <div class="install-sub">Tap Share → "Add to Home Screen" in Safari to install</div>
+    </div>
+    <button class="install-dismiss" onclick="dismissInstall()">✕</button>
+  </div>
+
+  <div class="widgets">
+
+    <!-- ASTRO BRIEF -->
+    <div class="widget">
+      <div class="widget-header" onclick="toggle('astro')">
+        <div class="wh-left">
+          <div class="wh-icon">♏</div>
+          <div class="wh-title">Astro Brief</div>
+        </div>
+        <div class="wh-chevron" id="chev-astro">▾</div>
+      </div>
+      <div class="brief-preview" onclick="toggle('astro')">
+        <div class="brief-preview-text" id="astro-preview">Tap to reveal your astro brief ↓</div>
+      </div>
+      <div class="widget-collapse" id="col-astro">
+        <div class="brief-body">
+          <div id="astro-content"></div>
+          <button class="refresh-btn" id="astro-refresh" onclick="loadAstro(true)">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEWS BRIEF -->
+    <div class="widget">
+      <div class="widget-header" onclick="toggle('news')">
+        <div class="wh-left">
+          <div class="wh-icon">◎</div>
+          <div class="wh-title">News Brief</div>
+        </div>
+        <div class="wh-chevron" id="chev-news">▾</div>
+      </div>
+      <div class="brief-preview" onclick="toggle('news')">
+        <div class="brief-preview-text" id="news-preview">Tap to load today's world news ↓</div>
+      </div>
+      <div class="widget-collapse" id="col-news">
+        <div class="brief-body">
+          <div id="news-content"></div>
+          <button class="refresh-btn" id="news-refresh" onclick="loadNews(true)">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEAL -->
+    <div class="widget">
+      <div class="widget-header" onclick="toggle('meal')">
+        <div class="wh-left">
+          <div class="wh-icon">◈</div>
+          <div class="wh-title">Today's Meals</div>
+        </div>
+        <div class="wh-chevron open" id="chev-meal">▾</div>
+      </div>
+      <div class="widget-collapse open" id="col-meal">
+        <div class="meal-body">
+          <div class="meal-placeholder">Meal plan available once<br/>the weekly planner is set up.</div>
+          <button class="meal-cta">+ Plan the week</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DON'T FORGET -->
+    <div class="widget">
+      <div class="widget-header" onclick="toggle('tasks')">
+        <div class="wh-left">
+          <div class="wh-icon">◇</div>
+          <div class="wh-title">Don't Forget</div>
+        </div>
+        <div class="wh-chevron open" id="chev-tasks">▾</div>
+      </div>
+      <div class="widget-collapse open" id="col-tasks">
+        <div class="tasks-body">
+          <div id="task-list"></div>
+          <div class="task-input-row">
+            <input class="task-input" id="task-input" type="text"
+              placeholder="Add something to remember..."
+              onkeydown="if(event.key==='Enter')addTask()"/>
+            <button class="task-add" onclick="addTask()">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANTRA -->
+    <div class="widget">
+      <div class="widget-header" onclick="toggle('mantra')">
+        <div class="wh-left">
+          <div class="wh-icon">✦</div>
+          <div class="wh-title">Daily Mantra</div>
+        </div>
+        <div class="wh-chevron open" id="chev-mantra">▾</div>
+      </div>
+      <div class="widget-collapse open" id="col-mantra">
+        <div class="mantra-body" id="mantra-body">
+          <div class="shimmer"></div><div class="shimmer"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-line"></div>
+    <div class="footer-text">Mon Monde</div>
+    <div class="footer-line"></div>
+  </div>
+
+</div>
+
+<script>
+const S = {
+  tasks: JSON.parse(localStorage.getItem('mm_tasks') || '[]'),
+  astroLoaded: false,
+  newsLoaded: false
+};
+const TODAY = new Date().toDateString();
+const JSONBIN_ID = '69e33fad36566621a8c749ba';
+const JSONBIN_KEY = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW';
+
+// ── DATE ──────────────────────────────────────────────
+function initDate() {
+  const now = new Date();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('header-date').innerHTML =
+    `${days[now.getDay()].toUpperCase()} <span>${now.getDate()} ${months[now.getMonth()]}</span>`;
+  const h = now.getHours();
+  document.getElementById('header-greeting').textContent =
+    h<12 ? 'Good morning' : h<18 ? 'Good afternoon' : 'Good evening';
+}
+
+// ── WEATHER ───────────────────────────────────────────
+async function loadWeather() {
+  try {
+    let lat = 48.8566, lon = 2.3522, city = 'Paris, France';
+
+    // Try geolocation first
+    const cached = localStorage.getItem('mm_geo');
+    const cachedTs = localStorage.getItem('mm_geo_ts');
+    if (cached && cachedTs && (Date.now() - parseInt(cachedTs)) < 3600000) {
+      const g = JSON.parse(cached);
+      lat = g.lat; lon = g.lon; city = g.city;
+    } else if (navigator.geolocation) {
+      await new Promise(res => {
+        navigator.geolocation.getCurrentPosition(async p => {
+          lat = p.coords.latitude;
+          lon = p.coords.longitude;
+          try {
+            const gc = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+            const gd = await gc.json();
+            city = gd.address?.city || gd.address?.town || gd.address?.village || 'Your location';
+          } catch { city = 'Your location'; }
+          localStorage.setItem('mm_geo', JSON.stringify({lat, lon, city}));
+          localStorage.setItem('mm_geo_ts', Date.now().toString());
+          res();
+        }, () => res(), {timeout: 5000});
+      });
+    }
+
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto`);
+    const d = await r.json();
+    document.getElementById('w-temp').textContent = `${Math.round(d.current.temperature_2m)}°C`;
+    document.getElementById('w-icon').textContent = wIcon(d.current.weathercode);
+    document.getElementById('w-desc').textContent = wDesc(d.current.weathercode);
+    document.getElementById('w-loc').textContent = city;
+  } catch {
+    document.getElementById('w-desc').textContent = 'Weather unavailable';
+  }
+}
+
+function wIcon(c){if(c===0)return'☀️';if(c<=2)return'🌤️';if(c<=3)return'☁️';if(c<=48)return'🌫️';if(c<=67)return'🌧️';if(c<=77)return'❄️';if(c<=82)return'🌦️';return'⛈️';}
+function wDesc(c){if(c===0)return'Clear sky';if(c<=2)return'Partly cloudy';if(c<=3)return'Overcast';if(c<=48)return'Foggy';if(c<=57)return'Drizzle';if(c<=67)return'Rain';if(c<=77)return'Snow';if(c<=82)return'Showers';return'Thunderstorm';}
+
+// ── CALENDAR (JSONBin) ─────────────────────────────────
+async function loadDayEvents() {
+  try {
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    const d = await r.json();
+    const events = d?.record?.events || [];
+    renderEvents(events);
+  } catch {
+    // Fall back to localStorage if JSONBin fails
+    const saved = localStorage.getItem('mm_events');
+    const savedDate = localStorage.getItem('mm_events_date');
+    if (saved && savedDate === TODAY) {
+      renderEvents(JSON.parse(saved));
+    } else {
+      document.getElementById('day-events').innerHTML = '<div class="day-empty">No events today.</div>';
+      document.getElementById('connect-btn').style.display = 'inline-flex';
+    }
+  }
+}
+
+function renderEvents(events) {
+  const el = document.getElementById('day-events');
+  const btn = document.getElementById('connect-btn');
+  if (!events || !events.length) {
+    el.innerHTML = '<div class="day-empty">No events today.</div>';
+    btn.style.display = 'inline-flex';
+    return;
+  }
+  btn.style.display = 'none';
+  el.innerHTML = events.map(e => `
+    <div class="day-event">
+      <div class="event-time">${e.time}</div>
+      <div class="event-bar"></div>
+      <div class="event-detail">
+        <div class="event-title">${e.title}</div>
+        ${e.location ? `<div class="event-sub">${e.location}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function showCalendarInfo() {
+  alert('Calendar sync:\n\nAn iOS Shortcut runs every morning at 7:15 AM and pushes your Google Calendar events to this dashboard automatically.');
+}
+
+// ── MANTRA (30 hardcoded, rotates by day of month) ────
+const MANTRAS = [
+  'Darkness is not the enemy — it is where I forge my power.',
+  'I rise through what would break others; depth is my gift.',
+  'My patience is not weakness — it is the mountain waiting.',
+  'I transform, therefore I endure beyond what others can see.',
+  'From the ashes of the old, I architect the unshakeable.',
+  'I see through illusion and build on bedrock truth.',
+  'My ambition and my soul move as one unbroken force.',
+  'I do not chase — I become what cannot be ignored.',
+  'The deeper the roots, the higher I am destined to climb.',
+  'I carry the vision others cannot hold and build it anyway.',
+  'Crisis reveals my character; I have never been found wanting.',
+  'I move slow, strike true, and leave nothing to chance.',
+  'What I build with intention outlasts what others built with speed.',
+  'My sensitivity is armor; my discipline is the sword.',
+  'I am not afraid of the void — I was born knowing its name.',
+  'Structure and soul are not opposites — I am the proof.',
+  'Every ending I have survived was preparing me for this.',
+  'I do not need permission to become what I already am.',
+  'My loyalty to my vision is absolute and unshakeable.',
+  'I transmute pressure into precision, pain into power.',
+  'The world does not understand my pace — it will understand my results.',
+  'I move through illusion like water through stone — inevitable.',
+  'What I sacrifice today I will wear as strength tomorrow.',
+  'My depths are not a wound — they are my greatest resource.',
+  'I trust the slow burn; it burns longest and brightest.',
+  'I am not waiting for the moment — I am building it.',
+  'My stillness is not absence; it is concentrated becoming.',
+  'Where others see endings, I recognize transformation.',
+  'I honor the invisible work — it is where empires begin.',
+  'I was built for the long game, and the long game was built for me.'
+];
+
+function loadMantra() {
+  const day = new Date().getDate();
+  const mantra = MANTRAS[(day - 1) % MANTRAS.length];
+  renderMantra(mantra);
+}
+
+function renderMantra(text) {
+  const words = text.split(' ');
+  const mid = Math.floor(words.length / 2);
+  document.getElementById('mantra-body').innerHTML = `
+    <div class="mantra-text">${words.slice(0,mid).join(' ')}<span class="mantra-accent">${words.slice(mid).join(' ')}</span></div>
+    <div class="mantra-rule"></div>`;
+}
+
+// ── ASTRO (Aztro API — free, no key) ──────────────────
+async function loadAstro(force=false) {
+  if(S.astroLoaded && !force) return;
+  S.astroLoaded = true;
+  const c = localStorage.getItem('mm_astro');
+  const cd = localStorage.getItem('mm_astro_date');
+  if(c && cd === TODAY && !force) { renderAstro(JSON.parse(c)); return; }
+  setLoading('astro-content', 'astro-refresh');
+
+  try {
+    // Aztro API — free horoscope for Scorpio
+    const r = await fetch('https://aztro.sameerkumar.website/?sign=scorpio&day=today', {
+      method: 'POST'
+    });
+    const d = await r.json();
+
+    const parsed = {
+      preview: d.description ? d.description.split('.')[0] + '.' : 'The stars speak to your Scorpionic depths today.',
+      horoscope: d.description || 'Your Scorpio Sun, anchored by Capricorn Moon conjunct Neptune, calls you to trust your instincts today. The path forward requires both your signature intensity and your quiet resilience.',
+      moonphase: `${d.current_date} · Moon in ${d.mood} energy. Lucky time: ${d.lucky_time}.`,
+      energy: d.color || 'Transformative'
+    };
+
+    localStorage.setItem('mm_astro', JSON.stringify(parsed));
+    localStorage.setItem('mm_astro_date', TODAY);
+    renderAstro(parsed);
+  } catch(e) {
+    // Fallback: day-of-week rotation
+    const fallbacks = [
+      { preview: 'Sunday calls for inner stillness and deep reflection.', horoscope: 'Your Scorpio Sun invites you to retreat inward today. With Capricorn Moon conjunct Neptune, your intuition is razor-sharp — trust what arrives in silence.', moonphase: 'Waning light favors release and introspection.', energy: 'Reflective' },
+      { preview: 'Monday ignites ambition in your Capricorn ascendant.', horoscope: 'The week opens with drive. Your Capricorn Rising pushes you to structure your intentions with precision. Neptune softens the edges — let vision lead.', moonphase: 'Building energy supports new beginnings.', energy: 'Driven' },
+      { preview: 'Tuesday sharpens your Scorpionic perception.', horoscope: 'You see what others miss today. Your Scorpio Sun pierces through surface appearances. Use this clarity to make decisions you have been postponing.', moonphase: 'Active moon supports decisive action.', energy: 'Perceptive' },
+      { preview: 'Wednesday bridges your inner world and outer ambition.', horoscope: 'A rare alignment between your emotional depth and practical drive. Capricorn Moon grounds your Neptunian visions into workable form today.', moonphase: 'Balanced energy supports integration.', energy: 'Integrating' },
+      { preview: 'Thursday favors long-term thinking and quiet power.', horoscope: 'Your Capricorn Rising commands respect without a word spoken. Focus on what you are building for the long term — your patience is your competitive edge.', moonphase: 'Expansive energy rewards bold vision.', energy: 'Strategic' },
+      { preview: 'Friday opens space for depth and connection.', horoscope: 'Your Scorpio nature craves authentic connection over surface pleasantries. Today favors meaningful exchanges and creative expression born from your Neptune influence.', moonphase: 'Flowing energy supports creative release.', energy: 'Magnetic' },
+      { preview: 'Saturday anchors your vision in earthly form.', horoscope: 'Capricorn Moon grounds your dreams today. What has felt intangible begins to take shape. Your discipline and your imagination are finally speaking the same language.', moonphase: 'Grounding energy supports manifestation.', energy: 'Grounded' }
+    ];
+    const fallback = fallbacks[new Date().getDay()];
+    localStorage.setItem('mm_astro', JSON.stringify(fallback));
+    localStorage.setItem('mm_astro_date', TODAY);
+    renderAstro(fallback);
+    document.getElementById('astro-refresh').classList.remove('spinning');
+  }
+}
+
+function renderAstro(d) {
+  document.getElementById('astro-preview').textContent = d.preview || 'Your astro brief';
+  document.getElementById('astro-content').innerHTML = `
+    <div class="brief-section">
+      <div class="brief-section-label">♏ · ♑ · Your Chart Today</div>
+      <p>${d.horoscope}</p>
+    </div>
+    <div class="brief-section">
+      <div class="brief-section-label">☽ Moon Phase</div>
+      <p>${d.moonphase}</p>
+    </div>
+    <div class="brief-section">
+      <div class="brief-section-label">Energy of the Day</div>
+      <p class="brief-energy">${d.energy}</p>
+    </div>`;
+  document.getElementById('astro-refresh').classList.remove('spinning');
+}
+
+// ── NEWS (Courrier International RSS — free) ───────────
+async function loadNews(force=false) {
+  if(S.newsLoaded && !force) return;
+  S.newsLoaded = true;
+  const c = localStorage.getItem('mm_news');
+  const cd = localStorage.getItem('mm_news_date');
+  if(c && cd === TODAY && !force) { renderNews(JSON.parse(c)); return; }
+  setLoading('news-content', 'news-refresh');
+  document.getElementById('news-preview').textContent = 'Loading news...';
+
+  try {
+    // Courrier International RSS via rss2json proxy
+    const RSS_URL = encodeURIComponent('https://www.courrierinternational.com/feed/all/rss.xml');
+    const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${RSS_URL}&count=5`);
+    const d = await r.json();
+
+    if (!d.items || !d.items.length) throw new Error('No items');
+
+    const items = d.items.slice(0, 4).map(item => ({
+      category: 'MONDE',
+      headline: item.title,
+      summary: item.description
+        ? item.description.replace(/<[^>]*>/g, '').slice(0, 160).trim() + '…'
+        : 'Lire la suite sur Courrier International.'
+    }));
+
+    const parsed = {
+      preview: items[0].headline,
+      items
+    };
+
+    localStorage.setItem('mm_news', JSON.stringify(parsed));
+    localStorage.setItem('mm_news_date', TODAY);
+    renderNews(parsed);
+  } catch(e) {
+    S.newsLoaded = false;
+    document.getElementById('news-preview').textContent = "Tap to load today's world news ↓";
+    document.getElementById('news-content').innerHTML = '<div class="error-note">Could not load news. Tap refresh to try again.</div>';
+    document.getElementById('news-refresh').classList.remove('spinning');
+  }
+}
+
+function renderNews(d) {
+  document.getElementById('news-preview').textContent = d.preview || "Today's brief";
+  document.getElementById('news-content').innerHTML = d.items.map(i => `
+    <div class="news-item">
+      <div class="news-category">${i.category}</div>
+      <div class="news-headline">${i.headline}</div>
+      <div class="news-summary">${i.summary}</div>
+    </div>`).join('');
+  document.getElementById('news-refresh').classList.remove('spinning');
+}
+
+// ── TASKS ─────────────────────────────────────────────
+function saveTasks(){localStorage.setItem('mm_tasks',JSON.stringify(S.tasks));}
+function renderTasks(){
+  const el=document.getElementById('task-list');
+  if(!S.tasks.length){el.innerHTML='<div class="task-empty">Nothing on the list yet.</div>';return;}
+  el.innerHTML=S.tasks.map((t,i)=>`
+    <div class="task-item">
+      <div class="task-box ${t.done?'done':''}" onclick="toggleTask(${i})"></div>
+      <div class="task-label ${t.done?'done':''}">${t.text}</div>
+      <button class="task-del" onclick="delTask(${i})">✕</button>
+    </div>`).join('');
+}
+function addTask(){
+  const inp=document.getElementById('task-input');
+  const v=inp.value.trim();if(!v)return;
+  S.tasks.push({text:v,done:false});saveTasks();renderTasks();
+  inp.value='';inp.focus();
+}
+function toggleTask(i){S.tasks[i].done=!S.tasks[i].done;saveTasks();renderTasks();}
+function delTask(i){S.tasks.splice(i,1);saveTasks();renderTasks();}
+
+// ── TOGGLE ────────────────────────────────────────────
+function toggle(id){
+  const col=document.getElementById(`col-${id}`);
+  const chev=document.getElementById(`chev-${id}`);
+  const opening=!col.classList.contains('open');
+  col.classList.toggle('open');chev.classList.toggle('open');
+  if(opening&&id==='astro'&&!S.astroLoaded)loadAstro();
+  if(opening&&id==='news'&&!S.newsLoaded)loadNews();
+}
+
+function setLoading(cid,bid){
+  document.getElementById(cid).innerHTML='<div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div>';
+  const btn=document.getElementById(bid);if(btn)btn.classList.add('spinning');
+}
+
+// ── INSTALL BANNER ────────────────────────────────────
+function initInstallBanner() {
+  const dismissed = localStorage.getItem('mm_install_dismissed');
+  const isStandalone = window.navigator.standalone === true;
+  if (!dismissed && !isStandalone) {
+    document.getElementById('install-banner').style.display = 'flex';
+  }
+}
+
+function dismissInstall() {
+  localStorage.setItem('mm_install_dismissed', '1');
+  document.getElementById('install-banner').style.display = 'none';
+}
+
+// ── SERVICE WORKER ────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+// ── INIT ──────────────────────────────────────────────
+initDate();
+loadWeather();
+loadMantra();
+loadDayEvents();
+renderTasks();
+initInstallBanner();
+</script>
+</body>
+</html>
