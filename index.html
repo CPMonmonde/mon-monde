@@ -819,28 +819,18 @@ async function loadNews(force=false) {
   if(c && cd === TODAY && !force) { renderNews(JSON.parse(c)); return; }
   setLoading('news-content', 'news-refresh');
   document.getElementById('news-preview').textContent = 'Loading news...';
-
   try {
-    // Courrier International RSS via rss2json proxy
-    const RSS_URL = encodeURIComponent('https://feeds.bbci.co.uk/news/world/rss.xml');
-    const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${RSS_URL}&count=5`);
+    const r = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://feeds.bbci.co.uk/news/world/rss.xml'));
     const d = await r.json();
-
-    if (!d.items || !d.items.length) throw new Error('No items');
-
-    const items = d.items.slice(0, 4).map(item => ({
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(d.contents, 'text/xml');
+    const items = [...xml.querySelectorAll('item')].slice(0, 4).map(item => ({
       category: 'MONDE',
-      headline: item.title,
-      summary: item.description
-        ? item.description.replace(/<[^>]*>/g, '').slice(0, 160).trim() + '…'
-        : 'Lire la suite sur Courrier International.'
+      headline: item.querySelector('title')?.textContent || '',
+      summary: (item.querySelector('description')?.textContent || '').replace(/<[^>]*>/g, '').slice(0, 160).trim() + '…'
     }));
-
-    const parsed = {
-      preview: items[0].headline,
-      items
-    };
-
+    if (!items.length) throw new Error('No items');
+    const parsed = { preview: items[0].headline, items };
     localStorage.setItem('mm_news', JSON.stringify(parsed));
     localStorage.setItem('mm_news_date', TODAY);
     renderNews(parsed);
