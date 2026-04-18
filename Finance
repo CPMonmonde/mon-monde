@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#ffffff"/>
+<title>MON MONDE — Admin & Finance</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f5f5f0; --surface: #ffffff; --surface2: #f0efea; --surface3: #e8e7e1;
+  --border: rgba(0,0,0,0.07); --border-strong: rgba(0,0,0,0.13);
+  --accent: #3a9463; --accent-light: #5CDB95; --accent-glow: rgba(92,219,149,0.1);
+  --red: #e05252; --red-glow: rgba(224,82,82,0.1);
+  --amber: #e0a352; --amber-glow: rgba(224,163,82,0.1);
+  --text: #1a1a1a; --text-mid: #555; --text-dim: #999;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06); --radius: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:'DM Sans',sans-serif; font-weight:400; background:var(--bg); color:var(--text); min-height:100dvh; overflow-x:hidden; }
+.app { max-width:430px; margin:0 auto; padding-bottom:52px; }
+
+/* HEADER */
+.header { padding:52px 20px 16px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:14px; }
+.back-btn { width:36px; height:36px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; color:var(--text-mid); text-decoration:none; flex-shrink:0; }
+.header-text { flex:1; }
+.header-eyebrow { font-size:10px; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; color:var(--accent); margin-bottom:2px; }
+.header-title { font-family:'Syne',sans-serif; font-weight:800; font-size:22px; color:var(--text); letter-spacing:-0.01em; }
+
+/* SECTIONS */
+.sections { padding:16px 16px 0; display:flex; flex-direction:column; gap:12px; }
+
+/* CARD */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+.card-header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; cursor:pointer; user-select:none; transition:background 0.15s; border-bottom:1px solid var(--border); }
+.card-header:active { background:var(--surface2); }
+.card-header-left { display:flex; align-items:center; gap:10px; }
+.card-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; background:var(--accent-glow); flex-shrink:0; }
+.card-title { font-size:13px; font-weight:600; color:var(--text); }
+.card-badge { font-size:10px; font-weight:600; padding:2px 7px; border-radius:20px; background:var(--red-glow); color:var(--red); margin-left:6px; }
+.card-chevron { font-size:11px; color:var(--text-dim); transition:transform 0.3s; }
+.card-chevron.open { transform:rotate(180deg); }
+.card-collapse { overflow:hidden; max-height:0; transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+.card-collapse.open { max-height:3000px; }
+
+/* SHARED BODY */
+.card-body { padding:14px 16px 16px; }
+
+/* LABELS */
+.section-label { font-size:9px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); padding-bottom:8px; margin-bottom:10px; border-bottom:1px solid var(--border); }
+
+/* ── SECTION 1: ADMIN TO-DO & DEADLINES ── */
+.deadline-tabs { display:flex; border-bottom:1px solid var(--border); }
+.deadline-tab { flex:1; padding:9px; font-size:11px; font-weight:600; color:var(--text-dim); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; margin-bottom:-1px; }
+.deadline-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+.deadline-list { padding:10px 16px 4px; }
+.deadline-item { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+.deadline-item:last-child { border-bottom:none; }
+.deadline-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.deadline-dot.urgent { background:var(--red); }
+.deadline-dot.soon { background:var(--amber); }
+.deadline-dot.ok { background:var(--accent); }
+.deadline-dot.done { background:var(--text-dim); }
+.deadline-info { flex:1; }
+.deadline-title { font-size:13px; font-weight:500; color:var(--text); line-height:1.3; }
+.deadline-title.done { opacity:0.4; text-decoration:line-through; }
+.deadline-meta { display:flex; align-items:center; gap:8px; margin-top:3px; flex-wrap:wrap; }
+.deadline-date { font-size:11px; color:var(--text-dim); }
+.deadline-urgency { font-size:10px; font-weight:600; padding:1px 6px; border-radius:20px; }
+.urgency-urgent { background:var(--red-glow); color:var(--red); }
+.urgency-soon { background:var(--amber-glow); color:var(--amber); }
+.urgency-ok { background:var(--accent-glow); color:var(--accent); }
+.deadline-actions { display:flex; gap:6px; align-items:center; flex-shrink:0; }
+.deadline-push-btn { font-size:10px; font-weight:600; color:var(--accent); background:var(--accent-glow); border:none; border-radius:6px; padding:3px 8px; cursor:pointer; white-space:nowrap; }
+.deadline-done-btn { font-size:10px; color:var(--text-dim); background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:3px 8px; cursor:pointer; }
+
+.deadline-add-form { padding:10px 16px 14px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px; }
+.deadline-input-row { display:flex; gap:8px; }
+.deadline-input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); outline:none; }
+.deadline-input:focus { border-color:var(--accent); }
+.deadline-input::placeholder { color:var(--text-dim); }
+.deadline-date-row { display:flex; gap:8px; }
+.deadline-date-input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-family:'DM Sans',sans-serif; font-size:12px; color:var(--text-mid); outline:none; }
+.deadline-add-btn { width:36px; height:36px; background:var(--accent); border:none; border-radius:8px; color:#fff; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:300; flex-shrink:0; }
+
+/* ── SECTION 2: EMAIL TRIAGE ── */
+.email-paste-area { width:100%; min-height:90px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px; font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); outline:none; resize:vertical; line-height:1.5; }
+.email-paste-area:focus { border-color:var(--accent); }
+.email-paste-area::placeholder { color:var(--text-dim); font-style:italic; }
+.email-triage-btn { width:100%; margin-top:10px; padding:12px; background:var(--accent); border:none; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:#fff; cursor:pointer; transition:opacity 0.2s; }
+.email-triage-btn:hover { opacity:0.88; }
+.email-triage-btn:disabled { opacity:0.5; cursor:not-allowed; }
+.email-result { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+.email-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px; }
+.email-tag { display:inline-block; font-size:9px; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; padding:2px 7px; border-radius:20px; margin-bottom:7px; }
+.tag-action { background:var(--red-glow); color:var(--red); }
+.tag-reply { background:var(--amber-glow); color:var(--amber); }
+.tag-unsub { background:rgba(0,0,0,0.06); color:var(--text-mid); }
+.tag-fyi { background:var(--accent-glow); color:var(--accent); }
+.email-subject { font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px; }
+.email-from { font-size:11px; color:var(--text-dim); margin-bottom:6px; }
+.email-summary { font-size:12px; color:var(--text-mid); line-height:1.6; margin-bottom:8px; }
+.email-draft { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:10px; font-size:12px; color:var(--text-mid); line-height:1.65; margin-bottom:8px; font-style:italic; }
+.email-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.email-action-btn { font-size:11px; font-weight:600; padding:5px 12px; border-radius:8px; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--text-mid); transition:all 0.2s; }
+.email-action-btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+/* ── SECTION 3: FINANCE DASHBOARD ── */
+.finance-tabs { display:flex; border-bottom:1px solid var(--border); }
+.finance-tab { flex:1; padding:10px 6px; font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; margin-bottom:-1px; }
+.finance-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.finance-panel { display:none; padding:14px 16px 16px; }
+.finance-panel.active { display:block; }
+
+/* Overview */
+.balance-hero { text-align:center; padding:12px 0 16px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+.balance-label { font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px; }
+.balance-amount { font-family:'Syne',sans-serif; font-size:36px; font-weight:800; color:var(--text); letter-spacing:-0.02em; }
+.balance-amount.tight { color:var(--amber); }
+.balance-amount.critical { color:var(--red); }
+.balance-sub { font-size:12px; color:var(--text-dim); margin-top:4px; }
+
+.finance-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--border); }
+.finance-row:last-child { border-bottom:none; }
+.finance-row-label { font-size:13px; color:var(--text-mid); }
+.finance-row-label.income { color:var(--accent); font-weight:500; }
+.finance-row-value { font-size:13px; font-weight:600; color:var(--text); }
+.finance-row-value.positive { color:var(--accent); }
+.finance-row-value.negative { color:var(--red); }
+
+.month-selector { display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:14px; }
+.month-btn { background:none; border:1px solid var(--border); border-radius:8px; width:28px; height:28px; cursor:pointer; font-size:14px; color:var(--text-mid); display:flex; align-items:center; justify-content:center; }
+.month-label { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--text); min-width:120px; text-align:center; }
+
+/* Budget bars */
+.budget-item { margin-bottom:14px; }
+.budget-item:last-child { margin-bottom:0; }
+.budget-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.budget-cat { font-size:12px; font-weight:500; color:var(--text); }
+.budget-amounts { font-size:11px; color:var(--text-dim); }
+.budget-bar-bg { height:6px; background:var(--surface2); border-radius:3px; overflow:hidden; }
+.budget-bar-fill { height:100%; border-radius:3px; transition:width 0.5s ease; }
+.fill-ok { background:var(--accent); }
+.fill-warn { background:var(--amber); }
+.fill-over { background:var(--red); }
+
+/* Subscriptions */
+.sub-item { display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--border); }
+.sub-item:last-child { border-bottom:none; }
+.sub-name { font-size:13px; color:var(--text); }
+.sub-freq { font-size:11px; color:var(--text-dim); margin-top:1px; }
+.sub-amount { font-size:13px; font-weight:600; color:var(--text); }
+.sub-flag { font-size:10px; font-weight:600; padding:1px 6px; border-radius:20px; margin-left:6px; }
+.flag-ok { background:var(--accent-glow); color:var(--accent); }
+.flag-warn { background:var(--amber-glow); color:var(--amber); }
+.sub-total { display:flex; justify-content:space-between; padding:10px 0 0; border-top:1px solid var(--border); margin-top:4px; }
+.sub-total-label { font-size:12px; font-weight:600; color:var(--text-mid); }
+.sub-total-val { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--text); }
+
+/* ── SECTION 4: PORTFOLIO ── */
+.portfolio-tabs { display:flex; border-bottom:1px solid var(--border); }
+.portfolio-tab { flex:1; padding:9px 4px; font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-dim); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; margin-bottom:-1px; }
+.portfolio-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.portfolio-panel { display:none; padding:14px 16px 16px; }
+.portfolio-panel.active { display:block; }
+
+.net-worth-hero { text-align:center; padding:10px 0 14px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+.net-worth-label { font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px; }
+.net-worth-amount { font-family:'Syne',sans-serif; font-size:32px; font-weight:800; color:var(--accent); letter-spacing:-0.02em; }
+.net-worth-sub { font-size:11px; color:var(--text-dim); margin-top:3px; }
+
+.asset-item { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+.asset-item:last-child { border-bottom:none; }
+.asset-icon { width:32px; height:32px; border-radius:8px; background:var(--accent-glow); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.asset-info { flex:1; }
+.asset-name { font-size:13px; font-weight:500; color:var(--text); }
+.asset-detail { font-size:11px; color:var(--text-dim); margin-top:1px; }
+.asset-value { text-align:right; }
+.asset-eur { font-size:14px; font-weight:700; color:var(--text); }
+.asset-change { font-size:11px; margin-top:1px; }
+.change-pos { color:var(--accent); }
+.change-neg { color:var(--red); }
+.asset-loading { font-size:12px; color:var(--text-dim); font-style:italic; }
+
+/* Staking */
+.staking-item { background:var(--surface2); border-radius:10px; padding:12px; margin-bottom:10px; border:1px solid var(--border); }
+.staking-item:last-child { margin-bottom:0; }
+.staking-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.staking-name { font-size:13px; font-weight:600; color:var(--text); }
+.staking-countdown { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; }
+.staking-countdown.urgent { color:var(--red); }
+.staking-countdown.soon { color:var(--amber); }
+.staking-countdown.ok { color:var(--accent); }
+.staking-detail { font-size:11px; color:var(--text-dim); line-height:1.5; }
+.staking-push-btn { margin-top:8px; font-size:10px; font-weight:600; color:var(--accent); background:var(--accent-glow); border:none; border-radius:6px; padding:4px 10px; cursor:pointer; }
+
+/* Investment engine */
+.investment-content { font-size:13px; color:var(--text-mid); line-height:1.75; }
+.investment-content h4 { font-family:'Syne',sans-serif; font-size:12px; font-weight:800; color:var(--text); letter-spacing:0.05em; text-transform:uppercase; margin:14px 0 6px; }
+.investment-content h4:first-child { margin-top:0; }
+.investment-meta { font-size:11px; color:var(--text-dim); margin-top:12px; font-style:italic; }
+.refresh-btn { display:flex; align-items:center; gap:6px; background:none; border:none; cursor:pointer; font-size:10px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); padding:0; opacity:0.7; transition:opacity 0.2s; margin-top:14px; }
+.refresh-btn:hover { opacity:1; }
+.refresh-btn.spinning svg { animation:spin 1s linear infinite; }
+@keyframes spin { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
+
+/* ── SECTION 5: DOCUMENT VAULT ── */
+.pin-gate { padding:24px 20px; text-align:center; }
+.pin-gate-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; color:var(--text); margin-bottom:6px; }
+.pin-gate-sub { font-size:13px; color:var(--text-dim); margin-bottom:20px; line-height:1.5; }
+.pin-display { display:flex; justify-content:center; gap:10px; margin-bottom:20px; }
+.pin-dot { width:14px; height:14px; border-radius:50%; background:var(--surface3); border:2px solid var(--border-strong); transition:background 0.15s; }
+.pin-dot.filled { background:var(--accent); border-color:var(--accent); }
+.pin-keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:220px; margin:0 auto; }
+.pin-key { padding:14px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; font-family:'Syne',sans-serif; font-size:18px; font-weight:700; color:var(--text); cursor:pointer; transition:all 0.15s; }
+.pin-key:active { background:var(--accent-glow); border-color:var(--accent); }
+.pin-key.del { font-size:14px; color:var(--text-dim); }
+.pin-error { font-size:12px; color:var(--red); margin-top:12px; height:16px; }
+.pin-hint { font-size:11px; color:var(--text-dim); margin-top:12px; }
+
+.vault-content { padding:14px 16px 16px; }
+.vault-doc { background:var(--surface2); border-radius:10px; padding:12px; margin-bottom:10px; border:1px solid var(--border); }
+.vault-doc:last-child { margin-bottom:0; }
+.vault-doc-header { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+.vault-doc-name { font-size:13px; font-weight:600; color:var(--text); }
+.vault-doc-status { font-size:10px; font-weight:700; padding:2px 7px; border-radius:20px; flex-shrink:0; }
+.status-urgent { background:var(--red-glow); color:var(--red); }
+.status-soon { background:var(--amber-glow); color:var(--amber); }
+.status-ok { background:var(--accent-glow); color:var(--accent); }
+.status-expired { background:rgba(0,0,0,0.08); color:var(--text-dim); }
+.vault-doc-detail { font-size:12px; color:var(--text-dim); margin-top:5px; line-height:1.5; }
+.vault-doc-action { font-size:11px; font-weight:600; color:var(--accent); margin-top:6px; cursor:pointer; background:none; border:none; padding:0; display:inline; }
+
+/* SHIMMER */
+.shimmer { height:12px; border-radius:6px; background:linear-gradient(90deg,var(--surface2) 25%,#e8e8e4 50%,var(--surface2) 75%); background-size:200% 100%; animation:shim 1.4s infinite; margin-bottom:8px; }
+.shimmer:nth-child(2){width:72%;animation-delay:0.1s;}
+.shimmer:nth-child(3){width:52%;animation-delay:0.2s;}
+@keyframes shim{0%{background-position:200% center;}100%{background-position:-200% center;}}
+
+/* FOOTER */
+.footer { padding:28px 20px 10px; display:flex; align-items:center; justify-content:center; gap:10px; }
+.footer-line { width:20px; height:1px; background:var(--accent); opacity:0.2; }
+.footer-text { font-size:10px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:var(--text-dim); }
+
+.empty-note { font-size:13px; font-style:italic; color:var(--text-dim); text-align:center; padding:12px 0; }
+.action-btn { padding:10px 16px; background:var(--accent); border:none; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; color:#fff; cursor:pointer; transition:opacity 0.2s; }
+.action-btn:hover { opacity:0.88; }
+.action-btn.secondary { background:var(--surface2); border:1px solid var(--border); color:var(--text-mid); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <a class="back-btn" href="index.html">←</a>
+    <div class="header-text">
+      <div class="header-eyebrow">Mon Monde</div>
+      <div class="header-title">Admin & Finance</div>
+    </div>
+  </div>
+
+  <div class="sections">
+
+    <!-- ── SECTION 1: ADMIN TO-DO & DEADLINES ── -->
+    <div class="card">
+      <div class="card-header" onclick="toggle('deadlines')">
+        <div class="card-header-left">
+          <div class="card-icon">📋</div>
+          <div class="card-title">Admin To-Do & Deadlines <span class="card-badge" id="deadline-badge"></span></div>
+        </div>
+        <div class="card-chevron open" id="chev-deadlines">▾</div>
+      </div>
+      <div class="card-collapse open" id="col-deadlines">
+        <div class="deadline-tabs">
+          <button class="deadline-tab active" id="dtab-upcoming" onclick="switchDeadlineTab('upcoming')">Upcoming</button>
+          <button class="deadline-tab" id="dtab-done" onclick="switchDeadlineTab('done')">Done</button>
+        </div>
+        <div class="deadline-list" id="deadline-list"></div>
+        <div class="deadline-add-form">
+          <div class="deadline-input-row">
+            <input class="deadline-input" id="deadline-text" type="text" placeholder="Add a task or deadline..."/>
+            <button class="deadline-add-btn" onclick="addDeadline()">+</button>
+          </div>
+          <div class="deadline-date-row">
+            <input class="deadline-date-input" id="deadline-date" type="date"/>
+            <input class="deadline-date-input" id="deadline-cat" type="text" placeholder="Category (tax, rental, health…)" style="flex:2"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: EMAIL TRIAGE ── -->
+    <div class="card">
+      <div class="card-header" onclick="toggle('emails')">
+        <div class="card-header-left">
+          <div class="card-icon">✉️</div>
+          <div class="card-title">Email Triage</div>
+        </div>
+        <div class="card-chevron" id="chev-emails">▾</div>
+      </div>
+      <div class="card-collapse" id="col-emails">
+        <div class="card-body">
+          <div class="section-label">Paste email content to triage</div>
+          <textarea class="email-paste-area" id="email-paste" placeholder="Paste one or more emails here (subject, sender, body)…&#10;&#10;Example:&#10;From: newsletter@company.com&#10;Subject: This week in tech&#10;Body: Here are our top picks…"></textarea>
+          <button class="email-triage-btn" id="triage-btn" onclick="triageEmails()">⚡ Triage with Claude</button>
+          <div id="email-results"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: FINANCE DASHBOARD ── -->
+    <div class="card">
+      <div class="card-header" onclick="toggle('finance')">
+        <div class="card-header-left">
+          <div class="card-icon">💶</div>
+          <div class="card-title">Finance Dashboard</div>
+        </div>
+        <div class="card-chevron open" id="chev-finance">▾</div>
+      </div>
+      <div class="card-collapse open" id="col-finance">
+        <div class="finance-tabs">
+          <button class="finance-tab active" id="ftab-overview" onclick="switchFinanceTab('overview')">Overview</button>
+          <button class="finance-tab" id="ftab-budget" onclick="switchFinanceTab('budget')">Budget</button>
+          <button class="finance-tab" id="ftab-subs" onclick="switchFinanceTab('subs')">Fixed</button>
+        </div>
+
+        <!-- OVERVIEW -->
+        <div class="finance-panel active" id="fpanel-overview">
+          <div class="month-selector">
+            <button class="month-btn" onclick="changeMonth(-1)">‹</button>
+            <div class="month-label" id="finance-month-label">April 2026</div>
+            <button class="month-btn" onclick="changeMonth(1)">›</button>
+          </div>
+          <div class="balance-hero">
+            <div class="balance-label">Remaining this month</div>
+            <div class="balance-amount" id="balance-remaining">—</div>
+            <div class="balance-sub" id="balance-sub">after fixed charges</div>
+          </div>
+          <div id="finance-overview-rows"></div>
+        </div>
+
+        <!-- BUDGET -->
+        <div class="finance-panel" id="fpanel-budget">
+          <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:11px;color:var(--text-dim)">Tap amounts to edit</span>
+            <button class="action-btn secondary" style="padding:6px 12px;font-size:11px" onclick="resetBudget()">Reset</button>
+          </div>
+          <div id="budget-items"></div>
+        </div>
+
+        <!-- FIXED CHARGES -->
+        <div class="finance-panel" id="fpanel-subs">
+          <div id="subs-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: PORTFOLIO ── -->
+    <div class="card">
+      <div class="card-header" onclick="toggle('portfolio')">
+        <div class="card-header-left">
+          <div class="card-icon">📈</div>
+          <div class="card-title">Portfolio & Investments</div>
+        </div>
+        <div class="card-chevron" id="chev-portfolio">▾</div>
+      </div>
+      <div class="card-collapse" id="col-portfolio">
+        <div class="portfolio-tabs">
+          <button class="portfolio-tab active" id="ptab-assets" onclick="switchPortfolioTab('assets')">Assets</button>
+          <button class="portfolio-tab" id="ptab-staking" onclick="switchPortfolioTab('staking')">Staking</button>
+          <button class="portfolio-tab" id="ptab-engine" onclick="switchPortfolioTab('engine')">Strategy</button>
+        </div>
+
+        <!-- ASSETS -->
+        <div class="portfolio-panel active" id="ppanel-assets">
+          <div class="net-worth-hero">
+            <div class="net-worth-label">Estimated Net Worth</div>
+            <div class="net-worth-amount" id="net-worth">Loading...</div>
+            <div class="net-worth-sub" id="net-worth-sub">Calculating all positions</div>
+          </div>
+          <div class="section-label">Crypto</div>
+          <div id="crypto-list"></div>
+          <div class="section-label" style="margin-top:14px">ETFs & Stocks (PEA)</div>
+          <div id="etf-list"></div>
+          <div class="section-label" style="margin-top:14px">Real Estate</div>
+          <div id="realestate-list"></div>
+        </div>
+
+        <!-- STAKING -->
+        <div class="portfolio-panel" id="ppanel-staking">
+          <div class="section-label">Restaking Reminders</div>
+          <div id="staking-list"></div>
+          <div style="margin-top:16px">
+            <div class="section-label">BNB Conversion Trigger</div>
+            <div style="display:flex;gap:10px;align-items:center;margin-top:4px">
+              <input type="number" id="bnb-threshold" class="deadline-date-input" placeholder="Min BNB to convert" step="0.001" style="flex:1"/>
+              <button class="action-btn" style="padding:8px 14px;font-size:12px" onclick="saveBnbThreshold()">Save</button>
+            </div>
+            <div style="font-size:11px;color:var(--text-dim);margin-top:6px" id="bnb-threshold-display"></div>
+          </div>
+        </div>
+
+        <!-- STRATEGY -->
+        <div class="portfolio-panel" id="ppanel-engine">
+          <div class="section-label">Monthly Investment Strategy</div>
+          <div id="investment-content">
+            <div class="empty-note">Loading strategy from JSONBin...</div>
+          </div>
+          <button class="refresh-btn" id="strategy-refresh" onclick="loadInvestmentStrategy(true)">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            Refresh strategy
+          </button>
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+            <div class="section-label">JSONBin Config</div>
+            <input class="deadline-date-input" id="jsonbin-id" placeholder="JSONBin bin ID for investment strategy" style="width:100%;margin-bottom:8px"/>
+            <input class="deadline-date-input" id="jsonbin-key" placeholder="JSONBin master key" style="width:100%;margin-bottom:8px" type="password"/>
+            <button class="action-btn" style="font-size:12px;padding:8px 14px" onclick="saveJsonbinConfig()">Save config</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: DOCUMENT VAULT ── -->
+    <div class="card">
+      <div class="card-header" onclick="toggle('vault')">
+        <div class="card-header-left">
+          <div class="card-icon">🔐</div>
+          <div class="card-title">Document Vault</div>
+        </div>
+        <div class="card-chevron" id="chev-vault">▾</div>
+      </div>
+      <div class="card-collapse" id="col-vault">
+        <div id="vault-gate">
+          <div class="pin-gate">
+            <div class="pin-gate-title" id="pin-title">🔐 Vault locked</div>
+            <div class="pin-gate-sub" id="pin-subtitle">Enter your 4-digit PIN to access your documents</div>
+            <div class="pin-display" id="pin-display">
+              <div class="pin-dot" id="pd0"></div>
+              <div class="pin-dot" id="pd1"></div>
+              <div class="pin-dot" id="pd2"></div>
+              <div class="pin-dot" id="pd3"></div>
+            </div>
+            <div class="pin-keypad">
+              <button class="pin-key" onclick="pinPress('1')">1</button>
+              <button class="pin-key" onclick="pinPress('2')">2</button>
+              <button class="pin-key" onclick="pinPress('3')">3</button>
+              <button class="pin-key" onclick="pinPress('4')">4</button>
+              <button class="pin-key" onclick="pinPress('5')">5</button>
+              <button class="pin-key" onclick="pinPress('6')">6</button>
+              <button class="pin-key" onclick="pinPress('7')">7</button>
+              <button class="pin-key" onclick="pinPress('8')">8</button>
+              <button class="pin-key" onclick="pinPress('9')">9</button>
+              <div></div>
+              <button class="pin-key" onclick="pinPress('0')">0</button>
+              <button class="pin-key del" onclick="pinDel()">⌫</button>
+            </div>
+            <div class="pin-error" id="pin-error"></div>
+            <div class="pin-hint" id="pin-hint"></div>
+          </div>
+        </div>
+        <div id="vault-content" style="display:none">
+          <div class="vault-content" id="vault-docs"></div>
+          <div style="padding:0 16px 16px;border-top:1px solid var(--border);margin-top:4px">
+            <button class="action-btn secondary" style="font-size:11px;padding:7px 14px;margin-top:12px" onclick="lockVault()">🔒 Lock vault</button>
+            <button class="action-btn secondary" style="font-size:11px;padding:7px 14px;margin-top:12px;margin-left:8px" onclick="changePinMode()">Change PIN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-line"></div>
+    <div class="footer-text">Mon Monde</div>
+    <div class="footer-line"></div>
+  </div>
+</div>
+
+<script>
+const TODAY = new Date();
+const TODAY_STR = TODAY.toISOString().split('T')[0];
+
+// ── TOGGLE ──────────────────────────────────────────
+function toggle(id) {
+  const col = document.getElementById(`col-${id}`);
+  const chev = document.getElementById(`chev-${id}`);
+  col.classList.toggle('open');
+  chev.classList.toggle('open');
+  if (id === 'portfolio' && col.classList.contains('open')) loadPortfolio();
+}
+
+// ── SECTION 1: DEADLINES ────────────────────────────
+const DEADLINES_KEY = 'mm_admin_deadlines';
+let deadlineTab = 'upcoming';
+
+const PRESET_DEADLINES = [
+  { id:'d1', text:'Post apartment listing on Gens de Confiance', date:'2026-04-20', cat:'Rental', done:false },
+  { id:'d2', text:'Current tenant leaving — organize état des lieux', date:'2026-05-11', cat:'Rental', done:false },
+  { id:'d3', text:'ETH restaking due', date:'2026-04-25', cat:'Crypto', done:false },
+  { id:'d4', text:'POL restaking due', date:'2026-05-06', cat:'Crypto', done:false },
+  { id:'d5', text:'Health insurance expires — renew or find new via employer', date:'2026-05-30', cat:'Health', done:false },
+  { id:'d6', text:'Income tax declaration (opens April, deadline ~June)', date:'2026-06-05', cat:'Tax', done:false },
+  { id:'d7', text:'Contact Italian consulate to renew expired passport', date:'2026-04-25', cat:'Admin', done:false },
+  { id:'d8', text:'Pay accountant', date:'2026-05-15', cat:'Finance', done:false },
+  { id:'d9', text:'November apartment charges (syndic)', date:'2026-11-01', cat:'Property', done:false },
+  { id:'d10', text:'Home insurance annual review', date:'2026-10-15', cat:'Insurance', done:false },
+];
+
+function loadDeadlines() {
+  if (!localStorage.getItem(DEADLINES_KEY)) {
+    localStorage.setItem(DEADLINES_KEY, JSON.stringify(PRESET_DEADLINES));
+  }
+  return JSON.parse(localStorage.getItem(DEADLINES_KEY));
+}
+
+function saveDeadlines(dl) { localStorage.setItem(DEADLINES_KEY, JSON.stringify(dl)); }
+
+function daysUntil(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const now = new Date(); now.setHours(0,0,0,0);
+  return Math.round((d - now) / 86400000);
+}
+
+function urgencyClass(days) {
+  if (days < 0) return 'urgent';
+  if (days <= 7) return 'urgent';
+  if (days <= 30) return 'soon';
+  return 'ok';
+}
+
+function urgencyLabel(days) {
+  if (days < 0) return `${Math.abs(days)}d overdue`;
+  if (days === 0) return 'Today';
+  if (days === 1) return 'Tomorrow';
+  return `${days} days`;
+}
+
+function switchDeadlineTab(tab) {
+  deadlineTab = tab;
+  document.getElementById('dtab-upcoming').classList.toggle('active', tab === 'upcoming');
+  document.getElementById('dtab-done').classList.toggle('active', tab === 'done');
+  renderDeadlines();
+}
+
+function renderDeadlines() {
+  const dl = loadDeadlines();
+  const filtered = dl.filter(d => deadlineTab === 'upcoming' ? !d.done : d.done);
+  const sorted = filtered.sort((a,b) => new Date(a.date) - new Date(b.date));
+  const el = document.getElementById('deadline-list');
+  const urgent = dl.filter(d => !d.done && daysUntil(d.date) <= 7).length;
+  const badge = document.getElementById('deadline-badge');
+  badge.textContent = urgent > 0 ? urgent : '';
+  badge.style.display = urgent > 0 ? 'inline' : 'none';
+
+  if (!sorted.length) {
+    el.innerHTML = `<div class="empty-note">${deadlineTab === 'done' ? 'Nothing completed yet.' : 'All clear! 🎉'}</div>`;
+    return;
+  }
+  el.innerHTML = sorted.map(d => {
+    const days = daysUntil(d.date);
+    const urg = urgencyClass(days);
+    const label = urgencyLabel(days);
+    return `<div class="deadline-item">
+      <div class="deadline-dot ${d.done ? 'done' : urg}"></div>
+      <div class="deadline-info">
+        <div class="deadline-title ${d.done ? 'done' : ''}">${d.text}</div>
+        <div class="deadline-meta">
+          <span class="deadline-date">${d.date}${d.cat ? ' · ' + d.cat : ''}</span>
+          ${!d.done ? `<span class="deadline-urgency urgency-${urg}">${label}</span>` : ''}
+        </div>
+      </div>
+      <div class="deadline-actions">
+        ${!d.done && days <= 0 ? `<button class="deadline-push-btn" onclick="pushDeadlineToHome('${d.id}')">→ Home</button>` : ''}
+        ${!d.done ? `<button class="deadline-done-btn" onclick="markDeadlineDone('${d.id}')">✓</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addDeadline() {
+  const text = document.getElementById('deadline-text').value.trim();
+  const date = document.getElementById('deadline-date').value || TODAY_STR;
+  const cat = document.getElementById('deadline-cat').value.trim();
+  if (!text) return;
+  const dl = loadDeadlines();
+  dl.push({ id: 'u' + Date.now(), text, date, cat, done: false });
+  saveDeadlines(dl); renderDeadlines();
+  document.getElementById('deadline-text').value = '';
+  document.getElementById('deadline-cat').value = '';
+}
+
+function markDeadlineDone(id) {
+  const dl = loadDeadlines();
+  const item = dl.find(d => d.id === id);
+  if (item) item.done = true;
+  saveDeadlines(dl); renderDeadlines();
+}
+
+function pushDeadlineToHome(id) {
+  const dl = loadDeadlines();
+  const item = dl.find(d => d.id === id);
+  if (!item) return;
+  const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
+  tasks.push({ text: item.text, done: false, date: item.date });
+  localStorage.setItem('mm_tasks', JSON.stringify(tasks));
+  const btn = event.target;
+  btn.textContent = '✓ Added';
+  btn.style.background = 'var(--accent-glow)';
+  setTimeout(() => { btn.textContent = '→ Home'; btn.style.background = ''; }, 2000);
+}
+
+// Daily auto-push: check each morning if any deadlines are due today
+function autoPushDueToday() {
+  const lastPush = localStorage.getItem('mm_deadline_push_date');
+  if (lastPush === TODAY_STR) return;
+  const dl = loadDeadlines();
+  const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
+  let pushed = false;
+  dl.forEach(d => {
+    if (!d.done && d.date === TODAY_STR) {
+      const alreadyThere = tasks.find(t => t.text === d.text);
+      if (!alreadyThere) { tasks.push({ text: d.text, done: false, date: d.date }); pushed = true; }
+    }
+  });
+  if (pushed) { localStorage.setItem('mm_tasks', JSON.stringify(tasks)); localStorage.setItem('mm_deadline_push_date', TODAY_STR); }
+}
+
+// ── SECTION 2: EMAIL TRIAGE ─────────────────────────
+async function triageEmails() {
+  const content = document.getElementById('email-paste').value.trim();
+  if (!content) return;
+  const btn = document.getElementById('triage-btn');
+  btn.disabled = true; btn.textContent = 'Triaging...';
+  document.getElementById('email-results').innerHTML = '<div class="shimmer"></div><div class="shimmer"></div><div class="shimmer"></div>';
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+        system: 'You are an intelligent email triage assistant. Respond ONLY with valid JSON. No markdown, no preamble.',
+        messages: [{ role: 'user', content: `Triage these emails. For each, classify as: ACTION_REQUIRED, REPLY_NEEDED, UNSUBSCRIBE, or FYI_ONLY.
+For ACTION_REQUIRED and REPLY_NEEDED, write a short draft response in French or English matching the email language.
+For UNSUBSCRIBE, write a short unsubscribe request.
+
+Return JSON array:
+[{"tag":"ACTION_REQUIRED","from":"sender","subject":"subject","summary":"what this is about","draft":"suggested response or action"}]
+
+Emails:
+${content}` }]
+      })
+    });
+    const d = await r.json();
+    const text = d.content?.find(b => b.type === 'text')?.text || '[]';
+    const items = JSON.parse(text.replace(/```json|```/g,'').trim());
+    renderEmailResults(items);
+  } catch(e) {
+    document.getElementById('email-results').innerHTML = '<div class="empty-note">Triage failed. Check your connection.</div>';
+  }
+  btn.disabled = false; btn.textContent = '⚡ Triage with Claude';
+}
+
+function renderEmailResults(items) {
+  if (!items.length) { document.getElementById('email-results').innerHTML = '<div class="empty-note">No actionable emails found.</div>'; return; }
+  const tagLabels = { ACTION_REQUIRED:'action', REPLY_NEEDED:'reply', UNSUBSCRIBE:'unsub', FYI_ONLY:'fyi' };
+  document.getElementById('email-results').innerHTML = `<div class="email-result">${items.map((item,i) => `
+    <div class="email-card">
+      <span class="email-tag tag-${tagLabels[item.tag]||'fyi'}">${item.tag?.replace('_',' ')}</span>
+      <div class="email-subject">${item.subject||'No subject'}</div>
+      <div class="email-from">From: ${item.from||'Unknown'}</div>
+      <div class="email-summary">${item.summary||''}</div>
+      ${item.draft ? `<div class="email-draft">${item.draft}</div>` : ''}
+      <div class="email-actions">
+        ${item.draft ? `<button class="email-action-btn primary" onclick="copyDraft(${i})">Copy draft</button>` : ''}
+        ${item.tag === 'ACTION_REQUIRED' ? `<button class="email-action-btn" onclick="addEmailTask('${item.subject?.replace(/'/g,"\\'")}')">→ Add to tasks</button>` : ''}
+      </div>
+    </div>`).join('')}</div>`;
+  window._emailItems = items;
+}
+
+function copyDraft(i) {
+  const item = window._emailItems?.[i];
+  if (!item?.draft) return;
+  navigator.clipboard?.writeText(item.draft).catch(() => {});
+  event.target.textContent = '✓ Copied';
+  setTimeout(() => event.target.textContent = 'Copy draft', 2000);
+}
+
+function addEmailTask(subject) {
+  const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
+  tasks.push({ text: `Email: ${subject}`, done: false, date: TODAY_STR });
+  localStorage.setItem('mm_tasks', JSON.stringify(tasks));
+  event.target.textContent = '✓ Added';
+  setTimeout(() => event.target.textContent = '→ Add to tasks', 2000);
+}
+
+// ── SECTION 3: FINANCE ───────────────────────────────
+let financeTab = 'overview';
+let financeMonthOffset = 0;
+
+const FIXED_CHARGES = [
+  { name:'Loyer (Paris)', amount:1357, freq:'monthly', flag:'ok' },
+  { name:'Mortgage — Prêt 930307', amount:152.32, freq:'monthly', flag:'ok' },
+  { name:'Mortgage — Prêt 930308', amount:330.23, freq:'monthly', flag:'ok' },
+  { name:'Mortgage insurance (CAAE)', amount:55.85, freq:'monthly', flag:'ok' },
+  { name:'Free Telecom (rental apt)', amount:39.99, freq:'monthly', flag:'ok' },
+  { name:'Orange (Paris apt)', amount:76.02, freq:'monthly', flag:'ok' },
+  { name:'Free Mobile', amount:9.99, freq:'monthly', flag:'ok' },
+  { name:'Octopus Energy', amount:81.15, freq:'monthly', flag:'ok' },
+  { name:'Neoness (gym)', amount:39, freq:'monthly', flag:'ok' },
+  { name:'Home insurance — apt 1', amount:31.41, freq:'monthly', flag:'ok' },
+  { name:'Home insurance — apt 2', amount:25.84, freq:'monthly', flag:'ok' },
+  { name:'Predissime 9 (life savings)', amount:40, freq:'monthly', flag:'ok' },
+  { name:'Garantie décès (Predica)', amount:4.87, freq:'monthly', flag:'ok' },
+  { name:'Protection juridique (Pacifica)', amount:8.87, freq:'monthly', flag:'ok' },
+  { name:'CA Premium offer', amount:16, freq:'monthly', flag:'warn' },
+  { name:'Paypal — Apple subscription', amount:7.99, freq:'monthly', flag:'ok' },
+  { name:'Paypal — other recurring', amount:57.67, freq:'monthly', flag:'warn' },
+];
+
+const DEFAULT_BUDGET = [
+  { cat:'Groceries', target:200, actual:0, color:'ok' },
+  { cat:'Health & Physio', target:150, actual:0, color:'ok' },
+  { cat:'Beauty & Wellbeing', target:80, actual:0, color:'ok' },
+  { cat:'Transport', target:100, actual:0, color:'ok' },
+  { cat:'Restaurants', target:50, actual:0, color:'ok' },
+  { cat:'Shopping', target:0, actual:0, color:'ok' },
+  { cat:'Travel', target:0, actual:0, color:'ok' },
+  { cat:'Misc/Cash', target:100, actual:0, color:'ok' },
+];
+
+function loadBudget() {
+  const saved = localStorage.getItem('mm_budget');
+  return saved ? JSON.parse(saved) : DEFAULT_BUDGET;
+}
+
+function switchFinanceTab(tab) {
+  financeTab = tab;
+  ['overview','budget','subs'].forEach(t => {
+    document.getElementById(`ftab-${t}`).classList.toggle('active', t === tab);
+    document.getElementById(`fpanel-${t}`).classList.toggle('active', t === tab);
+  });
+  if (tab === 'budget') renderBudget();
+  if (tab === 'subs') renderSubs();
+  if (tab === 'overview') renderOverview();
+}
+
+function changeMonth(dir) {
+  financeMonthOffset += dir;
+  renderOverview();
+}
+
+function renderOverview() {
+  const d = new Date(TODAY.getFullYear(), TODAY.getMonth() + financeMonthOffset, 1);
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('finance-month-label').textContent = `${months[d.getMonth()]} ${d.getFullYear()}`;
+
+  const fixedTotal = FIXED_CHARGES.reduce((s,c) => s + c.amount, 0);
+  const isCurrentMonth = financeMonthOffset === 0;
+
+  // Income estimate
+  const income = isCurrentMonth ? 3195 : 5800; // unemployed now, employed estimate otherwise
+  const incomeLabel = isCurrentMonth ? 'France Travail + rent' : 'Salary + rent (estimate)';
+
+  const remaining = income - fixedTotal;
+  const el = document.getElementById('balance-remaining');
+  el.textContent = `€${remaining.toFixed(0)}`;
+  el.className = 'balance-amount' + (remaining < 300 ? ' critical' : remaining < 600 ? ' tight' : '');
+  document.getElementById('balance-sub').textContent = `after €${fixedTotal.toFixed(0)} fixed charges`;
+
+  document.getElementById('finance-overview-rows').innerHTML = `
+    <div class="finance-row"><span class="finance-row-label income">↑ ${incomeLabel}</span><span class="finance-row-value positive">€${income.toLocaleString()}</span></div>
+    <div class="finance-row"><span class="finance-row-label income">↑ Rental income</span><span class="finance-row-value positive">€1,200</span></div>
+    <div class="finance-row"><span class="finance-row-label">↓ Fixed charges</span><span class="finance-row-value negative">−€${fixedTotal.toFixed(0)}</span></div>
+    <div class="finance-row"><span class="finance-row-label">↓ Mortgage capital</span><span class="finance-row-value negative">−€376</span></div>
+    <div class="finance-row" style="font-weight:600;border-top:2px solid var(--border);margin-top:4px;padding-top:12px"><span class="finance-row-label" style="font-weight:600;color:var(--text)">Variable budget</span><span class="finance-row-value ${remaining < 0 ? 'negative' : 'positive'}">€${remaining.toFixed(0)}</span></div>
+  `;
+}
+
+function renderBudget() {
+  const budget = loadBudget();
+  document.getElementById('budget-items').innerHTML = budget.map((b, i) => {
+    const pct = b.target > 0 ? Math.min(100, Math.round((b.actual / b.target) * 100)) : 0;
+    const fillClass = pct > 100 ? 'fill-over' : pct > 80 ? 'fill-warn' : 'fill-ok';
+    return `<div class="budget-item">
+      <div class="budget-header">
+        <span class="budget-cat">${b.cat}</span>
+        <span class="budget-amounts" onclick="editBudgetItem(${i})" style="cursor:pointer">
+          €${b.actual} / <strong>€${b.target}</strong>
+        </span>
+      </div>
+      <div class="budget-bar-bg">
+        <div class="budget-bar-fill ${fillClass}" style="width:${pct}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function editBudgetItem(i) {
+  const budget = loadBudget();
+  const b = budget[i];
+  const newTarget = prompt(`Budget target for ${b.cat} (€)?`, b.target);
+  const newActual = prompt(`Actual spent this month for ${b.cat} (€)?`, b.actual);
+  if (newTarget !== null) b.target = parseFloat(newTarget) || 0;
+  if (newActual !== null) b.actual = parseFloat(newActual) || 0;
+  localStorage.setItem('mm_budget', JSON.stringify(budget));
+  renderBudget();
+}
+
+function resetBudget() {
+  if (!confirm('Reset all actual spending to 0?')) return;
+  const budget = loadBudget();
+  budget.forEach(b => b.actual = 0);
+  localStorage.setItem('mm_budget', JSON.stringify(budget));
+  renderBudget();
+}
+
+function renderSubs() {
+  const total = FIXED_CHARGES.reduce((s,c) => s + c.amount, 0);
+  document.getElementById('subs-list').innerHTML = `
+    ${FIXED_CHARGES.map(s => `
+      <div class="sub-item">
+        <div><div class="sub-name">${s.name}</div><div class="sub-freq">${s.freq}</div></div>
+        <div style="display:flex;align-items:center">
+          <span class="sub-amount">€${s.amount.toFixed(2)}</span>
+          <span class="sub-flag flag-${s.flag}">${s.flag === 'warn' ? '⚠ Review' : '✓'}</span>
+        </div>
+      </div>`).join('')}
+    <div class="sub-total"><span class="sub-total-label">Total fixed / month</span><span class="sub-total-val">€${total.toFixed(2)}</span></div>`;
+}
+
+// ── SECTION 4: PORTFOLIO ─────────────────────────────
+const CRYPTO_HOLDINGS = [
+  { symbol:'BTC', name:'Bitcoin', qty:0.00706117, apr:0.29, restake:null, icon:'₿' },
+  { symbol:'ETH', name:'Ethereum', qty:0.0298884, apr:2.5, restake:'2026-04-25', icon:'Ξ' },
+  { symbol:'BNB', name:'BNB', qty:0.04391586, apr:0.16, restake:null, icon:'B' },
+  { symbol:'POL', name:'Polygon', qty:96, apr:23, restake:'2026-05-06', icon:'P' },
+];
+
+const ETF_HOLDINGS = [
+  { ticker:'MLUX', name:'Amundi PEA Luxe Monde UCITS', qty:9, type:'ETF' },
+  { ticker:'CAC40', name:'Amundi Core CAC 40 UC ETF', qty:2, type:'ETF' },
+  { ticker:'WPEA', name:'iShares MSCI World Swap PEA', qty:13, type:'ETF' },
+  { ticker:'ORA', name:'Orange SA', qty:1, type:'Stock' },
+];
+
+let portfolioLoaded = false;
+
+function switchPortfolioTab(tab) {
+  ['assets','staking','engine'].forEach(t => {
+    document.getElementById(`ptab-${t}`).classList.toggle('active', t === tab);
+    document.getElementById(`ppanel-${t}`).classList.toggle('active', t === tab);
+  });
+  if (tab === 'staking') renderStaking();
+  if (tab === 'engine') loadInvestmentStrategy();
+}
+
+async function loadPortfolio() {
+  if (portfolioLoaded) return;
+  portfolioLoaded = true;
+  renderCryptoLoading();
+  try {
+    const ids = 'bitcoin,ethereum,binancecoin,matic-network';
+    const r = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=eur&include_24hr_change=true`);
+    const prices = await r.json();
+    const map = { BTC: prices.bitcoin, ETH: prices.ethereum, BNB: prices.binancecoin, POL: prices['matic-network'] };
+    let cryptoTotal = 0;
+    document.getElementById('crypto-list').innerHTML = CRYPTO_HOLDINGS.map(c => {
+      const p = map[c.symbol];
+      const price = p?.eur || 0;
+      const change = p?.eur_24h_change || 0;
+      const value = price * c.qty;
+      cryptoTotal += value;
+      return `<div class="asset-item">
+        <div class="asset-icon">${c.icon}</div>
+        <div class="asset-info">
+          <div class="asset-name">${c.name}</div>
+          <div class="asset-detail">${c.qty} ${c.symbol} · APR ${c.apr}%${c.restake ? ' · Restake: ' + c.restake : ''}</div>
+        </div>
+        <div class="asset-value">
+          <div class="asset-eur">€${value.toFixed(2)}</div>
+          <div class="asset-change ${change >= 0 ? 'change-pos' : 'change-neg'}">${change >= 0 ? '+' : ''}${change.toFixed(1)}%</div>
+        </div>
+      </div>`;
+    }).join('');
+    renderNetWorth(cryptoTotal);
+  } catch {
+    document.getElementById('crypto-list').innerHTML = '<div class="empty-note">Could not load prices. Try again later.</div>';
+  }
+  // ETFs — static estimate (Yahoo Finance doesn't have a free no-auth CORS API)
+  renderETFs();
+}
+
+function renderCryptoLoading() {
+  document.getElementById('crypto-list').innerHTML = '<div class="shimmer"></div><div class="shimmer"></div>';
+}
+
+function renderETFs() {
+  const estimates = { MLUX:50, CAC40:30, WPEA:45, ORA:10.5 }; // rough EUR/unit — user should update
+  let etfTotal = 0;
+  document.getElementById('etf-list').innerHTML = ETF_HOLDINGS.map(e => {
+    const price = estimates[e.ticker] || 0;
+    const value = price * e.qty;
+    etfTotal += value;
+    return `<div class="asset-item">
+      <div class="asset-icon" style="font-size:11px;font-weight:700">${e.ticker}</div>
+      <div class="asset-info">
+        <div class="asset-name">${e.name}</div>
+        <div class="asset-detail">${e.qty} units · PEA · <span style="color:var(--amber);font-size:10px">Update price manually</span></div>
+      </div>
+      <div class="asset-value">
+        <div class="asset-eur">~€${value.toFixed(0)}</div>
+        <div class="asset-change" style="color:var(--text-dim)">est.</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('realestate-list').innerHTML = `<div class="asset-item">
+    <div class="asset-icon">🏠</div>
+    <div class="asset-info">
+      <div class="asset-name">Apartment (owned)</div>
+      <div class="asset-detail">~270,000€ market value · rented 1,200€/mo</div>
+    </div>
+    <div class="asset-value">
+      <div class="asset-eur">€270,000</div>
+      <div class="asset-change change-pos">+rental yield</div>
+    </div>
+  </div>`;
+}
+
+function renderNetWorth(cryptoTotal) {
+  const etfEstimate = 50*9 + 30*2 + 45*13 + 10.5*1;
+  const property = 270000;
+  const mortgageDebt = 152.32 * 12 * 15 + 330.23 * 12 * 15; // rough remaining
+  const total = cryptoTotal + etfEstimate + property - mortgageDebt;
+  document.getElementById('net-worth').textContent = `€${Math.round(total).toLocaleString()}`;
+  document.getElementById('net-worth-sub').textContent = `Crypto + ETFs + property − mortgage estimate`;
+}
+
+function renderStaking() {
+  const stakeable = CRYPTO_HOLDINGS.filter(c => c.restake);
+  document.getElementById('staking-list').innerHTML = stakeable.map(c => {
+    const days = Math.round((new Date(c.restake) - new Date()) / 86400000);
+    const urgClass = days <= 0 ? 'urgent' : days <= 3 ? 'urgent' : days <= 7 ? 'soon' : 'ok';
+    const label = days < 0 ? `${Math.abs(days)}d overdue` : days === 0 ? 'Today!' : `${days} days`;
+    return `<div class="staking-item">
+      <div class="staking-header">
+        <span class="staking-name">${c.name} (${c.symbol})</span>
+        <span class="staking-countdown ${urgClass}">${label}</span>
+      </div>
+      <div class="staking-detail">
+        ${c.qty} ${c.symbol} · APR ${c.apr}% · Restake by ${c.restake}<br/>
+        Est. daily reward: ${(c.qty * c.apr / 100 / 365).toFixed(6)} ${c.symbol}
+      </div>
+      <button class="staking-push-btn" onclick="pushStakingToTasks('${c.symbol}','${c.restake}')">→ Push to tasks</button>
+    </div>`;
+  }).join('');
+  const saved = localStorage.getItem('mm_bnb_threshold');
+  if (saved) {
+    document.getElementById('bnb-threshold').value = saved;
+    document.getElementById('bnb-threshold-display').textContent = `Convert BNB rewards when balance exceeds ${saved} BNB`;
+  }
+}
+
+function pushStakingToTasks(symbol, date) {
+  const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
+  tasks.push({ text:`Restake ${symbol}`, done:false, date });
+  localStorage.setItem('mm_tasks', JSON.stringify(tasks));
+  event.target.textContent = '✓ Added to tasks';
+  setTimeout(() => event.target.textContent = '→ Push to tasks', 2000);
+}
+
+function saveBnbThreshold() {
+  const val = document.getElementById('bnb-threshold').value;
+  if (!val) return;
+  localStorage.setItem('mm_bnb_threshold', val);
+  document.getElementById('bnb-threshold-display').textContent = `Convert BNB rewards when balance exceeds ${val} BNB`;
+}
+
+// Investment strategy from JSONBin
+async function loadInvestmentStrategy(force=false) {
+  const cached = localStorage.getItem('mm_strategy');
+  const cachedDate = localStorage.getItem('mm_strategy_date');
+  const monthKey = new Date().toISOString().slice(0,7);
+  if (cached && cachedDate === monthKey && !force) { renderStrategy(cached); return; }
+
+  const binId = localStorage.getItem('mm_jsonbin_strategy_id');
+  const binKey = localStorage.getItem('mm_jsonbin_strategy_key');
+  if (!binId || !binKey) {
+    document.getElementById('investment-content').innerHTML = `<div class="empty-note">Enter your JSONBin config below to connect your investment strategy.</div>`;
+    return;
+  }
+
+  document.getElementById('investment-content').innerHTML = '<div class="shimmer"></div><div class="shimmer"></div>';
+  document.getElementById('strategy-refresh').classList.add('spinning');
+  try {
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, { headers:{ 'X-Master-Key': binKey }});
+    const d = await r.json();
+    const content = d?.record?.content || d?.record?.strategy || JSON.stringify(d?.record);
+    localStorage.setItem('mm_strategy', content);
+    localStorage.setItem('mm_strategy_date', monthKey);
+    renderStrategy(content);
+  } catch {
+    document.getElementById('investment-content').innerHTML = '<div class="empty-note">Could not load strategy. Check JSONBin config.</div>';
+  }
+  document.getElementById('strategy-refresh').classList.remove('spinning');
+}
+
+function renderStrategy(content) {
+  document.getElementById('investment-content').innerHTML = `<div class="investment-content">${content.replace(/\n/g,'<br/>')}</div>`;
+}
+
+function saveJsonbinConfig() {
+  const id = document.getElementById('jsonbin-id').value.trim();
+  const key = document.getElementById('jsonbin-key').value.trim();
+  if (id) localStorage.setItem('mm_jsonbin_strategy_id', id);
+  if (key) localStorage.setItem('mm_jsonbin_strategy_key', key);
+  loadInvestmentStrategy(true);
+}
+
+// ── SECTION 5: VAULT / PIN ───────────────────────────
+let pinBuffer = '';
+let pinMode = 'unlock'; // 'unlock' | 'setup' | 'confirm' | 'change'
+let pinSetupFirst = '';
+
+function initPin() {
+  const hasPin = !!localStorage.getItem('mm_vault_pin');
+  if (!hasPin) {
+    pinMode = 'setup';
+    document.getElementById('pin-title').textContent = '🔐 Create your PIN';
+    document.getElementById('pin-subtitle').textContent = 'Choose a 4-digit PIN to protect your documents';
+    document.getElementById('pin-hint').textContent = 'You\'ll need to remember this.';
+  }
+}
+
+function pinPress(digit) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += digit;
+  updatePinDisplay();
+  if (pinBuffer.length === 4) setTimeout(() => processPinInput(), 200);
+}
+
+function pinDel() { pinBuffer = pinBuffer.slice(0,-1); updatePinDisplay(); }
+
+function updatePinDisplay() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById(`pd${i}`).classList.toggle('filled', i < pinBuffer.length);
+  }
+}
+
+function processPinInput() {
+  const hasPin = localStorage.getItem('mm_vault_pin');
+  if (pinMode === 'setup') {
+    pinSetupFirst = pinBuffer; pinBuffer = '';
+    pinMode = 'confirm';
+    document.getElementById('pin-title').textContent = 'Confirm your PIN';
+    document.getElementById('pin-subtitle').textContent = 'Enter the same PIN again to confirm';
+    updatePinDisplay();
+  } else if (pinMode === 'confirm') {
+    if (pinBuffer === pinSetupFirst) {
+      localStorage.setItem('mm_vault_pin', hashPin(pinBuffer));
+      pinBuffer = ''; pinMode = 'unlock';
+      openVault();
+    } else {
+      showPinError('PINs don\'t match. Try again.');
+      pinBuffer = ''; pinSetupFirst = ''; pinMode = 'setup';
+      document.getElementById('pin-title').textContent = '🔐 Create your PIN';
+      document.getElementById('pin-subtitle').textContent = 'Choose a 4-digit PIN to protect your documents';
+      updatePinDisplay();
+    }
+  } else {
+    if (hashPin(pinBuffer) === localStorage.getItem('mm_vault_pin')) {
+      pinBuffer = ''; openVault();
+    } else {
+      showPinError('Incorrect PIN. Try again.');
+      pinBuffer = ''; updatePinDisplay();
+    }
+  }
+}
+
+function hashPin(pin) {
+  let h = 0;
+  for (let i = 0; i < pin.length; i++) { h = ((h << 5) - h) + pin.charCodeAt(i); h |= 0; }
+  return h.toString(36);
+}
+
+function showPinError(msg) {
+  const el = document.getElementById('pin-error');
+  el.textContent = msg;
+  setTimeout(() => el.textContent = '', 2500);
+}
+
+function openVault() {
+  document.getElementById('vault-gate').style.display = 'none';
+  document.getElementById('vault-content').style.display = 'block';
+  renderVaultDocs();
+}
+
+function lockVault() {
+  document.getElementById('vault-gate').style.display = 'block';
+  document.getElementById('vault-content').style.display = 'none';
+  pinBuffer = ''; updatePinDisplay();
+  document.getElementById('pin-title').textContent = '🔐 Vault locked';
+  document.getElementById('pin-subtitle').textContent = 'Enter your 4-digit PIN to access your documents';
+  pinMode = 'unlock';
+}
+
+function changePinMode() {
+  lockVault();
+  pinMode = 'setup';
+  document.getElementById('pin-title').textContent = '🔐 Change PIN';
+  document.getElementById('pin-subtitle').textContent = 'Choose a new 4-digit PIN';
+}
+
+const VAULT_DOCS = [
+  { name:'Italian Passport', detail:'EXPIRED — Contact Italian Consulate Paris: 01 49 54 03 00 · Book appointment at consolato-parigi.esteri.it', status:'expired', action:'Book consulate appointment' },
+  { name:'French Passport', detail:'Expires 07 November 2029 · Reminder set for May 2029', status:'ok', action:null },
+  { name:'Health Insurance (Mutuelle)', detail:'Expires 30 May 2026 · Renew via new employer or independently', status:'urgent', action:'Renew before May 30' },
+  { name:'Apartment — owned', detail:'~270,000€ · 13 Rue des Petits Carreaux 75002 · Crédit Agricole mortgage', status:'ok', action:null },
+  { name:'Home Insurance × 2', detail:'Both apartments insured via Pacifica (CA) · Auto-renews', status:'ok', action:null },
+  { name:'Life Insurance — Predissime 9', detail:'Contrat 86000809482561 · 40€/month', status:'ok', action:null },
+  { name:'Carte Vitale', detail:'CPAM 75 · Update if job/status changes', status:'soon', action:'Update after new job starts' },
+  { name:'Accountant', detail:'Lorient agency · Annual tax filing', status:'soon', action:'Schedule April/May meeting' },
+];
+
+function renderVaultDocs() {
+  document.getElementById('vault-docs').innerHTML = VAULT_DOCS.map(d => `
+    <div class="vault-doc">
+      <div class="vault-doc-header">
+        <div class="vault-doc-name">${d.name}</div>
+        <span class="vault-doc-status status-${d.status}">${d.status.toUpperCase()}</span>
+      </div>
+      <div class="vault-doc-detail">${d.detail}</div>
+      ${d.action ? `<button class="vault-doc-action" onclick="addVaultTask('${d.action.replace(/'/g,"\\'")}')">> ${d.action}</button>` : ''}
+    </div>`).join('');
+}
+
+function addVaultTask(text) {
+  const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
+  tasks.push({ text, done:false, date: TODAY_STR });
+  localStorage.setItem('mm_tasks', JSON.stringify(tasks));
+  event.target.textContent = '✓ Added to tasks';
+  setTimeout(() => event.target.textContent = `> ${text}`, 2000);
+}
+
+// ── INIT ─────────────────────────────────────────────
+renderDeadlines();
+renderOverview();
+renderSubs();
+initPin();
+autoPushDueToday();
+document.getElementById('deadline-date').value = TODAY_STR;
+</script>
+</body>
+</html>
