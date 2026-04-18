@@ -38,7 +38,6 @@
 
   .app { max-width: 430px; margin: 0 auto; padding-bottom: 52px; }
 
-  /* ── HEADER ── */
   .header {
     padding: 56px 20px 16px;
     background: var(--surface);
@@ -69,10 +68,8 @@
     color: var(--text); letter-spacing: -0.01em;
   }
 
-  /* ── SECTIONS ── */
   .sections { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 12px; }
 
-  /* ── CARD ── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -100,7 +97,7 @@
   .card-collapse { overflow: hidden; max-height: 0; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
   .card-collapse.open { max-height: 3000px; }
 
-  /* ── DAY TABS ── */
+  /* DAY TABS */
   .day-tabs {
     display: flex; overflow-x: auto;
     border-bottom: 1px solid var(--border);
@@ -114,29 +111,24 @@
     border: none; cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: all 0.2s; margin-bottom: -1px;
-    white-space: nowrap;
   }
   .day-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
   .day-tab.has-meal { color: var(--text-mid); }
 
-  /* ── MEAL VIEW ── */
+  /* MEAL VIEW */
   .meal-view { padding: 16px; }
-
   .meal-slot { margin-bottom: 20px; }
   .meal-slot:last-child { margin-bottom: 0; }
-
   .meal-slot-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 10px;
   }
   .meal-slot-label {
     font-size: 10px; font-weight: 600;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent);
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
   }
   .meal-slot-right { display: flex; align-items: center; gap: 8px; }
   .meal-kcal-badge { font-size: 11px; font-weight: 500; color: var(--text-dim); }
-
   .meal-edit-btn {
     font-size: 11px; font-weight: 600;
     color: var(--accent); background: var(--accent-glow);
@@ -145,48 +137,36 @@
     cursor: pointer; transition: opacity 0.2s;
   }
   .meal-edit-btn:hover { opacity: 0.8; }
-
   .meal-card-inner {
-    background: var(--surface2);
-    border-radius: 10px; padding: 14px;
-    border: 1px solid var(--border);
+    background: var(--surface2); border-radius: 10px;
+    padding: 14px; border: 1px solid var(--border);
   }
-
   .meal-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-
   .meal-macros { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
   .macro-pill {
     font-size: 11px; font-weight: 500;
     padding: 2px 8px; border-radius: 20px;
     background: var(--accent-glow); color: var(--accent);
   }
-
   .meal-ingredients { font-size: 12px; color: var(--text-mid); line-height: 1.6; margin-bottom: 10px; }
-
   .meal-instructions-toggle {
     font-size: 11px; font-weight: 600;
     color: var(--accent); cursor: pointer;
     background: none; border: none; padding: 0;
   }
-
   .meal-instructions {
     font-size: 12px; color: var(--text-mid);
     line-height: 1.7; margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
+    padding-top: 10px; border-top: 1px solid var(--border);
     display: none;
   }
   .meal-instructions.visible { display: block; }
-
   .meal-empty-slot {
-    background: var(--surface2);
-    border-radius: 10px; padding: 20px;
+    background: var(--surface2); border-radius: 10px; padding: 20px;
     border: 1px dashed var(--border-strong);
-    text-align: center;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;
   }
   .meal-empty-slot p { font-size: 12px; font-style: italic; color: var(--text-dim); }
-
   .day-total {
     display: flex; justify-content: space-between; align-items: center;
     padding: 12px 0 0; border-top: 1px solid var(--border); margin-top: 8px;
@@ -194,7 +174,7 @@
   .day-total-label { font-size: 11px; font-weight: 600; color: var(--text-mid); }
   .day-total-val { font-size: 14px; font-weight: 700; color: var(--accent); }
 
-  /* ── EDIT MODAL ── */
+  /* MODAL */
   .modal-overlay {
     position: fixed; inset: 0; z-index: 100;
     background: rgba(0,0,0,0.4);
@@ -203,7 +183,6 @@
     transition: opacity 0.25s;
   }
   .modal-overlay.visible { opacity: 1; pointer-events: all; }
-
   .modal {
     width: 100%; max-width: 430px; margin: 0 auto;
     background: var(--surface);
@@ -211,20 +190,29 @@
     padding: 20px 20px 40px;
     transform: translateY(100%);
     transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    max-height: 85vh; overflow-y: auto;
+    max-height: 88vh; overflow-y: auto;
   }
   .modal-overlay.visible .modal { transform: translateY(0); }
-
   .modal-handle {
     width: 36px; height: 4px;
     background: var(--border-strong); border-radius: 2px;
     margin: 0 auto 16px;
   }
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
 
-  .modal-title {
-    font-size: 16px; font-weight: 700;
-    color: var(--text); margin-bottom: 16px;
+  .modal-tabs {
+    display: flex; border-bottom: 1px solid var(--border); margin-bottom: 16px;
   }
+  .modal-tab {
+    flex: 1; padding: 10px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-dim); background: none;
+    border: none; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s; margin-bottom: -1px;
+  }
+  .modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
   .modal-field { margin-bottom: 14px; }
   .modal-label {
@@ -232,19 +220,17 @@
     color: var(--text-mid); letter-spacing: 0.08em;
     text-transform: uppercase; margin-bottom: 6px; display: block;
   }
-  .modal-input, .modal-textarea {
+  .modal-input, .modal-textarea, .modal-select {
     width: 100%; background: var(--surface2);
     border: 1px solid var(--border); border-radius: 8px;
     padding: 10px 12px; font-family: 'DM Sans', sans-serif;
     font-size: 13px; color: var(--text); outline: none;
     transition: border-color 0.2s;
   }
-  .modal-input:focus, .modal-textarea:focus { border-color: var(--accent); }
+  .modal-input:focus, .modal-textarea:focus, .modal-select:focus { border-color: var(--accent); }
   .modal-textarea { min-height: 80px; resize: vertical; }
-
   .modal-row { display: flex; gap: 10px; }
   .modal-row .modal-field { flex: 1; }
-
   .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
   .modal-cancel {
     flex: 1; padding: 12px;
@@ -258,10 +244,15 @@
     background: var(--accent); border: none;
     border-radius: 10px; cursor: pointer; color: #fff;
   }
+  .move-info {
+    font-size: 13px; color: var(--text-mid);
+    line-height: 1.6; margin-bottom: 16px;
+    padding: 12px; background: var(--surface2);
+    border-radius: 8px; border: 1px solid var(--border);
+  }
 
-  /* ── COURSES ── */
+  /* COURSES */
   .courses-body { padding: 14px 16px; }
-
   .rayon { margin-bottom: 18px; }
   .rayon:last-child { margin-bottom: 0; }
   .rayon-title {
@@ -270,13 +261,11 @@
     color: var(--accent); margin-bottom: 8px;
     padding-bottom: 6px; border-bottom: 1px solid var(--border);
   }
-
   .course-item {
     display: flex; align-items: center; gap: 10px;
     padding: 8px 0; border-bottom: 1px solid var(--border);
   }
   .course-item:last-child { border-bottom: none; }
-
   .course-box {
     width: 18px; height: 18px;
     border: 1.5px solid var(--border-strong); border-radius: 5px;
@@ -286,17 +275,14 @@
   }
   .course-box.done { background: var(--accent); border-color: var(--accent); }
   .course-box.done::after { content:'✓'; font-size:10px; color:#fff; font-weight:700; }
-
   .course-label { font-size: 13px; color: var(--text); flex: 1; }
   .course-label.done { opacity:0.35; text-decoration:line-through; text-decoration-color:var(--accent); }
-
   .course-del {
     font-size: 12px; color: var(--text-dim); cursor: pointer;
     opacity: 0.4; padding: 4px; background: none; border: none;
   }
   .course-del:hover { opacity: 1; }
   .course-empty { font-size: 13px; font-style: italic; color: var(--text-dim); text-align: center; padding: 12px 0; }
-
   .course-actions { display: flex; gap: 10px; margin-top: 14px; }
   .course-action-btn {
     flex: 1; padding: 10px;
@@ -309,7 +295,6 @@
   .course-action-btn:hover { background: var(--accent-glow); color: var(--accent); border-color: rgba(58,148,99,0.2); }
   .course-action-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
   .course-action-btn.primary:hover { opacity: 0.9; }
-
   .course-add-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
   .course-add-input {
     flex: 1; background: var(--surface2);
@@ -326,13 +311,11 @@
     display: flex; align-items: center; justify-content: center; font-weight: 300;
   }
 
-  /* ── WORKOUT ── */
+  /* WORKOUT */
   .workout-body { padding: 14px 16px; }
-
   .steps-section {
-    background: var(--surface2);
-    border-radius: 10px; padding: 14px;
-    border: 1px solid var(--border); margin-bottom: 16px;
+    background: var(--surface2); border-radius: 10px;
+    padding: 14px; border: 1px solid var(--border); margin-bottom: 16px;
   }
   .steps-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .steps-label { font-size: 12px; font-weight: 600; color: var(--text-mid); }
@@ -353,19 +336,16 @@
     background: var(--accent); border: none; border-radius: 8px;
     color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;
   }
-
   .sessions-label {
     font-size: 10px; font-weight: 600;
     letter-spacing: 0.15em; text-transform: uppercase;
     color: var(--accent); margin-bottom: 10px;
   }
-
   .session-item {
     display: flex; align-items: center; gap: 12px;
     padding: 10px 0; border-bottom: 1px solid var(--border);
   }
   .session-item:last-child { border-bottom: none; }
-
   .session-check {
     width: 28px; height: 28px; border-radius: 50%;
     border: 1.5px solid var(--border-strong);
@@ -375,12 +355,11 @@
   }
   .session-check.done { background: var(--accent); border-color: var(--accent); }
   .session-check.done::after { content:'✓'; font-size:11px; color:#fff; font-weight:700; }
-
   .session-info { flex: 1; }
   .session-name { font-size: 13px; font-weight: 500; color: var(--text); }
   .session-time { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
 
-  /* ── REFRESH ── */
+  /* REFRESH */
   .refresh-btn {
     display: flex; align-items: center; gap: 6px;
     background: none; border: none; cursor: pointer;
@@ -393,7 +372,7 @@
   .refresh-btn.spinning svg { animation: spin 1s linear infinite; }
   @keyframes spin { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
 
-  /* ── SHIMMER ── */
+  /* SHIMMER */
   .shimmer {
     height: 12px; border-radius: 6px;
     background: linear-gradient(90deg, var(--surface2) 25%, #e8e8e4 50%, var(--surface2) 75%);
@@ -404,14 +383,12 @@
   .shimmer:nth-child(3){width:52%;animation-delay:0.2s;}
   @keyframes shim{0%{background-position:200% center;}100%{background-position:-200% center;}}
 
-  /* ── FOOTER ── */
   .footer {
     padding: 28px 20px 10px;
     display: flex; align-items: center; justify-content: center; gap: 10px;
   }
   .footer-line { width:20px; height:1px; background:var(--accent); opacity:0.2; }
   .footer-text { font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-dim); }
-
   .error-note { font-size: 12px; font-style: italic; color: var(--text-dim); line-height: 1.6; text-align: center; padding: 12px 0; }
 </style>
 </head>
@@ -419,7 +396,6 @@
 
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
     <a class="back-btn" href="index.html">←</a>
     <div class="header-text">
@@ -446,9 +422,9 @@
           <div class="shimmer"></div>
           <div class="shimmer"></div>
         </div>
-        <div style="padding: 0 16px 16px; border-top: 1px solid var(--border);">
+        <div style="padding:0 16px 16px;border-top:1px solid var(--border)">
           <div style="height:12px"></div>
-          <button class="refresh-btn" id="meals-refresh" onclick="loadMeals(true)">
+          <button class="refresh-btn" onclick="loadMeals(true)">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
             </svg>
@@ -527,37 +503,65 @@
 
 </div>
 
-<!-- EDIT MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modal-title">Edit meal</div>
-    <div class="modal-field">
-      <label class="modal-label">Meal name</label>
-      <input class="modal-input" id="edit-name" type="text" placeholder="e.g. Salmon bowl"/>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-edit" onclick="switchModalTab('edit')">✎ Edit manually</button>
+      <button class="modal-tab" id="tab-move" onclick="switchModalTab('move')">↕ Move to another day</button>
     </div>
-    <div class="modal-row">
+
+    <!-- EDIT PANEL -->
+    <div id="panel-edit">
       <div class="modal-field">
-        <label class="modal-label">Calories (kcal)</label>
-        <input class="modal-input" id="edit-kcal" type="number" placeholder="450"/>
+        <label class="modal-label">Meal name</label>
+        <input class="modal-input" id="edit-name" type="text" placeholder="e.g. Salmon bowl"/>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label class="modal-label">Calories (kcal)</label>
+          <input class="modal-input" id="edit-kcal" type="number" placeholder="450"/>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Protein (g)</label>
+          <input class="modal-input" id="edit-protein" type="number" placeholder="35"/>
+        </div>
       </div>
       <div class="modal-field">
-        <label class="modal-label">Protein (g)</label>
-        <input class="modal-input" id="edit-protein" type="number" placeholder="35"/>
+        <label class="modal-label">Ingredients (one per line)</label>
+        <textarea class="modal-textarea" id="edit-ingredients" placeholder="Salmon fillet&#10;Quinoa&#10;Spinach"></textarea>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Instructions</label>
+        <textarea class="modal-textarea" id="edit-instructions" placeholder="Step by step..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-cancel" onclick="closeModalDirect()">Cancel</button>
+        <button class="modal-save" onclick="saveMealEdit()">Save meal</button>
       </div>
     </div>
-    <div class="modal-field">
-      <label class="modal-label">Ingredients (one per line)</label>
-      <textarea class="modal-textarea" id="edit-ingredients" placeholder="Salmon fillet&#10;Quinoa&#10;Spinach"></textarea>
+
+    <!-- MOVE PANEL -->
+    <div id="panel-move" style="display:none">
+      <div class="move-info" id="move-info">—</div>
+      <div class="modal-field">
+        <label class="modal-label">Move to</label>
+        <select class="modal-select" id="move-target">
+          <option value="">Select a slot...</option>
+        </select>
+      </div>
+      <p style="font-size:12px;color:var(--text-dim);line-height:1.6;margin-top:-8px;margin-bottom:16px">
+        The original slot will become empty. If the destination already has a meal, it will be replaced.
+      </p>
+      <div class="modal-actions">
+        <button class="modal-cancel" onclick="closeModalDirect()">Cancel</button>
+        <button class="modal-save" onclick="saveMealMove()">Move meal</button>
+      </div>
     </div>
-    <div class="modal-field">
-      <label class="modal-label">Instructions</label>
-      <textarea class="modal-textarea" id="edit-instructions" placeholder="Step by step instructions..."></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="closeModalDirect()">Cancel</button>
-      <button class="modal-save" onclick="saveMealEdit()">Save meal</button>
-    </div>
+
   </div>
 </div>
 
@@ -567,6 +571,7 @@ const JSONBIN_MEALS = '69e3c35e36566621a8c928f4';
 
 const DAYS    = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
 const DAYS_FR = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const DAYS_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const TODAY_IDX  = (new Date().getDay() + 6) % 7;
 const TODAY_DATE = new Date().toISOString().split('T')[0];
 
@@ -591,8 +596,7 @@ function toggle(id) {
 // ── MEALS ─────────────────────────────────────────────
 async function loadMeals(force=false) {
   const cached = localStorage.getItem('mm_meals');
-  const cachedDate = localStorage.getItem('mm_meals_week');
-  if (cached && cachedDate && !force) {
+  if (cached && !force) {
     S.meals = JSON.parse(cached);
     renderDayTabs();
     renderMealView();
@@ -607,7 +611,6 @@ async function loadMeals(force=false) {
     if (d?.record?.meals) {
       S.meals = d.record;
       localStorage.setItem('mm_meals', JSON.stringify(S.meals));
-      localStorage.setItem('mm_meals_week', TODAY_DATE);
       renderDayTabs();
       renderMealView();
       pushTodayToHome();
@@ -626,10 +629,9 @@ function renderEmptyMeals() {
 }
 
 function renderDayTabs() {
-  const container = document.getElementById('day-tabs');
-  container.innerHTML = DAYS.map((d, i) => {
+  document.getElementById('day-tabs').innerHTML = DAYS.map((d, i) => {
     const hasMeal = S.meals?.meals?.[d]?.lunch?.name || S.meals?.meals?.[d]?.dinner?.name;
-    return `<button class="day-tab ${hasMeal ? 'has-meal' : ''} ${i === S.currentDay ? 'active' : ''}"
+    return `<button class="day-tab ${hasMeal?'has-meal':''} ${i===S.currentDay?'active':''}"
       onclick="switchDay(${i})">${DAYS_FR[i]}</button>`;
   }).join('');
 }
@@ -644,76 +646,63 @@ function renderMealView() {
   const el = document.getElementById('meal-view');
   const day = DAYS[S.currentDay];
   const dayMeals = S.meals?.meals?.[day];
-
   const lunch = dayMeals?.lunch || null;
   const dinner = dayMeals?.dinner || null;
-  const lunchKcal = lunch?.kcal || 0;
-  const dinnerKcal = dinner?.kcal || 0;
-  const total = lunchKcal + dinnerKcal;
+  const total = (lunch?.kcal || 0) + (dinner?.kcal || 0);
 
   el.innerHTML = `
     ${renderMealSlot('Midi', lunch, day, 'lunch')}
     ${renderMealSlot('Soir', dinner, day, 'dinner')}
-    ${total > 0 ? `
-    <div class="day-total">
+    ${total > 0 ? `<div class="day-total">
       <div class="day-total-label">Total du jour</div>
       <div class="day-total-val">${total} kcal</div>
-    </div>` : ''}
-  `;
+    </div>` : ''}`;
 }
 
 function renderMealSlot(label, meal, dayKey, slot) {
   if (!meal || !meal.name) {
     return `<div class="meal-slot">
-      <div class="meal-slot-header">
-        <div class="meal-slot-label">${label}</div>
-      </div>
+      <div class="meal-slot-header"><div class="meal-slot-label">${label}</div></div>
       <div class="meal-empty-slot">
         <p>Not planned yet</p>
         <button class="meal-edit-btn" onclick="openModal('${dayKey}','${slot}')">+ Add manually</button>
       </div>
     </div>`;
   }
-
   const ingredients = Array.isArray(meal.ingredients)
-    ? meal.ingredients.join(', ')
-    : (meal.ingredients || '');
-
+    ? meal.ingredients.join(', ') : (meal.ingredients || '');
   return `<div class="meal-slot">
     <div class="meal-slot-header">
       <div class="meal-slot-label">${label}</div>
       <div class="meal-slot-right">
-        <div class="meal-kcal-badge">${meal.kcal || 0} kcal</div>
+        <div class="meal-kcal-badge">${meal.kcal||0} kcal</div>
         <button class="meal-edit-btn" onclick="openModal('${dayKey}','${slot}')">✎ Swap</button>
       </div>
     </div>
     <div class="meal-card-inner">
       <div class="meal-name">${meal.name}</div>
       <div class="meal-macros">
-        <div class="macro-pill">${meal.kcal || 0} kcal</div>
-        <div class="macro-pill">${meal.protein || 0}g protein</div>
+        <div class="macro-pill">${meal.kcal||0} kcal</div>
+        <div class="macro-pill">${meal.protein||0}g protein</div>
       </div>
       <div class="meal-ingredients">${ingredients}</div>
       <button class="meal-instructions-toggle" onclick="toggleInstructions('${dayKey}-${slot}')">↓ View instructions</button>
-      <div class="meal-instructions" id="instr-${dayKey}-${slot}">${meal.instructions || 'No instructions available.'}</div>
+      <div class="meal-instructions" id="instr-${dayKey}-${slot}">${meal.instructions||'No instructions available.'}</div>
     </div>
   </div>`;
 }
 
 function toggleInstructions(id) {
   const el = document.getElementById(`instr-${id}`);
-  const btn = el.previousElementSibling;
   el.classList.toggle('visible');
-  btn.textContent = el.classList.contains('visible') ? '↑ Hide instructions' : '↓ View instructions';
+  el.previousElementSibling.textContent = el.classList.contains('visible')
+    ? '↑ Hide instructions' : '↓ View instructions';
 }
 
 function pushTodayToHome() {
   if (!S.meals?.meals) return;
-  const day = DAYS[TODAY_IDX];
-  const todayMeals = S.meals.meals[day];
-  if (todayMeals) {
-    localStorage.setItem('mm_today_meals', JSON.stringify(todayMeals));
-  }
+  const todayMeals = S.meals.meals[DAYS[TODAY_IDX]];
+  if (todayMeals) localStorage.setItem('mm_today_meals', JSON.stringify(todayMeals));
 }
 
 // ── MODAL ─────────────────────────────────────────────
@@ -722,9 +711,11 @@ function openModal(dayKey, slot) {
   S.editingSlot = slot;
   const meal = S.meals?.meals?.[dayKey]?.[slot];
   const slotLabel = slot === 'lunch' ? 'Midi' : 'Soir';
-  const dayLabel = DAYS_FR[DAYS.indexOf(dayKey)];
+  const dayLabel = DAYS_FULL[DAYS.indexOf(dayKey)];
 
   document.getElementById('modal-title').textContent = `${dayLabel} — ${slotLabel}`;
+
+  // Fill edit panel
   document.getElementById('edit-name').value = meal?.name || '';
   document.getElementById('edit-kcal').value = meal?.kcal || '';
   document.getElementById('edit-protein').value = meal?.protein || '';
@@ -732,13 +723,36 @@ function openModal(dayKey, slot) {
     ? meal.ingredients.join('\n') : (meal?.ingredients || '');
   document.getElementById('edit-instructions').value = meal?.instructions || '';
 
+  // Fill move panel
+  document.getElementById('move-info').textContent = meal?.name
+    ? `Moving: "${meal.name}" (${meal.kcal||0} kcal)`
+    : 'This slot is empty — nothing to move.';
+
+  const select = document.getElementById('move-target');
+  select.innerHTML = '<option value="">Select destination...</option>';
+  DAYS.forEach((d, i) => {
+    ['lunch','dinner'].forEach(s => {
+      if (d === dayKey && s === slot) return;
+      const m = S.meals?.meals?.[d]?.[s];
+      const slotName = s === 'lunch' ? 'Midi' : 'Soir';
+      const mealName = m?.name ? ` — ${m.name}` : ' (empty)';
+      select.innerHTML += `<option value="${d}|${s}">${DAYS_FULL[i]} ${slotName}${mealName}</option>`;
+    });
+  });
+
+  switchModalTab('edit');
   document.getElementById('modal-overlay').classList.add('visible');
 }
 
+function switchModalTab(tab) {
+  document.getElementById('panel-edit').style.display = tab === 'edit' ? 'block' : 'none';
+  document.getElementById('panel-move').style.display = tab === 'move' ? 'block' : 'none';
+  document.getElementById('tab-edit').classList.toggle('active', tab === 'edit');
+  document.getElementById('tab-move').classList.toggle('active', tab === 'move');
+}
+
 function closeModal(event) {
-  if (event.target === document.getElementById('modal-overlay')) {
-    closeModalDirect();
-  }
+  if (event.target === document.getElementById('modal-overlay')) closeModalDirect();
 }
 
 function closeModalDirect() {
@@ -750,7 +764,6 @@ function closeModalDirect() {
 function saveMealEdit() {
   const name = document.getElementById('edit-name').value.trim();
   if (!name) { alert('Please enter a meal name.'); return; }
-
   const meal = {
     name,
     kcal: parseInt(document.getElementById('edit-kcal').value) || 0,
@@ -759,13 +772,26 @@ function saveMealEdit() {
       .split('\n').map(i => i.trim()).filter(Boolean),
     instructions: document.getElementById('edit-instructions').value.trim()
   };
-
   if (!S.meals) S.meals = { meals: {} };
   if (!S.meals.meals[S.editingDay]) S.meals.meals[S.editingDay] = {};
   S.meals.meals[S.editingDay][S.editingSlot] = meal;
-
   localStorage.setItem('mm_meals', JSON.stringify(S.meals));
-  localStorage.setItem('mm_meals_week', TODAY_DATE);
+  pushTodayToHome();
+  renderDayTabs();
+  renderMealView();
+  closeModalDirect();
+}
+
+function saveMealMove() {
+  const target = document.getElementById('move-target').value;
+  if (!target) { alert('Please select a destination.'); return; }
+  const meal = S.meals?.meals?.[S.editingDay]?.[S.editingSlot];
+  if (!meal?.name) { alert('Nothing to move from this slot.'); return; }
+  const [targetDay, targetSlot] = target.split('|');
+  if (!S.meals.meals[targetDay]) S.meals.meals[targetDay] = {};
+  S.meals.meals[targetDay][targetSlot] = { ...meal };
+  S.meals.meals[S.editingDay][S.editingSlot] = null;
+  localStorage.setItem('mm_meals', JSON.stringify(S.meals));
   pushTodayToHome();
   renderDayTabs();
   renderMealView();
@@ -778,10 +804,10 @@ function categorize(ing) {
   if (/poulet|saumon|thon|cabillaud|crevette|viande|bœuf|boeuf|porc|agneau|steak|filet/.test(i)) return 'Viandes & Poissons';
   if (/œuf|oeuf|yaourt|fromage|lait|crème|creme|beurre|feta|mozzarella/.test(i)) return 'Produits Laitiers & Œufs';
   if (/quinoa|riz|pâte|pasta|pain|farine|lentille|pois chiche|haricot|fécule|avoine|tortilla/.test(i)) return 'Épicerie sèche';
-  if (/huile|sauce|sel|poivre|cumin|paprika|curry|moutarde|vinaigre|miel|soja|tamari|épice|herbe|ail en poudre/.test(i)) return 'Épicerie sèche';
+  if (/huile|sauce|sel|poivre|cumin|paprika|curry|moutarde|vinaigre|miel|soja|tamari|épice|herbe/.test(i)) return 'Épicerie sèche';
   if (/surgelé|frozen/.test(i)) return 'Surgelés';
-  if (/carotte|courgette|épinard|brocoli|poivron|aubergine|oignon|ail|salade|avocat|pomme de terre|patate|champignon|fenouil|asperge|céleri|radis|betterave|navet|artichaut|courge|potiron/.test(i)) return 'Fruits & Légumes';
-  if (/pomme|poire|banane|orange|citron|citron vert|fraise|framboise|myrtille|raisin|mangue|ananas|kiwi|pêche|abricot/.test(i)) return 'Fruits & Légumes';
+  if (/carotte|courgette|épinard|brocoli|poivron|aubergine|oignon|ail|salade|avocat|pomme de terre|patate|champignon|fenouil|asperge|céleri|radis|betterave|courge|potiron/.test(i)) return 'Fruits & Légumes';
+  if (/pomme|poire|banane|orange|citron|fraise|framboise|myrtille|raisin|mangue|kiwi|pêche|abricot/.test(i)) return 'Fruits & Légumes';
   return 'Autres';
 }
 
@@ -790,7 +816,7 @@ function generateCourses() {
   const allIng = new Set();
   Object.values(S.meals.meals).forEach(day => {
     ['lunch','dinner'].forEach(slot => {
-      const meal = day[slot];
+      const meal = day?.[slot];
       if (meal?.ingredients) {
         const arr = Array.isArray(meal.ingredients) ? meal.ingredients : [meal.ingredients];
         arr.forEach(ing => { if (ing?.trim()) allIng.add(ing.trim()); });
@@ -798,10 +824,8 @@ function generateCourses() {
     });
   });
   const manual = S.courses.filter(c => c.manual);
-  const generated = [...allIng].map(ing => ({ text: ing, done: false, rayon: categorize(ing), manual: false }));
-  S.courses = [...generated, ...manual];
-  saveCourses();
-  renderCourses();
+  S.courses = [...[...allIng].map(ing => ({ text: ing, done: false, rayon: categorize(ing), manual: false })), ...manual];
+  saveCourses(); renderCourses();
 }
 
 function saveCourses() { localStorage.setItem('mm_courses', JSON.stringify(S.courses)); }
@@ -835,7 +859,6 @@ function addCourse() {
   saveCourses(); renderCourses();
   inp.value = ''; inp.focus();
 }
-
 function toggleCourse(i) { S.courses[i].done = !S.courses[i].done; saveCourses(); renderCourses(); }
 function delCourse(i) { S.courses.splice(i, 1); saveCourses(); renderCourses(); }
 function clearDone() { S.courses = S.courses.filter(c => !c.done); saveCourses(); renderCourses(); }
@@ -862,11 +885,12 @@ function loadWorkout() {
   const pct = Math.min(100, Math.round((todaySteps / 10000) * 100));
   document.getElementById('steps-val').textContent = todaySteps > 0 ? todaySteps.toLocaleString() : '—';
   document.getElementById('steps-fill').style.width = `${pct}%`;
-  document.getElementById('steps-target').textContent = todaySteps > 0 ? `${pct}% of 10,000 steps goal` : 'Goal: 10,000 steps';
+  document.getElementById('steps-target').textContent = todaySteps > 0
+    ? `${pct}% of 10,000 steps goal` : 'Goal: 10,000 steps';
   if (todaySteps > 0) document.getElementById('steps-input').value = todaySteps;
   document.getElementById('sessions-list').innerHTML = SESSIONS.map(s => `
     <div class="session-item">
-      <div class="session-check ${S.workout[weekKey][s.id] ? 'done' : ''}" onclick="toggleSession('${s.id}')"></div>
+      <div class="session-check ${S.workout[weekKey][s.id]?'done':''}" onclick="toggleSession('${s.id}')"></div>
       <div class="session-info">
         <div class="session-name">${s.label}</div>
         <div class="session-time">${s.time}</div>
