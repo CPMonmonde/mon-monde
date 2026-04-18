@@ -648,9 +648,7 @@ async function loadWeather() {
         }, () => res(), {timeout: 5000});
       });
     }
-    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode,timezone=auto`);
-    const d = await r.json();
-    document.getElementById('w-temp').textContent = `${Math.round(d.current.temperature_2m)}°`;
+const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto`);    document.getElementById('w-temp').textContent = `${Math.round(d.current.temperature_2m)}°`;
     document.getElementById('w-icon').textContent = wIcon(d.current.weathercode);
     document.getElementById('w-desc').textContent = wDesc(d.current.weathercode);
     document.getElementById('w-loc').textContent = city;
