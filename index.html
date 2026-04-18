@@ -914,13 +914,36 @@ function dismissInstall() {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
+// ── TODAY'S MEALS FROM FOOD PAGE ──────────────────────
+function loadTodayMeals() {
+  const saved = localStorage.getItem('mm_today_meals');
+  if (!saved) return;
+  const meals = JSON.parse(saved);
+  
+  const lunch = meals.lunch;
+  const dinner = meals.dinner;
 
+  if (lunch?.name) {
+    document.getElementById('meal-lunch-content').innerHTML = `
+      <div class="meal-name">${lunch.name}</div>
+      <div class="meal-details">${Array.isArray(lunch.ingredients) ? lunch.ingredients.slice(0,3).join(', ') : ''}</div>
+      <div class="meal-kcal">${lunch.kcal || 0} kcal · ${lunch.protein || 0}g protein</div>`;
+  }
+
+  if (dinner?.name) {
+    document.getElementById('meal-dinner-content').innerHTML = `
+      <div class="meal-name">${dinner.name}</div>
+      <div class="meal-details">${Array.isArray(dinner.ingredients) ? dinner.ingredients.slice(0,3).join(', ') : ''}</div>
+      <div class="meal-kcal">${dinner.kcal || 0} kcal · ${dinner.protein || 0}g protein</div>`;
+  }
+}
 // ── INIT ──────────────────────────────────────────────
 initDate();
 loadWeather();
 loadMantra();
 renderTasks();
 initInstallBanner();
+loadTodayMeals();
 </script>
 </body>
 </html>
