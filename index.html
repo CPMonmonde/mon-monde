@@ -822,7 +822,7 @@ async function loadNews(force=false) {
 
   try {
     // Courrier International RSS via rss2json proxy
-    const RSS_URL = encodeURIComponent('https://www.courrierinternational.com/feed/all/rss.xml');
+    const RSS_URL = encodeURIComponent('https://feeds.bbci.co.uk/news/world/rss.xml');
     const r = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${RSS_URL}&count=5`);
     const d = await r.json();
 
