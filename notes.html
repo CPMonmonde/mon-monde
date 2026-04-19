@@ -550,13 +550,15 @@ function centerMapOn(id){
   if(card){card.classList.add('highlighted');card.scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
 
-async function geocode(name,address){
-  const q=encodeURIComponent((address&&address.length>3?address+' ':'')+name+' Paris France');
-  try{
-    const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`);
-    const d=await r.json();
-    if(d&&d[0]) return {lat:parseFloat(d[0].lat),lng:parseFloat(d[0].lon)};
-  }catch(e){}
+async function geocode(name, address) {
+  const query = encodeURIComponent(address && address.length > 2 ? `${name} ${address}` : `${name} Paris`);
+  try {
+    const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`, {
+      headers: { 'Accept': 'application/json', 'Accept-Language': 'fr' }
+    });
+    const d = await r.json();
+    if (d && d[0]) return { lat: parseFloat(d[0].lat), lng: parseFloat(d[0].lon) };
+  } catch(e) {}
   return null;
 }
 
@@ -622,7 +624,7 @@ async function addLocation(){
   const type=document.getElementById('qa-loc-type')?.value||'restaurant';
   const note=document.getElementById('qa-loc-note')?.value.trim()||'';
   const locs=load('locations');
-  const coords=await geocode(name,address);
+  const coords = await geocode(name, address); locs.unshift({id:Date.now(),name,address,type,note,status:'to visit',lat:coords?.lat||null,lng:coords?.lng||null,date:TODAY_STR});
   locs.unshift({id:Date.now(),name,address,type,note,status:'to visit',lat:coords?.lat||null,lng:coords?.lng||null,date:TODAY_STR});
   save('locations',locs);
   renderLocations();
