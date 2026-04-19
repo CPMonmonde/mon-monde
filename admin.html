@@ -361,7 +361,7 @@ select.input{color:var(--text-mid);}
       <div id="strategy-prompt-display"></div>
       <div id="strategy-paste-area"></div>
       <div id="strategy-display"></div>
-      <button class="refresh-btn" onclick="loadStrategy()">
+      <button class="refresh-btn" onclick="loadStrategy(true)">
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
         Refresh saved strategy
       </button>
@@ -546,15 +546,13 @@ function renderDeadlines() {
       <div class="deadline-btns">
         ${!d.done?`<button class="btn-xs btn-edit" onclick="editDL('${d.id}')">✎</button>`:''}
         ${!d.done?`<button class="btn-xs btn-done" onclick="markDone('${d.id}')">✓</button>`:''}
-        ${!d.done&&days<=1?`<button class="btn-xs btn-push" onclick="pushToHome('${d.id}')">→ Home</button>`:''}
+        ${!d.done?`<button class="btn-xs btn-push" onclick="pushToHome('${d.id}')">→ Home</button>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
 function autoPushToday(dl) {
-  const lastPush = localStorage.getItem('mm_dl_push');
-  if (lastPush === TODAY_STR) return;
   const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
   let pushed = false;
   dl.forEach(d => {
@@ -562,9 +560,8 @@ function autoPushToday(dl) {
       tasks.push({text: d.text, done: false, date: d.date}); pushed = true;
     }
   });
-  if (pushed) { localStorage.setItem('mm_tasks', JSON.stringify(tasks)); localStorage.setItem('mm_dl_push', TODAY_STR); }
+  if (pushed) localStorage.setItem('mm_tasks', JSON.stringify(tasks));
 }
-
 function copyOverdue() {
   navigator.clipboard?.writeText(window._overdueText || '').catch(() => {});
   const btn = document.querySelector('.overdue-copy-btn');
@@ -652,7 +649,7 @@ const DEFAULT_FIXED = [
   {id:'f17',name:'Paypal — other',amount:57.67,flag:'warn'},
 ];
 function getFixed() { return JSON.parse(localStorage.getItem(FIXED_KEY) || JSON.stringify(DEFAULT_FIXED)); }
-function saveFixed(f) { localStorage.setItem(FIXED_KEY, JSON.stringify(f)); }
+function persistFixed(f) { localStorage.setItem(FIXED_KEY, JSON.stringify(f)); }
 
 const BUDGET_KEY = 'mm_budget';
 const DEFAULT_BUDGET = [
@@ -782,12 +779,12 @@ function saveFixed(id) {
   item.name = document.getElementById('m-name').value.trim() || item.name;
   item.amount = parseFloat(document.getElementById('m-amount').value)||0;
   item.flag = document.getElementById('m-flag').value;
-  saveFixed(fixed); renderFixed(); renderOverview(); closeModal();
+  persistFixed(fixed); renderFixed(); renderOverview(); closeModal();
 }
 
 function deleteFixed(id) {
   if (!confirm('Delete this charge?')) return;
-  saveFixed(getFixed().filter(f => f.id !== id)); renderFixed(); renderOverview();
+  persistFixed(getFixed().filter(f => f.id !== id)); renderFixed(); renderOverview();
 }
 
 function addFixedModal() {
@@ -803,7 +800,7 @@ function addFixed() {
   if (!name) return;
   const fixed = getFixed();
   fixed.push({id:'f'+Date.now(), name, amount: parseFloat(document.getElementById('m-amount').value)||0, flag:'ok'});
-  saveFixed(fixed); renderFixed(); renderOverview(); closeModal();
+  persistFixed(fixed); renderFixed(); renderOverview(); closeModal();
 }
 
 // STATEMENT PDF
@@ -971,10 +968,9 @@ function renderETFs(cryptoTotal) {
     <div class="asset-value"><div class="asset-eur">€270,000</div><div class="asset-change change-pos">+rental yield</div></div>
   </div>`;
 
-  const mortgage = (152.32 + 330.23) * 12 * 15;
-  const total = cryptoTotal + etfCurrent + 270000 - mortgage;
+const total = cryptoTotal + etfCurrent;
   document.getElementById('net-worth').textContent = `€${Math.round(total).toLocaleString()}`;
-  document.getElementById('net-worth-sub').textContent = `ETF invested €${etfInvested.toFixed(0)} → now €${etfCurrent.toFixed(0)} (${etfCurrent>etfInvested?'+':''}€${(etfCurrent-etfInvested).toFixed(0)})`;
+  document.getElementById('net-worth-sub').textContent = `Crypto + ETF invested €${etfInvested.toFixed(0)} → now €${etfCurrent.toFixed(0)} (${etfCurrent>etfInvested?'+':''}€${(etfCurrent-etfInvested).toFixed(0)})`;
 }
 
 function editCrypto(i) {
@@ -1117,17 +1113,19 @@ async function saveStrategy() {
   btn.textContent = '💾 Save to JSONBin'; btn.disabled = false;
 }
 
-function loadStrategy() {
+async function loadStrategy(force=false) {
   const cached = localStorage.getItem('mm_strategy');
-  if (cached) { renderStrategy(cached); return; }
-  fetch(`https://api.jsonbin.io/v3/b/${JBSTRATEGY}/latest`, {headers:{'X-Master-Key':JBKEY}})
-    .then(r => r.json())
-    .then(d => {
-      const text = d?.record?.strategy || '';
-      if (text) { localStorage.setItem('mm_strategy', text); renderStrategy(text); }
-      else document.getElementById('strategy-display').innerHTML = '<div class="empty-note">No strategy yet. Generate a prompt and paste the result.</div>';
-    })
-    .catch(() => document.getElementById('strategy-display').innerHTML = '<div class="empty-note">Could not load strategy.</div>');
+  if (cached && !force) { renderStrategy(cached); return; }
+  document.getElementById('strategy-display').innerHTML = '<div class="shimmer"></div><div class="shimmer"></div>';
+  try {
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${JBSTRATEGY}/latest`, {headers:{'X-Master-Key':JBKEY}});
+    const d = await r.json();
+    const text = d?.record?.strategy || '';
+    if (text) { localStorage.setItem('mm_strategy', text); renderStrategy(text); }
+    else document.getElementById('strategy-display').innerHTML = '<div class="empty-note">No strategy yet. Generate a prompt and paste the result.</div>';
+  } catch {
+    document.getElementById('strategy-display').innerHTML = '<div class="empty-note">Could not load. Check connection.</div>';
+  }
 }
 
 function renderStrategy(text) {
@@ -1285,10 +1283,20 @@ function saveNewDoc() {
 }
 
 function addVaultTask(text) {
+  openModal('Add to tasks',
+    `<div class="modal-field"><label class="modal-label">Task</label><input class="input" id="m-vtask" value="${text}"/></div>
+    <div class="modal-field"><label class="modal-label">Due date</label><input class="input" id="m-vdate" type="date" value="${TODAY_STR}"/></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
+     <button class="modal-save" onclick="confirmVaultTask()">Add to tasks</button>`
+  );
+}
+function confirmVaultTask() {
+  const text = document.getElementById('m-vtask').value.trim();
+  const date = document.getElementById('m-vdate').value || TODAY_STR;
   const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
-  tasks.push({text, done:false, date:TODAY_STR});
+  tasks.push({text, done:false, date});
   localStorage.setItem('mm_tasks', JSON.stringify(tasks));
-  event.target.textContent = '✓ Added'; setTimeout(() => event.target.textContent = `→ ${text}`, 2000);
+  closeModal();
 }
 
 // ── INIT ────────────────────────────────────────────
