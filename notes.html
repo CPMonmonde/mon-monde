@@ -395,40 +395,39 @@ function detectURL(val) {
 
 function renderQAExtra() {
   const el = document.getElementById('qa-extra');
+  el.style.display = 'block';
   if (selectedCat === 'link') {
-    el.style.display = 'block';
-    el.innerHTML = `<select id="qa-link-type" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
-      <option value="article">Article</option>
-      <option value="achat">Achat potentiel</option>
-      <option value="recette">Recette</option>
-      <option value="autre">Autre</option>
-    </select>`;
+    el.innerHTML = `
+      <input id="qa-title" placeholder="Titre du lien..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
+      <select id="qa-link-type" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+        <option value="article">Article</option>
+        <option value="achat">Achat potentiel</option>
+        <option value="recette">Recette</option>
+        <option value="autre">Autre</option>
+      </select>`;
   } else if (selectedCat === 'lieu') {
-    el.style.display = 'block';
-    el.innerHTML = `<div style="display:flex;gap:8px;">
-      <input id="qa-lieu-adresse" placeholder="Adresse ou quartier (optionnel)" style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;" />
-      <select id="qa-lieu-type" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+    el.innerHTML = `
+      <input id="qa-title" placeholder="Nom du lieu..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
+      <input id="qa-lieu-adresse" placeholder="Adresse ou quartier (optionnel)..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
+      <select id="qa-lieu-type" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
         <option value="resto">🍽 Resto</option>
         <option value="bar">🍸 Bar</option>
         <option value="cafe">☕ Café</option>
         <option value="shop">🛍 Shop</option>
         <option value="autre">📍 Autre</option>
-      </select>
-    </div>`;
+      </select>`;
   } else if (selectedCat === 'idee') {
-    el.style.display = 'block';
-    el.innerHTML = `<textarea id="qa-idee-note" placeholder="Notes sur l'idée (optionnel)..." rows="2" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;resize:none;"></textarea>`;
+    el.innerHTML = `
+      <input id="qa-title" placeholder="Titre de l'idée..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
+      <textarea id="qa-idee-note" placeholder="Détails, contexte, next steps... (optionnel)" rows="3" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;line-height:1.5;"></textarea>`;
   } else if (selectedCat === 'note') {
-    el.style.display = 'block';
-    el.innerHTML = `<select id="qa-note-cat" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
-      <option value="perso">Perso</option>
-      <option value="pro">Pro</option>
-      <option value="projet">Projet</option>
-      <option value="autre">Autre</option>
-    </select>`;
-  } else {
-    el.style.display = 'none';
-    el.innerHTML = '';
+    el.innerHTML = `
+      <select id="qa-note-cat" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+        <option value="perso">Perso</option>
+        <option value="pro">Pro</option>
+        <option value="projet">Projet</option>
+        <option value="autre">Autre</option>
+      </select>`;
   }
 }
 
@@ -438,42 +437,56 @@ function autoResize(el) {
 }
 
 function quickAdd() {
-  const val = document.getElementById('qa-input').value.trim();
-  if (!val) return;
+  const url = document.getElementById('qa-input').value.trim();
+  if (!url && selectedCat === 'link') { alert('Colle un lien.'); return; }
 
   if (selectedCat === 'link') {
+    const title = document.getElementById('qa-title')?.value.trim() || url;
     const type = document.getElementById('qa-link-type')?.value || 'article';
-    const isURL = /^https?:\/\//i.test(val) || /^www\./i.test(val);
-    const url = isURL ? (val.startsWith('http') ? val : 'https://' + val) : '';
-    const title = isURL ? 'Link sauvegardé' : val;
+    const cleanUrl = url.startsWith('http') ? url : url ? 'https://' + url : '';
+    if (!title && !cleanUrl) return;
     const links = load('links');
-    links.unshift({ id: Date.now(), title: url ? title : val, url, type, read: false, date: TODAY_STR });
+    links.unshift({ id: Date.now(), title: title || cleanUrl, url: cleanUrl, type, read: false, date: TODAY_STR });
     save('links', links);
     renderLinks();
     switchTab('links');
+
   } else if (selectedCat === 'lieu') {
+    const nom = document.getElementById('qa-title')?.value.trim();
+    if (!nom) { alert('Entre le nom du lieu.'); return; }
     const adresse = document.getElementById('qa-lieu-adresse')?.value.trim() || '';
     const type = document.getElementById('qa-lieu-type')?.value || 'resto';
     const lieux = load('lieux');
-    lieux.unshift({ id: Date.now(), nom: val, adresse, type, statut: 'à tester', date: TODAY_STR });
+    lieux.unshift({ id: Date.now(), nom, adresse, type, statut: 'à tester', date: TODAY_STR });
     save('lieux', lieux);
     renderLieux();
     switchTab('lieux');
+
   } else if (selectedCat === 'idee') {
+    const titre = document.getElementById('qa-title')?.value.trim();
+    if (!titre) { alert('Entre un titre pour l\'idée.'); return; }
     const note = document.getElementById('qa-idee-note')?.value.trim() || '';
     const idees = load('idees');
-    idees.unshift({ id: Date.now(), titre: val, note, statut: 'actif', date: TODAY_STR });
+    idees.unshift({ id: Date.now(), titre, note, statut: 'actif', date: TODAY_STR });
     save('idees', idees);
     renderIdees();
     switchTab('idees');
+
   } else if (selectedCat === 'note') {
+    const text = url;
+    if (!text) { alert('Écris quelque chose.'); return; }
     const cat = document.getElementById('qa-note-cat')?.value || 'perso';
     const notes = load('notes');
-    notes.unshift({ id: Date.now(), text: val, cat, date: TODAY_STR });
+    notes.unshift({ id: Date.now(), text, cat, date: TODAY_STR });
     save('notes', notes);
     renderNotes();
     switchTab('notes');
   }
+
+  document.getElementById('qa-input').value = '';
+  document.getElementById('qa-input').style.height = 'auto';
+  renderQAExtra();
+}
 
   document.getElementById('qa-input').value = '';
   document.getElementById('qa-input').style.height = 'auto';
