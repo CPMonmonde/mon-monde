@@ -244,11 +244,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <span class="filter-chip" id="locf-shop" onclick="filterLocations('shop')">Shops</span>
       <span class="filter-chip" id="locf-other" onclick="filterLocations('other')">Other</span>
     </div>
-    <div class="view-toggle">
-      <button class="view-btn active" id="vbtn-map" onclick="switchLocView('map')">🗺 Map</button>
-      <button class="view-btn" id="vbtn-list" onclick="switchLocView('list')">📋 List</button>
-    </div>
-    <div id="map" style="display:none"></div>
+    <div id="quartier-filters" style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px"></div>
     <div id="locations-list"></div>
   </div>
 
@@ -380,7 +376,7 @@ function switchTab(tab){
     document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
     document.getElementById(`panel-${t}`).classList.toggle('active',t===tab);
   });
-if(tab==='locations'){ switchLocView(locView); }
+if(tab==='locations'){ renderLocations(); }
   if(tab==='reflect'){ renderReflect(); }
 }
 
@@ -504,7 +500,7 @@ function saveLink(id){
 }
 
 // ── LOCATIONS + LEAFLET ──────────────────────────────
-let map=null, markers=[], locFilter='all', locView='map';
+let map=null, markers=[], locFilter='all', locView='map', locQuartier='all';
 
 function initMap(){
   if(map) return;
@@ -569,46 +565,49 @@ function filterLocations(f){
   renderLocationMarkers();
 }
 
-function switchLocView(v){
-  locView=v;
-  document.getElementById('vbtn-map').classList.toggle('active',v==='map');
-  document.getElementById('vbtn-list').classList.toggle('active',v==='list');
-  const mapEl=document.getElementById('map');
-  if(v==='map'){
-    mapEl.style.display='block';
-    if(!map) initMap();
-    else setTimeout(()=>{map.invalidateSize();renderLocationMarkers();},100);
-  } else {
-    mapEl.style.display='none';
-  }
+function switchLocView(v){ renderLocations(); }
+function filterQuartier(q){
+  locQuartier=q;
   renderLocations();
 }
-
 function getFilteredLocations(){
   const locs=load('locations');
   return locFilter==='all'?locs:locs.filter(l=>l.type===locFilter);
 }
 
 function renderLocations(){
-  const filtered=getFilteredLocations();
-  const el=document.getElementById('locations-list');
-  const typeEmoji={restaurant:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',other:'📍'};
-  if(!filtered.length){
+  const locs = load('locations');
+  const filtered = locFilter==='all' ? locs : locs.filter(l=>l.type===locFilter);
+  const el = document.getElementById('locations-list');
+  const typeEmoji = {restaurant:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',other:'📍'};
+
+  // Build quartier filter chips dynamically
+  const quartiers = [...new Set(locs.map(l => l.address).filter(Boolean))];
+  const qEl = document.getElementById('quartier-filters');
+  if (qEl) {
+    qEl.innerHTML = `<span class="filter-chip ${locQuartier==='all'?'active':''}" onclick="filterQuartier('all')">Tous</span>`
+      + quartiers.map(q => `<span class="filter-chip ${locQuartier===q?'active':''}" onclick="filterQuartier('${q}')">${q}</span>`).join('');
+  }
+
+  // Apply quartier filter
+  const finalFiltered = locQuartier==='all' ? filtered : filtered.filter(l=>l.address===locQuartier);
+
+  if(!finalFiltered.length){
     el.innerHTML=`<div class="empty-state"><div class="emoji">📍</div><p>No locations saved yet.<br/>Add a restaurant, bar, café...</p></div>`;
     return;
   }
-  el.innerHTML=filtered.map(l=>`
-    <div class="loc-card" data-loc-id="${l.id}" onclick="centerMapOn(${l.id})">
+
+  el.innerHTML = finalFiltered.map(l=>`
+    <div class="loc-card">
       <div class="item-header">
         <div class="item-info">
           <div class="item-title">${typeEmoji[l.type]||'📍'} ${l.name}</div>
-          <div class="item-meta">${l.address||'Paris'}${l.note?' · '+l.note:''}</div>
+          <div class="item-meta">${l.address||'—'}${l.note?' · '+l.note:''}</div>
           <div style="margin-top:4px">
             <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:${l.status==='visited'?'var(--accent-glow)':'var(--amber-glow)'};color:${l.status==='visited'?'var(--accent)':'var(--amber)'}">${l.status}</span>
-            ${!l.lat?'<span style="font-size:10px;color:var(--red);margin-left:6px">⚠ No coordinates</span>':''}
           </div>
         </div>
-        <div class="item-actions" onclick="event.stopPropagation()">
+        <div class="item-actions">
           <button class="action-btn action-check ${l.status==='visited'?'done':''}" onclick="toggleLocation(${l.id})">✓</button>
           <button class="action-btn action-edit" onclick="editLocation(${l.id})">✎</button>
           <button class="action-btn action-del" onclick="delLocation(${l.id})">✕</button>
