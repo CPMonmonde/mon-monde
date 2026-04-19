@@ -197,32 +197,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-<!-- PIN GATE -->
-<div id="pin-gate">
-  <div class="pin-gate-wrap">
-    <div class="pin-gate-title">🔒 Private access</div>
-    <div class="pin-gate-sub">Enter your 4-digit PIN</div>
-    <div class="pin-display">
-      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="pin-keypad">
-      <button class="pin-key" onclick="pinPress('1')">1</button>
-      <button class="pin-key" onclick="pinPress('2')">2</button>
-      <button class="pin-key" onclick="pinPress('3')">3</button>
-      <button class="pin-key" onclick="pinPress('4')">4</button>
-      <button class="pin-key" onclick="pinPress('5')">5</button>
-      <button class="pin-key" onclick="pinPress('6')">6</button>
-      <button class="pin-key" onclick="pinPress('7')">7</button>
-      <button class="pin-key" onclick="pinPress('8')">8</button>
-      <button class="pin-key" onclick="pinPress('9')">9</button>
-      <div></div>
-      <button class="pin-key" onclick="pinPress('0')">0</button>
-      <button class="pin-key del" onclick="pinDel()">⌫</button>
-    </div>
-    <div class="pin-error" id="pin-error"></div>
-  </div>
-</div>
+
 
 <!-- MAIN -->
 <div class="main" id="main-content">
@@ -382,7 +357,6 @@ function checkPin(){
   }
 }
 function openMain(){
-  document.getElementById('pin-gate').style.display='none';
   document.getElementById('main-content').classList.add('visible');
   renderAll();
   checkEveningCheckin();
@@ -406,7 +380,7 @@ function switchTab(tab){
     document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
     document.getElementById(`panel-${t}`).classList.toggle('active',t===tab);
   });
-  if(tab==='locations') initMap();
+if(tab==='locations'){ switchLocView(locView); }
   if(tab==='reflect'){ renderReflect(); }
 }
 
@@ -598,10 +572,12 @@ function switchLocView(v){
   document.getElementById('vbtn-map').classList.toggle('active',v==='map');
   document.getElementById('vbtn-list').classList.toggle('active',v==='list');
   const mapEl=document.getElementById('map');
-  mapEl.style.display=v==='map'?'block':'none';
   if(v==='map'){
+    mapEl.style.display='block';
     if(!map) initMap();
-    else setTimeout(()=>map.invalidateSize(),100);
+    else setTimeout(()=>{map.invalidateSize();renderLocationMarkers();},100);
+  } else {
+    mapEl.style.display='none';
   }
   renderLocations();
 }
@@ -997,11 +973,7 @@ function renderAll(){
   selectQACat('link');
 }
 
-if(!localStorage.getItem('mm_vault_pin')){
-  openMain();
-} else {
-  updateDots();
-}
+openMain();
 </script>
 </body>
 </html>
