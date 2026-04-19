@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -24,378 +24,162 @@
     --shadow: 0 2px 12px rgba(0,0,0,0.06);
     --radius: 12px;
   }
-
+ 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100dvh;
-    overflow-x: hidden;
-  }
-
+  body { font-family: 'DM Sans', sans-serif; font-weight: 400; background: var(--bg); color: var(--text); min-height: 100dvh; overflow-x: hidden; }
   .app { max-width: 430px; margin: 0 auto; padding-bottom: 52px; }
-
-  .header {
-    padding: 56px 20px 16px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 14px;
-  }
-
-  .back-btn {
-    display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; cursor: pointer;
-    font-size: 16px; color: var(--text-mid);
-    text-decoration: none; flex-shrink: 0;
-    transition: background 0.15s;
-  }
+ 
+  .header { padding: 56px 20px 16px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+  .back-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-size: 16px; color: var(--text-mid); text-decoration: none; flex-shrink: 0; transition: background 0.15s; }
   .back-btn:active { background: var(--border); }
-
   .header-text { flex: 1; }
-  .header-eyebrow {
-    font-size: 10px; font-weight: 500;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 2px;
-  }
-  .header-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800; font-size: 22px;
-    color: var(--text); letter-spacing: -0.01em;
-  }
-
+  .header-eyebrow { font-size: 10px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+  .header-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: var(--text); letter-spacing: -0.01em; }
+ 
   .sections { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 12px; }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-
-  .card-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px;
-    cursor: pointer; user-select: none;
-    transition: background 0.15s;
-  }
+ 
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; user-select: none; transition: background 0.15s; }
   .card-header:active { background: var(--surface2); }
   .card-header-left { display: flex; align-items: center; gap: 10px; }
-  .card-icon {
-    width: 28px; height: 28px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; background: var(--accent-glow); flex-shrink: 0;
-  }
+  .card-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; background: var(--accent-glow); flex-shrink: 0; }
   .card-title { font-size: 13px; font-weight: 600; color: var(--text); }
   .card-chevron { font-size: 11px; color: var(--text-dim); transition: transform 0.3s ease; }
   .card-chevron.open { transform: rotate(180deg); }
   .card-collapse { overflow: hidden; max-height: 0; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
-  .card-collapse.open { max-height: 3000px; }
-
+  .card-collapse.open { max-height: 4000px; }
+ 
   /* DAY TABS */
-  .day-tabs {
-    display: flex; overflow-x: auto;
-    border-bottom: 1px solid var(--border);
-    scrollbar-width: none;
-  }
+  .day-tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--border); scrollbar-width: none; }
   .day-tabs::-webkit-scrollbar { display: none; }
-  .day-tab {
-    flex-shrink: 0; padding: 10px 14px;
-    font-size: 11px; font-weight: 600;
-    color: var(--text-dim); background: none;
-    border: none; cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s; margin-bottom: -1px;
-  }
+  .day-tab { flex-shrink: 0; padding: 10px 14px; font-size: 11px; font-weight: 600; color: var(--text-dim); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; }
   .day-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
   .day-tab.has-meal { color: var(--text-mid); }
-
+ 
   /* MEAL VIEW */
   .meal-view { padding: 16px; }
   .meal-slot { margin-bottom: 20px; }
   .meal-slot:last-child { margin-bottom: 0; }
-  .meal-slot-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .meal-slot-label {
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
-  }
+  .meal-slot-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .meal-slot-label { font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
   .meal-slot-right { display: flex; align-items: center; gap: 8px; }
   .meal-kcal-badge { font-size: 11px; font-weight: 500; color: var(--text-dim); }
-  .meal-edit-btn {
-    font-size: 11px; font-weight: 600;
-    color: var(--accent); background: var(--accent-glow);
-    border: 1px solid rgba(58,148,99,0.2);
-    border-radius: 6px; padding: 3px 8px;
-    cursor: pointer; transition: opacity 0.2s;
-  }
+  .meal-edit-btn { font-size: 11px; font-weight: 600; color: var(--accent); background: var(--accent-glow); border: 1px solid rgba(58,148,99,0.2); border-radius: 6px; padding: 3px 8px; cursor: pointer; transition: opacity 0.2s; }
   .meal-edit-btn:hover { opacity: 0.8; }
-  .meal-card-inner {
-    background: var(--surface2); border-radius: 10px;
-    padding: 14px; border: 1px solid var(--border);
-  }
+  .meal-card-inner { background: var(--surface2); border-radius: 10px; padding: 14px; border: 1px solid var(--border); }
   .meal-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
   .meal-macros { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-  .macro-pill {
-    font-size: 11px; font-weight: 500;
-    padding: 2px 8px; border-radius: 20px;
-    background: var(--accent-glow); color: var(--accent);
-  }
+  .macro-pill { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; background: var(--accent-glow); color: var(--accent); }
   .meal-ingredients { font-size: 12px; color: var(--text-mid); line-height: 1.6; margin-bottom: 10px; }
-  .meal-instructions-toggle {
-    font-size: 11px; font-weight: 600;
-    color: var(--accent); cursor: pointer;
-    background: none; border: none; padding: 0;
-  }
-  .meal-instructions {
-    font-size: 12px; color: var(--text-mid);
-    line-height: 1.7; margin-top: 10px;
-    padding-top: 10px; border-top: 1px solid var(--border);
-    display: none;
-  }
+  .meal-instructions-toggle { font-size: 11px; font-weight: 600; color: var(--accent); cursor: pointer; background: none; border: none; padding: 0; }
+  .meal-instructions { font-size: 12px; color: var(--text-mid); line-height: 1.7; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: none; }
   .meal-instructions.visible { display: block; }
-  .meal-empty-slot {
-    background: var(--surface2); border-radius: 10px; padding: 20px;
-    border: 1px dashed var(--border-strong);
-    text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px;
-  }
+  .meal-empty-slot { background: var(--surface2); border-radius: 10px; padding: 20px; border: 1px dashed var(--border-strong); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
   .meal-empty-slot p { font-size: 12px; font-style: italic; color: var(--text-dim); }
-  .day-total {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0 0; border-top: 1px solid var(--border); margin-top: 8px;
-  }
+  .day-total { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 0; border-top: 1px solid var(--border); margin-top: 8px; }
   .day-total-label { font-size: 11px; font-weight: 600; color: var(--text-mid); }
   .day-total-val { font-size: 14px; font-weight: 700; color: var(--accent); }
-
+ 
   /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 100;
-    background: rgba(0,0,0,0.4);
-    display: flex; align-items: flex-end;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.25s;
-  }
+  .modal-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.4); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
   .modal-overlay.visible { opacity: 1; pointer-events: all; }
-  .modal {
-    width: 100%; max-width: 430px; margin: 0 auto;
-    background: var(--surface);
-    border-radius: 20px 20px 0 0;
-    padding: 20px 20px 40px;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    max-height: 88vh; overflow-y: auto;
-  }
+  .modal { width: 100%; max-width: 430px; margin: 0 auto; background: var(--surface); border-radius: 20px 20px 0 0; padding: 20px 20px 40px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); max-height: 88vh; overflow-y: auto; }
   .modal-overlay.visible .modal { transform: translateY(0); }
-  .modal-handle {
-    width: 36px; height: 4px;
-    background: var(--border-strong); border-radius: 2px;
-    margin: 0 auto 16px;
-  }
+  .modal-handle { width: 36px; height: 4px; background: var(--border-strong); border-radius: 2px; margin: 0 auto 16px; }
   .modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
-
-  .modal-tabs {
-    display: flex; border-bottom: 1px solid var(--border); margin-bottom: 16px;
-  }
-  .modal-tab {
-    flex: 1; padding: 10px;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--text-dim); background: none;
-    border: none; cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s; margin-bottom: -1px;
-  }
+  .modal-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .modal-tab { flex: 1; padding: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); background: none; border: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; }
   .modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
   .modal-field { margin-bottom: 14px; }
-  .modal-label {
-    font-size: 11px; font-weight: 600;
-    color: var(--text-mid); letter-spacing: 0.08em;
-    text-transform: uppercase; margin-bottom: 6px; display: block;
-  }
-  .modal-input, .modal-textarea, .modal-select {
-    width: 100%; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 12px; font-family: 'DM Sans', sans-serif;
-    font-size: 13px; color: var(--text); outline: none;
-    transition: border-color 0.2s;
-  }
+  .modal-label { font-size: 11px; font-weight: 600; color: var(--text-mid); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .modal-input, .modal-textarea, .modal-select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s; }
   .modal-input:focus, .modal-textarea:focus, .modal-select:focus { border-color: var(--accent); }
   .modal-textarea { min-height: 80px; resize: vertical; }
   .modal-row { display: flex; gap: 10px; }
   .modal-row .modal-field { flex: 1; }
   .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-  .modal-cancel {
-    flex: 1; padding: 12px;
-    font-size: 13px; font-weight: 600;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 10px; cursor: pointer; color: var(--text-mid);
-  }
-  .modal-save {
-    flex: 2; padding: 12px;
-    font-size: 13px; font-weight: 600;
-    background: var(--accent); border: none;
-    border-radius: 10px; cursor: pointer; color: #fff;
-  }
-  .move-info {
-    font-size: 13px; color: var(--text-mid);
-    line-height: 1.6; margin-bottom: 16px;
-    padding: 12px; background: var(--surface2);
-    border-radius: 8px; border: 1px solid var(--border);
-  }
-
+  .modal-cancel { flex: 1; padding: 12px; font-size: 13px; font-weight: 600; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; color: var(--text-mid); }
+  .modal-save { flex: 2; padding: 12px; font-size: 13px; font-weight: 600; background: var(--accent); border: none; border-radius: 10px; cursor: pointer; color: #fff; }
+  .move-info { font-size: 13px; color: var(--text-mid); line-height: 1.6; margin-bottom: 16px; padding: 12px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); }
+ 
   /* COURSES */
   .courses-body { padding: 14px 16px; }
   .rayon { margin-bottom: 18px; }
   .rayon:last-child { margin-bottom: 0; }
-  .rayon-title {
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 8px;
-    padding-bottom: 6px; border-bottom: 1px solid var(--border);
-  }
-  .course-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 0; border-bottom: 1px solid var(--border);
-  }
+  .rayon-title { font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .course-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
   .course-item:last-child { border-bottom: none; }
-  .course-box {
-    width: 18px; height: 18px;
-    border: 1.5px solid var(--border-strong); border-radius: 5px;
-    flex-shrink: 0; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s; background: transparent;
-  }
+  .course-box { width: 18px; height: 18px; border: 1.5px solid var(--border-strong); border-radius: 5px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; background: transparent; }
   .course-box.done { background: var(--accent); border-color: var(--accent); }
   .course-box.done::after { content:'✓'; font-size:10px; color:#fff; font-weight:700; }
   .course-label { font-size: 13px; color: var(--text); flex: 1; }
   .course-label.done { opacity:0.35; text-decoration:line-through; text-decoration-color:var(--accent); }
-  .course-del {
-    font-size: 12px; color: var(--text-dim); cursor: pointer;
-    opacity: 0.4; padding: 4px; background: none; border: none;
-  }
+  .course-del { font-size: 12px; color: var(--text-dim); cursor: pointer; opacity: 0.4; padding: 4px; background: none; border: none; }
   .course-del:hover { opacity: 1; }
   .course-empty { font-size: 13px; font-style: italic; color: var(--text-dim); text-align: center; padding: 12px 0; }
   .course-actions { display: flex; gap: 10px; margin-top: 14px; }
-  .course-action-btn {
-    flex: 1; padding: 10px;
-    font-size: 11px; font-weight: 600;
-    border-radius: 8px; cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface2); color: var(--text-mid);
-    transition: all 0.2s;
-  }
+  .course-action-btn { flex: 1; padding: 10px; font-size: 11px; font-weight: 600; border-radius: 8px; cursor: pointer; border: 1px solid var(--border); background: var(--surface2); color: var(--text-mid); transition: all 0.2s; }
   .course-action-btn:hover { background: var(--accent-glow); color: var(--accent); border-color: rgba(58,148,99,0.2); }
   .course-action-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
   .course-action-btn.primary:hover { opacity: 0.9; }
   .course-add-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
-  .course-add-input {
-    flex: 1; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 9px 12px; font-family: 'DM Sans', sans-serif;
-    font-size: 13px; color: var(--text); outline: none;
-  }
+  .course-add-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); outline: none; }
   .course-add-input::placeholder { color: var(--text-dim); }
   .course-add-input:focus { border-color: var(--accent); }
-  .course-add-btn {
-    width: 36px; height: 36px;
-    background: var(--accent); border: none; border-radius: 8px;
-    color: #fff; font-size: 22px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-weight: 300;
-  }
-
+  .course-add-btn { width: 36px; height: 36px; background: var(--accent); border: none; border-radius: 8px; color: #fff; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 300; }
+ 
   /* WORKOUT */
   .workout-body { padding: 14px 16px; }
-  .steps-section {
-    background: var(--surface2); border-radius: 10px;
-    padding: 14px; border: 1px solid var(--border); margin-bottom: 16px;
-  }
-  .steps-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .steps-label { font-size: 12px; font-weight: 600; color: var(--text-mid); }
-  .steps-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); }
-  .steps-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .steps-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.5s ease; }
-  .steps-target { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
-  .steps-input-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
-  .steps-input {
-    flex: 1; background: var(--surface);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 8px 12px; font-family: 'DM Sans', sans-serif;
-    font-size: 13px; color: var(--text); outline: none;
-  }
-  .steps-input:focus { border-color: var(--accent); }
-  .steps-save-btn {
-    padding: 8px 14px;
-    background: var(--accent); border: none; border-radius: 8px;
-    color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;
-  }
-  .sessions-label {
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 10px;
-  }
-  .session-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 0; border-bottom: 1px solid var(--border);
-  }
+  .sessions-label { font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .session-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
   .session-item:last-child { border-bottom: none; }
-  .session-check {
-    width: 28px; height: 28px; border-radius: 50%;
-    border: 1.5px solid var(--border-strong);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: all 0.15s;
-    background: var(--surface2); flex-shrink: 0;
-  }
+  .session-check { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border-strong); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s; background: var(--surface2); flex-shrink: 0; }
   .session-check.done { background: var(--accent); border-color: var(--accent); }
   .session-check.done::after { content:'✓'; font-size:11px; color:#fff; font-weight:700; }
   .session-info { flex: 1; }
   .session-name { font-size: 13px; font-weight: 500; color: var(--text); }
   .session-time { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
-
+ 
+  /* VIDEO CARDS */
+  .video-card { display: flex; gap: 12px; align-items: center; background: var(--surface2); border-radius: 10px; padding: 12px; border: 1px solid var(--border); margin-bottom: 10px; text-decoration: none; }
+  .video-card:last-child { margin-bottom: 0; }
+  .video-thumb { width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+  .video-thumb.pilates { background: #f3e8ff; }
+  .video-thumb.strength { background: #e8f4ff; }
+  .video-info { flex: 1; }
+  .video-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .video-meta { font-size: 11px; color: var(--text-dim); }
+  .video-arrow { font-size: 14px; color: var(--accent); opacity: 0.7; }
+  .video-channel-link { display: block; text-align: center; font-size: 11px; font-weight: 600; color: var(--accent); padding: 8px 0 2px; text-decoration: none; }
+ 
+  /* SUGGESTION */
+  .suggestion-card { display: flex; gap: 12px; align-items: flex-start; background: var(--surface2); border-radius: 10px; padding: 14px; border: 1px solid var(--border); }
+  .suggestion-emoji { font-size: 24px; flex-shrink: 0; }
+  .suggestion-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .suggestion-text { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
+ 
   /* REFRESH */
-  .refresh-btn {
-    display: flex; align-items: center; gap: 6px;
-    background: none; border: none; cursor: pointer;
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); padding: 0;
-    opacity: 0.7; transition: opacity 0.2s;
-  }
+  .refresh-btn { display: flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); padding: 0; opacity: 0.7; transition: opacity 0.2s; }
   .refresh-btn:hover { opacity: 1; }
   .refresh-btn.spinning svg { animation: spin 1s linear infinite; }
   @keyframes spin { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
-
+ 
   /* SHIMMER */
-  .shimmer {
-    height: 12px; border-radius: 6px;
-    background: linear-gradient(90deg, var(--surface2) 25%, #e8e8e4 50%, var(--surface2) 75%);
-    background-size: 200% 100%;
-    animation: shim 1.4s infinite; margin-bottom: 8px;
-  }
+  .shimmer { height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--surface2) 25%, #e8e8e4 50%, var(--surface2) 75%); background-size: 200% 100%; animation: shim 1.4s infinite; margin-bottom: 8px; }
   .shimmer:nth-child(2){width:72%;animation-delay:0.1s;}
   .shimmer:nth-child(3){width:52%;animation-delay:0.2s;}
   @keyframes shim{0%{background-position:200% center;}100%{background-position:-200% center;}}
-
-  .footer {
-    padding: 28px 20px 10px;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-  }
+ 
+  .footer { padding: 28px 20px 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .footer-line { width:20px; height:1px; background:var(--accent); opacity:0.2; }
   .footer-text { font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-dim); }
   .error-note { font-size: 12px; font-style: italic; color: var(--text-dim); line-height: 1.6; text-align: center; padding: 12px 0; }
 </style>
 </head>
 <body>
-
+ 
 <div class="app">
-
+ 
   <div class="header">
     <a class="back-btn" href="index.html">←</a>
     <div class="header-text">
@@ -403,9 +187,9 @@
       <div class="header-title">Food & Wellness</div>
     </div>
   </div>
-
+ 
   <div class="sections">
-
+ 
     <!-- MEAL PLANNER -->
     <div class="card">
       <div class="card-header" onclick="toggle('meals')">
@@ -433,7 +217,7 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- COURSES -->
     <div class="card">
       <div class="card-header" onclick="toggle('courses')">
@@ -461,7 +245,7 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- WORKOUT -->
     <div class="card">
       <div class="card-header" onclick="toggle('workout')">
@@ -473,48 +257,48 @@
       </div>
       <div class="card-collapse open" id="col-workout">
         <div class="workout-body">
-          <div class="steps-section">
-            <div class="steps-header">
-              <div class="steps-label">Daily Steps</div>
-              <div class="steps-val" id="steps-val">—</div>
-            </div>
-            <div class="steps-bar">
-              <div class="steps-fill" id="steps-fill" style="width:0%"></div>
-            </div>
-            <div class="steps-target" id="steps-target">Goal: 10,000 steps</div>
-            <div class="steps-input-row">
-              <input class="steps-input" id="steps-input" type="number" placeholder="Enter today's steps"/>
-              <button class="steps-save-btn" onclick="saveSteps()">Save</button>
-            </div>
-          </div>
+ 
+          <!-- SESSIONS -->
           <div class="sessions-label">This Week's Sessions</div>
           <div id="sessions-list"></div>
+ 
+          <!-- TODAY'S SUGGESTION -->
+          <div class="sessions-label" style="margin-top:20px">Today's Suggestion</div>
+          <div id="workout-suggestion"></div>
+ 
+          <!-- PILATES -->
+          <div class="sessions-label" style="margin-top:20px">Pilates — Lidia Mera</div>
+          <div id="pilates-video"></div>
+          <a class="video-channel-link" href="https://www.youtube.com/@lidiavmera" target="_blank">View all videos on her channel →</a>
+ 
+          <!-- STRENGTH -->
+          <div class="sessions-label" style="margin-top:20px">Strength & Machines</div>
+          <div id="strength-video"></div>
+          <a class="video-channel-link" href="https://www.youtube.com/playlist?list=PL8g6gl_0gxxWUwLzfGqA54lFAg4ImJJ5E" target="_blank">View full playlist →</a>
+ 
         </div>
       </div>
     </div>
-
+ 
   </div>
-
+ 
   <div class="footer">
     <div class="footer-line"></div>
     <div class="footer-text">Mon Monde</div>
     <div class="footer-line"></div>
   </div>
-
+ 
 </div>
-
+ 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modal-title">Edit meal</div>
-
     <div class="modal-tabs">
       <button class="modal-tab active" id="tab-edit" onclick="switchModalTab('edit')">✎ Edit manually</button>
       <button class="modal-tab" id="tab-move" onclick="switchModalTab('move')">↕ Move to another day</button>
     </div>
-
-    <!-- EDIT PANEL -->
     <div id="panel-edit">
       <div class="modal-field">
         <label class="modal-label">Meal name</label>
@@ -543,38 +327,35 @@
         <button class="modal-save" onclick="saveMealEdit()">Save meal</button>
       </div>
     </div>
-
-    <!-- MOVE PANEL -->
     <div id="panel-move" style="display:none">
       <div class="move-info" id="move-info">—</div>
       <div class="modal-field">
-        <label class="modal-label">Move to</label>
+        <label class="modal-label">Swap with</label>
         <select class="modal-select" id="move-target">
           <option value="">Select a slot...</option>
         </select>
       </div>
       <p style="font-size:12px;color:var(--text-dim);line-height:1.6;margin-top:-8px;margin-bottom:16px">
-        The original slot will become empty. If the destination already has a meal, it will be replaced.
+        The two meals will be swapped. If the destination is empty, this meal moves there.
       </p>
       <div class="modal-actions">
         <button class="modal-cancel" onclick="closeModalDirect()">Cancel</button>
-        <button class="modal-save" onclick="saveMealMove()">Move meal</button>
+        <button class="modal-save" onclick="saveMealMove()">Swap meal</button>
       </div>
     </div>
-
   </div>
 </div>
-
+ 
 <script>
 const JSONBIN_KEY   = '$2a$10$b1sZOEorOZe/J3lnVyWXBOHZ01cxVreTm3JVQuE38AIrRMhk/31iW';
 const JSONBIN_MEALS = '69e3c35e36566621a8c928f4';
-
-const DAYS    = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
-const DAYS_FR = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+ 
+const DAYS      = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+const DAYS_FR   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const DAYS_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const TODAY_IDX  = (new Date().getDay() + 6) % 7;
 const TODAY_DATE = new Date().toISOString().split('T')[0];
-
+ 
 const S = {
   meals: null,
   currentDay: TODAY_IDX,
@@ -582,95 +363,68 @@ const S = {
   editingSlot: null,
   courses: JSON.parse(localStorage.getItem('mm_courses') || '[]'),
   workout: JSON.parse(localStorage.getItem('mm_workout') || '{}'),
-  steps: JSON.parse(localStorage.getItem('mm_steps') || '{}')
 };
-
-// ── TOGGLE ────────────────────────────────────────────
+ 
+// ── TOGGLE ──────────────────────────────────────────
 function toggle(id) {
   const col = document.getElementById(`col-${id}`);
   const chev = document.getElementById(`chev-${id}`);
   col.classList.toggle('open');
   chev.classList.toggle('open');
 }
-
-// ── MEALS ─────────────────────────────────────────────
+ 
+// ── MEALS ────────────────────────────────────────────
 async function loadMeals(force=false) {
   const cached = localStorage.getItem('mm_meals');
   if (cached && !force) {
     S.meals = JSON.parse(cached);
-    renderDayTabs();
-    renderMealView();
-    pushTodayToHome();
-    return;
+    renderDayTabs(); renderMealView(); pushTodayToHome(); return;
   }
   try {
-    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_MEALS}/latest`, {
-      headers: { 'X-Master-Key': JSONBIN_KEY }
-    });
+    const r = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_MEALS}/latest`, { headers: { 'X-Master-Key': JSONBIN_KEY } });
     const d = await r.json();
     if (d?.record?.meals) {
       S.meals = d.record;
       localStorage.setItem('mm_meals', JSON.stringify(S.meals));
-      renderDayTabs();
-      renderMealView();
-      pushTodayToHome();
-    } else {
-      renderEmptyMeals();
-    }
-  } catch {
-    renderEmptyMeals();
-  }
+      renderDayTabs(); renderMealView(); pushTodayToHome();
+    } else renderEmptyMeals();
+  } catch { renderEmptyMeals(); }
 }
-
+ 
 function renderEmptyMeals() {
-  document.getElementById('meal-view').innerHTML =
-    '<div class="error-note">No meal plan yet.<br/>Run your shortcut to generate this week\'s plan.</div>';
+  document.getElementById('meal-view').innerHTML = '<div class="error-note">No meal plan yet.<br/>Run your shortcut to generate this week\'s plan.</div>';
   renderDayTabs();
 }
-
+ 
 function renderDayTabs() {
   document.getElementById('day-tabs').innerHTML = DAYS.map((d, i) => {
     const hasMeal = S.meals?.meals?.[d]?.lunch?.name || S.meals?.meals?.[d]?.dinner?.name;
-    return `<button class="day-tab ${hasMeal?'has-meal':''} ${i===S.currentDay?'active':''}"
-      onclick="switchDay(${i})">${DAYS_FR[i]}</button>`;
+    return `<button class="day-tab ${hasMeal?'has-meal':''} ${i===S.currentDay?'active':''}" onclick="switchDay(${i})">${DAYS_FR[i]}</button>`;
   }).join('');
 }
-
-function switchDay(i) {
-  S.currentDay = i;
-  renderDayTabs();
-  renderMealView();
-}
-
+ 
+function switchDay(i) { S.currentDay = i; renderDayTabs(); renderMealView(); }
+ 
 function renderMealView() {
   const el = document.getElementById('meal-view');
   const day = DAYS[S.currentDay];
   const dayMeals = S.meals?.meals?.[day];
   const lunch = dayMeals?.lunch || null;
   const dinner = dayMeals?.dinner || null;
-  const total = (lunch?.kcal || 0) + (dinner?.kcal || 0);
-
+  const total = (lunch?.kcal||0) + (dinner?.kcal||0);
   el.innerHTML = `
     ${renderMealSlot('Midi', lunch, day, 'lunch')}
     ${renderMealSlot('Soir', dinner, day, 'dinner')}
-    ${total > 0 ? `<div class="day-total">
-      <div class="day-total-label">Total du jour</div>
-      <div class="day-total-val">${total} kcal</div>
-    </div>` : ''}`;
+    ${total > 0 ? `<div class="day-total"><div class="day-total-label">Total du jour</div><div class="day-total-val">${total} kcal</div></div>` : ''}`;
 }
-
+ 
 function renderMealSlot(label, meal, dayKey, slot) {
   if (!meal || !meal.name) {
-    return `<div class="meal-slot">
-      <div class="meal-slot-header"><div class="meal-slot-label">${label}</div></div>
-      <div class="meal-empty-slot">
-        <p>Not planned yet</p>
-        <button class="meal-edit-btn" onclick="openModal('${dayKey}','${slot}')">+ Add manually</button>
-      </div>
-    </div>`;
+    return `<div class="meal-slot"><div class="meal-slot-header"><div class="meal-slot-label">${label}</div></div>
+      <div class="meal-empty-slot"><p>Not planned yet</p>
+      <button class="meal-edit-btn" onclick="openModal('${dayKey}','${slot}')">+ Add manually</button></div></div>`;
   }
-  const ingredients = Array.isArray(meal.ingredients)
-    ? meal.ingredients.join(', ') : (meal.ingredients || '');
+  const ingredients = Array.isArray(meal.ingredients) ? meal.ingredients.join(', ') : (meal.ingredients||'');
   return `<div class="meal-slot">
     <div class="meal-slot-header">
       <div class="meal-slot-label">${label}</div>
@@ -681,53 +435,38 @@ function renderMealSlot(label, meal, dayKey, slot) {
     </div>
     <div class="meal-card-inner">
       <div class="meal-name">${meal.name}</div>
-      <div class="meal-macros">
-        <div class="macro-pill">${meal.kcal||0} kcal</div>
-        <div class="macro-pill">${meal.protein||0}g protein</div>
-      </div>
+      <div class="meal-macros"><div class="macro-pill">${meal.kcal||0} kcal</div><div class="macro-pill">${meal.protein||0}g protein</div></div>
       <div class="meal-ingredients">${ingredients}</div>
       <button class="meal-instructions-toggle" onclick="toggleInstructions('${dayKey}-${slot}')">↓ View instructions</button>
       <div class="meal-instructions" id="instr-${dayKey}-${slot}">${meal.instructions||'No instructions available.'}</div>
     </div>
   </div>`;
 }
-
+ 
 function toggleInstructions(id) {
   const el = document.getElementById(`instr-${id}`);
   el.classList.toggle('visible');
-  el.previousElementSibling.textContent = el.classList.contains('visible')
-    ? '↑ Hide instructions' : '↓ View instructions';
+  el.previousElementSibling.textContent = el.classList.contains('visible') ? '↑ Hide instructions' : '↓ View instructions';
 }
-
+ 
 function pushTodayToHome() {
   if (!S.meals?.meals) return;
   const todayMeals = S.meals.meals[DAYS[TODAY_IDX]];
   if (todayMeals) localStorage.setItem('mm_today_meals', JSON.stringify(todayMeals));
 }
-
-// ── MODAL ─────────────────────────────────────────────
+ 
+// ── MODAL ────────────────────────────────────────────
 function openModal(dayKey, slot) {
-  S.editingDay = dayKey;
-  S.editingSlot = slot;
+  S.editingDay = dayKey; S.editingSlot = slot;
   const meal = S.meals?.meals?.[dayKey]?.[slot];
   const slotLabel = slot === 'lunch' ? 'Midi' : 'Soir';
-  const dayLabel = DAYS_FULL[DAYS.indexOf(dayKey)];
-
-  document.getElementById('modal-title').textContent = `${dayLabel} — ${slotLabel}`;
-
-  // Fill edit panel
-  document.getElementById('edit-name').value = meal?.name || '';
-  document.getElementById('edit-kcal').value = meal?.kcal || '';
-  document.getElementById('edit-protein').value = meal?.protein || '';
-  document.getElementById('edit-ingredients').value = Array.isArray(meal?.ingredients)
-    ? meal.ingredients.join('\n') : (meal?.ingredients || '');
-  document.getElementById('edit-instructions').value = meal?.instructions || '';
-
-  // Fill move panel
-  document.getElementById('move-info').textContent = meal?.name
-    ? `Moving: "${meal.name}" (${meal.kcal||0} kcal)`
-    : 'This slot is empty — nothing to move.';
-
+  document.getElementById('modal-title').textContent = `${DAYS_FULL[DAYS.indexOf(dayKey)]} — ${slotLabel}`;
+  document.getElementById('edit-name').value = meal?.name||'';
+  document.getElementById('edit-kcal').value = meal?.kcal||'';
+  document.getElementById('edit-protein').value = meal?.protein||'';
+  document.getElementById('edit-ingredients').value = Array.isArray(meal?.ingredients) ? meal.ingredients.join('\n') : (meal?.ingredients||'');
+  document.getElementById('edit-instructions').value = meal?.instructions||'';
+  document.getElementById('move-info').textContent = meal?.name ? `Swapping: "${meal.name}"` : 'Slot is empty — use Edit to add a meal.';
   const select = document.getElementById('move-target');
   select.innerHTML = '<option value="">Select destination...</option>';
   DAYS.forEach((d, i) => {
@@ -739,74 +478,52 @@ function openModal(dayKey, slot) {
       select.innerHTML += `<option value="${d}|${s}">${DAYS_FULL[i]} ${slotName}${mealName}</option>`;
     });
   });
-
   switchModalTab('edit');
   document.getElementById('modal-overlay').classList.add('visible');
 }
-
+ 
 function switchModalTab(tab) {
-  document.getElementById('panel-edit').style.display = tab === 'edit' ? 'block' : 'none';
-  document.getElementById('panel-move').style.display = tab === 'move' ? 'block' : 'none';
-  document.getElementById('tab-edit').classList.toggle('active', tab === 'edit');
-  document.getElementById('tab-move').classList.toggle('active', tab === 'move');
+  document.getElementById('panel-edit').style.display = tab==='edit'?'block':'none';
+  document.getElementById('panel-move').style.display = tab==='move'?'block':'none';
+  document.getElementById('tab-edit').classList.toggle('active', tab==='edit');
+  document.getElementById('tab-move').classList.toggle('active', tab==='move');
 }
-
-function closeModal(event) {
-  if (event.target === document.getElementById('modal-overlay')) closeModalDirect();
-}
-
-function closeModalDirect() {
-  document.getElementById('modal-overlay').classList.remove('visible');
-  S.editingDay = null;
-  S.editingSlot = null;
-}
-
+ 
+function closeModal(e) { if (e.target===document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('visible'); S.editingDay=null; S.editingSlot=null; }
+ 
 function saveMealEdit() {
   const name = document.getElementById('edit-name').value.trim();
   if (!name) { alert('Please enter a meal name.'); return; }
   const meal = {
     name,
-    kcal: parseInt(document.getElementById('edit-kcal').value) || 0,
-    protein: parseInt(document.getElementById('edit-protein').value) || 0,
-    ingredients: document.getElementById('edit-ingredients').value
-      .split('\n').map(i => i.trim()).filter(Boolean),
+    kcal: parseInt(document.getElementById('edit-kcal').value)||0,
+    protein: parseInt(document.getElementById('edit-protein').value)||0,
+    ingredients: document.getElementById('edit-ingredients').value.split('\n').map(i=>i.trim()).filter(Boolean),
     instructions: document.getElementById('edit-instructions').value.trim()
   };
   if (!S.meals) S.meals = { meals: {} };
   if (!S.meals.meals[S.editingDay]) S.meals.meals[S.editingDay] = {};
   S.meals.meals[S.editingDay][S.editingSlot] = meal;
   localStorage.setItem('mm_meals', JSON.stringify(S.meals));
-  pushTodayToHome();
-  renderDayTabs();
-  renderMealView();
-  closeModalDirect();
+  pushTodayToHome(); renderDayTabs(); renderMealView(); closeModalDirect();
 }
-
+ 
 function saveMealMove() {
   const target = document.getElementById('move-target').value;
   if (!target) { alert('Please select a destination.'); return; }
   const meal = S.meals?.meals?.[S.editingDay]?.[S.editingSlot];
-  if (!meal?.name) { alert('Nothing to move from this slot.'); return; }
+  if (!meal?.name) { alert('Nothing to swap — use Edit tab to add a meal.'); return; }
   const [targetDay, targetSlot] = target.split('|');
   if (!S.meals.meals[targetDay]) S.meals.meals[targetDay] = {};
-
-  // Swap — save destination meal first
-  const destinationMeal = S.meals.meals[targetDay][targetSlot] || null;
-
-  // Put original meal in destination
+  const destMeal = S.meals.meals[targetDay][targetSlot] || null;
   S.meals.meals[targetDay][targetSlot] = { ...meal };
-
-  // Put destination meal in original slot (swap!)
-  S.meals.meals[S.editingDay][S.editingSlot] = destinationMeal;
-
+  S.meals.meals[S.editingDay][S.editingSlot] = destMeal;
   localStorage.setItem('mm_meals', JSON.stringify(S.meals));
-  pushTodayToHome();
-  renderDayTabs();
-  renderMealView();
-  closeModalDirect();
+  pushTodayToHome(); renderDayTabs(); renderMealView(); closeModalDirect();
 }
-
-// ── COURSES ───────────────────────────────────────────
+ 
+// ── COURSES ──────────────────────────────────────────
 function categorize(ing) {
   const i = ing.toLowerCase();
   if (/poulet|saumon|thon|cabillaud|crevette|viande|bœuf|boeuf|porc|agneau|steak|filet/.test(i)) return 'Viandes & Poissons';
@@ -818,7 +535,7 @@ function categorize(ing) {
   if (/pomme|poire|banane|orange|citron|fraise|framboise|myrtille|raisin|mangue|kiwi|pêche|abricot/.test(i)) return 'Fruits & Légumes';
   return 'Autres';
 }
-
+ 
 function generateCourses() {
   if (!S.meals?.meals) { alert('No meal plan loaded. Please refresh first.'); return; }
   const allIng = new Set();
@@ -835,67 +552,87 @@ function generateCourses() {
   S.courses = [...[...allIng].map(ing => ({ text: ing, done: false, rayon: categorize(ing), manual: false })), ...manual];
   saveCourses(); renderCourses();
 }
-
+ 
 function saveCourses() { localStorage.setItem('mm_courses', JSON.stringify(S.courses)); }
-
+ 
 function renderCourses() {
   const el = document.getElementById('courses-list');
   if (!S.courses.length) { el.innerHTML = '<div class="course-empty">La liste est vide.</div>'; return; }
   const byRayon = {};
-  S.courses.forEach((c, i) => {
-    const r = c.rayon || 'Autres';
-    if (!byRayon[r]) byRayon[r] = [];
-    byRayon[r].push({...c, idx: i});
-  });
+  S.courses.forEach((c, i) => { const r = c.rayon||'Autres'; if (!byRayon[r]) byRayon[r]=[]; byRayon[r].push({...c,idx:i}); });
   const order = ['Fruits & Légumes','Viandes & Poissons','Produits Laitiers & Œufs','Épicerie sèche','Surgelés','Autres'];
   el.innerHTML = order.filter(r => byRayon[r]?.length).map(r => `
-    <div class="rayon">
-      <div class="rayon-title">${r}</div>
-      ${byRayon[r].map(c => `
-        <div class="course-item">
-          <div class="course-box ${c.done?'done':''}" onclick="toggleCourse(${c.idx})"></div>
-          <div class="course-label ${c.done?'done':''}">${c.text}</div>
-          <button class="course-del" onclick="delCourse(${c.idx})">✕</button>
-        </div>`).join('')}
+    <div class="rayon"><div class="rayon-title">${r}</div>
+    ${byRayon[r].map(c => `
+      <div class="course-item">
+        <div class="course-box ${c.done?'done':''}" onclick="toggleCourse(${c.idx})"></div>
+        <div class="course-label ${c.done?'done':''}">${c.text}</div>
+        <button class="course-del" onclick="delCourse(${c.idx})">✕</button>
+      </div>`).join('')}
     </div>`).join('');
 }
-
+ 
 function addCourse() {
   const inp = document.getElementById('course-input');
   const v = inp.value.trim(); if (!v) return;
   S.courses.push({ text: v, done: false, rayon: categorize(v), manual: true });
-  saveCourses(); renderCourses();
-  inp.value = ''; inp.focus();
+  saveCourses(); renderCourses(); inp.value=''; inp.focus();
 }
-function toggleCourse(i) { S.courses[i].done = !S.courses[i].done; saveCourses(); renderCourses(); }
-function delCourse(i) { S.courses.splice(i, 1); saveCourses(); renderCourses(); }
-function clearDone() { S.courses = S.courses.filter(c => !c.done); saveCourses(); renderCourses(); }
-
-// ── WORKOUT ───────────────────────────────────────────
+function toggleCourse(i) { S.courses[i].done=!S.courses[i].done; saveCourses(); renderCourses(); }
+function delCourse(i) { S.courses.splice(i,1); saveCourses(); renderCourses(); }
+function clearDone() { S.courses=S.courses.filter(c=>!c.done); saveCourses(); renderCourses(); }
+ 
+// ── WORKOUT ──────────────────────────────────────────
 const SESSIONS = [
-  { id: 'mon',   label: 'Neoness',       time: 'Monday · Any time' },
-  { id: 'wed',   label: 'Neoness',       time: 'Wednesday · Any time' },
-  { id: 'wkd',   label: 'Neoness',       time: 'Weekend · 12:00–13:00' },
-  { id: 'extra', label: 'Extra session', time: 'Your choice' }
+  { id:'mon',   label:'Neoness',       time:'Monday · Any time' },
+  { id:'wed',   label:'Neoness',       time:'Wednesday · Any time' },
+  { id:'wkd',   label:'Neoness',       time:'Weekend · 12:00–13:00' },
+  { id:'extra', label:'Extra session', time:'Your choice' }
 ];
-
+ 
+const DAY_SUGGESTIONS = [
+  { emoji:'💪', type:'Neoness',  text:'Strength or cardio class at Neoness today. Try something you haven\'t done before.' },
+  { emoji:'💪', type:'Neoness',  text:'Neoness session today — great day for a machine circuit or group class.' },
+  { emoji:'🪷', type:'Pilates',  text:'Perfect Pilates day at home with Lidia Mera. Even 20 min makes a difference.' },
+  { emoji:'💪', type:'Neoness',  text:'Midweek Neoness session — keep the momentum going.' },
+  { emoji:'🪷', type:'Pilates',  text:'Pilates or light stretch at home. Focus on core and mobility.' },
+  { emoji:'🚶', type:'Recovery', text:'Active recovery today — a walk outside or gentle stretching.' },
+  { emoji:'🏋️', type:'Neoness',  text:'Weekend Neoness session — your 12:00–13:00 slot!' },
+];
+ 
+// Pilates videos — rotating by day of month
+const PILATES_VIDEOS = [
+  { title:'30 min Full Body Pilates', duration:'30 min', level:'All levels' },
+  { title:'20 min Core & Abs Pilates', duration:'20 min', level:'Beginner friendly' },
+  { title:'25 min Pilates for Strength', duration:'25 min', level:'Intermediate' },
+  { title:'15 min Morning Pilates Flow', duration:'15 min', level:'All levels' },
+  { title:'40 min Lower Body Pilates', duration:'40 min', level:'Intermediate' },
+  { title:'20 min Pilates Arms & Shoulders', duration:'20 min', level:'All levels' },
+  { title:'30 min Pilates for Flexibility', duration:'30 min', level:'All levels' },
+];
+ 
+const STRENGTH_VIDEOS = [
+  { title:'Machine Circuit — Full Body', duration:'45 min', focus:'Full body' },
+  { title:'Machine Circuit — Lower Body', duration:'40 min', focus:'Legs & glutes' },
+  { title:'Machine Circuit — Upper Body', duration:'40 min', focus:'Back & arms' },
+  { title:'Machine Circuit — Core Focus', duration:'30 min', focus:'Core & abs' },
+  { title:'Machine Circuit — Push Day', duration:'35 min', focus:'Chest & shoulders' },
+  { title:'Machine Circuit — Pull Day', duration:'35 min', focus:'Back & biceps' },
+  { title:'Machine Circuit — Legs', duration:'45 min', focus:'Quads & hamstrings' },
+];
+ 
 function getWeekKey() {
   const now = new Date();
   const monday = new Date(now);
-  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  monday.setDate(now.getDate() - ((now.getDay()+6)%7));
   return monday.toISOString().split('T')[0];
 }
-
+ 
 function loadWorkout() {
   const weekKey = getWeekKey();
   if (!S.workout[weekKey]) S.workout[weekKey] = {};
-  const todaySteps = S.steps[TODAY_DATE] || 0;
-  const pct = Math.min(100, Math.round((todaySteps / 10000) * 100));
-  document.getElementById('steps-val').textContent = todaySteps > 0 ? todaySteps.toLocaleString() : '—';
-  document.getElementById('steps-fill').style.width = `${pct}%`;
-  document.getElementById('steps-target').textContent = todaySteps > 0
-    ? `${pct}% of 10,000 steps goal` : 'Goal: 10,000 steps';
-  if (todaySteps > 0) document.getElementById('steps-input').value = todaySteps;
+ 
+  // Sessions
   document.getElementById('sessions-list').innerHTML = SESSIONS.map(s => `
     <div class="session-item">
       <div class="session-check ${S.workout[weekKey][s.id]?'done':''}" onclick="toggleSession('${s.id}')"></div>
@@ -904,27 +641,57 @@ function loadWorkout() {
         <div class="session-time">${s.time}</div>
       </div>
     </div>`).join('');
+ 
+  // Today's suggestion (by day of week: 0=Sun,1=Mon,...,6=Sat → remap to Mon=0)
+  const dayIdx = new Date().getDay(); // 0=Sun
+  const sug = DAY_SUGGESTIONS[dayIdx];
+  document.getElementById('workout-suggestion').innerHTML = `
+    <div class="suggestion-card">
+      <div class="suggestion-emoji">${sug.emoji}</div>
+      <div>
+        <div class="suggestion-title">${sug.type}</div>
+        <div class="suggestion-text">${sug.text}</div>
+      </div>
+    </div>`;
+ 
+  // Pilates — rotate by day of month
+  const pidx = (new Date().getDate()-1) % PILATES_VIDEOS.length;
+  const pv = PILATES_VIDEOS[pidx];
+  document.getElementById('pilates-video').innerHTML = `
+    <a class="video-card" href="https://www.youtube.com/@lidiavmera" target="_blank">
+      <div class="video-thumb pilates">🪷</div>
+      <div class="video-info">
+        <div class="video-title">${pv.title}</div>
+        <div class="video-meta">${pv.duration} · ${pv.level}</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>`;
+ 
+  // Strength — rotate by day of month offset
+  const sidx = (new Date().getDate()) % STRENGTH_VIDEOS.length;
+  const sv = STRENGTH_VIDEOS[sidx];
+  document.getElementById('strength-video').innerHTML = `
+    <a class="video-card" href="https://www.youtube.com/playlist?list=PL8g6gl_0gxxWUwLzfGqA54lFAg4ImJJ5E" target="_blank">
+      <div class="video-thumb strength">🏋️</div>
+      <div class="video-info">
+        <div class="video-title">${sv.title}</div>
+        <div class="video-meta">${sv.duration} · ${sv.focus}</div>
+      </div>
+      <div class="video-arrow">→</div>
+    </a>`;
 }
-
+ 
 function toggleSession(id) {
   const weekKey = getWeekKey();
-  if (!S.workout[weekKey]) S.workout[weekKey] = {};
+  if (!S.workout[weekKey]) S.workout[weekKey]={};
   S.workout[weekKey][id] = !S.workout[weekKey][id];
   localStorage.setItem('mm_workout', JSON.stringify(S.workout));
   loadWorkout();
 }
-
-function saveSteps() {
-  const val = parseInt(document.getElementById('steps-input').value) || 0;
-  S.steps[TODAY_DATE] = val;
-  localStorage.setItem('mm_steps', JSON.stringify(S.steps));
-  loadWorkout();
-}
-
-// ── INIT ──────────────────────────────────────────────
+ 
+// ── INIT ─────────────────────────────────────────────
 loadMeals();
 renderCourses();
 loadWorkout();
 </script>
 </body>
-</html>
