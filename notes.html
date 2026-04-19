@@ -919,31 +919,59 @@ function getWeekKey(){
   return mon.toISOString().split('T')[0];
 }
 
-async function generateWeeklyReview(){
-  const btn=document.querySelector('.review-gen-btn');
-  if(btn){btn.textContent='Generating...';btn.disabled=true;}
-  const context=buildWeekContext();
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',max_tokens:800,
-        system:'You are a personal intelligence assistant. Write a warm but honest weekly review. Use 3 short paragraphs: (1) What you did, (2) What you didn\'t do or what needs attention, (3) One thing to carry into next week. Be specific, not generic. Write in second person. Max 200 words total.',
-        messages:[{role:'user',content:`Here is my week data:\n${context}\n\nWrite my weekly review.`}]
-      })
-    });
-    const d=await r.json();
-    const text=d.content?.find(b=>b.type==='text')?.text||'Could not generate review.';
-    const reviews=load('reviews');
-    reviews.unshift({week:getWeekKey(),text,date:TODAY_STR});
-    save('reviews',reviews);
-    // Also save as insight seed for next week
-    localStorage.setItem('mm_weekly_seed',text);
-    localStorage.setItem('mm_weekly_seed_date',getWeekKey());
-    renderWeeklyReviews();
-  }catch(e){
-    if(btn){btn.textContent='⚡ Generate this week\'s review';btn.disabled=false;}
+function generateWeeklyReview() {
+  const context = buildWeekContext();
+  const tasks = JSON.parse(localStorage.getItem('mm_tasks') || '[]');
+  const deadlines = JSON.parse(localStorage.getItem('mm_admin_deadlines') || '[]');
+  const budget = JSON.parse(localStorage.getItem('mm_budget') || '[]');
+  const checkins = load('checkins').slice(0, 7);
+  const workout = JSON.parse(localStorage.getItem('mm_workout') || '{}');
+
+  const today = new Date();
+  const weekKey = Object.keys(workout).sort().pop();
+  const sessions = weekKey ? Object.values(workout[weekKey] || {}).filter(Boolean).length : 0;
+  const doneTasks = tasks.filter(t => t.done).length;
+  const todayTasks = tasks.filter(t => !t.done);
+  const overdue = deadlines.filter(d => !d.done && new Date(d.date) < today);
+  const urgent = deadlines.filter(d => !d.done && new Date(d.date) >= today && 
+    Math.round((new Date(d.date) - today) / 86400000) <= 14);
+  const overBudget = budget.filter(b => b.actual > b.target);
+  const lastCheckin = checkins[0];
+
+  // Paragraph 1 — what you did
+  let p1 = `This week you completed ${doneTasks} task${doneTasks!==1?'s':''} and worked out ${sessions} time${sessions!==1?'s':''}.`;
+  if (lastCheckin) p1 += ` Your last check-in: ${lastCheckin.answers?.join(' · ')}.`;
+  if (overBudget.length === 0) p1 += ` Budget on track across all categories.`;
+
+  // Paragraph 2 — what needs attention
+  let p2Parts = [];
+  if (overdue.length > 0) p2Parts.push(`${overdue.length} overdue item${overdue.length!==1?'s':''}: ${overdue.map(d=>d.text).join(', ')}`);
+  if (overBudget.length > 0) p2Parts.push(`budget overrun on ${overBudget.map(b=>`${b.cat} (€${b.actual}/€${b.target})`).join(', ')}`);
+  if (sessions < 2) p2Parts.push(`only ${sessions} workout${sessions!==1?'s':''} this week — aim for 3`);
+  const p2 = p2Parts.length > 0
+    ? `Needs attention: ${p2Parts.join('; ')}.`
+    : `Nothing major to flag this week — well done.`;
+
+  // Paragraph 3 — next week focus
+  let p3 = '';
+  if (urgent.length > 0) {
+    const next = urgent.sort((a,b) => new Date(a.date)-new Date(b.date))[0];
+    const days = Math.round((new Date(next.date) - today) / 86400000);
+    p3 = `Next week: prioritise "${next.text}" — due in ${days} day${days!==1?'s':''}.`;
+  } else if (todayTasks.length > 0) {
+    p3 = `Next week: clear your ${todayTasks.length} pending task${todayTasks.length!==1?'s':''} and keep the momentum.`;
+  } else {
+    p3 = `Next week: keep up the consistency — you're on track.`;
   }
+
+  const text = `${p1}\n\n${p2}\n\n${p3}`;
+
+  const reviews = load('reviews');
+  reviews.unshift({ week: getWeekKey(), text, date: TODAY_STR });
+  save('reviews', reviews);
+  localStorage.setItem('mm_weekly_seed', text);
+  localStorage.setItem('mm_weekly_seed_date', getWeekKey());
+  renderWeeklyReviews();
 }
 
 function buildWeekContext(){
