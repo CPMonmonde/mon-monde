@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="theme-color" content="#ffffff"/>
+<title>MON MONDE — Notes & Saved</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#f5f5f0;--surface:#ffffff;--surface2:#f0efea;--surface3:#e8e7e1;
+  --border:rgba(0,0,0,0.08);--border-strong:rgba(0,0,0,0.15);
+  --accent:#3a9463;--accent-glow:rgba(92,219,149,0.12);
+  --red:#e05252;--red-glow:rgba(224,82,82,0.1);
+  --amber:#e0a352;--amber-glow:rgba(224,163,82,0.1);
+  --purple:#8b5cf6;--purple-glow:rgba(139,92,246,0.1);
+  --blue:#3b82f6;--blue-glow:rgba(59,130,246,0.1);
+  --text:#1a1a1a;--text-mid:#555;--text-dim:#999;
+  --shadow:0 2px 12px rgba(0,0,0,0.06);--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;}
+.app{max-width:430px;margin:0 auto;padding-bottom:60px;}
+
+/* HEADER */
+.header{padding:52px 20px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.back-btn{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-mid);text-decoration:none;flex-shrink:0;}
+.header-text{flex:1;}
+.header-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:2px;}
+.header-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--text);letter-spacing:-0.01em;}
+
+/* PIN GATE */
+.pin-gate{padding:40px 20px;text-align:center;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.pin-gate-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.pin-gate-sub{font-size:13px;color:var(--text-dim);margin-bottom:28px;line-height:1.5;}
+.pin-display{display:flex;justify-content:center;gap:12px;margin-bottom:28px;}
+.pin-dot{width:16px;height:16px;border-radius:50%;background:var(--surface3);border:2px solid var(--border-strong);transition:background 0.15s;}
+.pin-dot.filled{background:var(--accent);border-color:var(--accent);}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:240px;margin:0 auto;}
+.pin-key{padding:16px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);cursor:pointer;transition:all 0.15s;}
+.pin-key:active{background:var(--accent-glow);border-color:var(--accent);}
+.pin-key.del{font-size:14px;color:var(--text-dim);}
+.pin-error{font-size:12px;color:var(--red);margin-top:14px;height:16px;}
+
+/* MAIN CONTENT */
+.main{display:none;}
+.main.visible{display:block;}
+
+/* QUICK ADD */
+.quick-add{padding:14px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
+.quick-add-row{display:flex;gap:8px;align-items:flex-start;}
+.quick-add-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;min-height:40px;max-height:120px;overflow-y:auto;line-height:1.5;}
+.quick-add-input:focus{border-color:var(--accent);}
+.quick-add-input::placeholder{color:var(--text-dim);}
+.quick-add-btn{width:36px;height:40px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.quick-add-cats{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.cat-pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all 0.2s;}
+.cat-pill.link{background:var(--blue-glow);color:var(--blue);border-color:rgba(59,130,246,0.2);}
+.cat-pill.lieu{background:var(--accent-glow);color:var(--accent);border-color:rgba(58,148,99,0.2);}
+.cat-pill.idee{background:var(--purple-glow);color:var(--purple);border-color:rgba(139,92,246,0.2);}
+.cat-pill.note{background:var(--amber-glow);color:var(--amber);border-color:rgba(224,163,82,0.2);}
+.cat-pill.active{opacity:1;box-shadow:0 0 0 2px currentColor;}
+.cat-pill:not(.active){opacity:0.6;}
+
+/* TABS */
+.tabs-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.tabs-bar::-webkit-scrollbar{display:none;}
+.tab-btn{flex-shrink:0;padding:11px 16px;font-size:11px;font-weight:600;color:var(--text-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;margin-bottom:-1px;white-space:nowrap;}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+.tab-panel{display:none;padding:14px 16px;}
+.tab-panel.active{display:block;}
+
+/* SHARED ITEM STYLES */
+.item-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);}
+.item-card:last-child{margin-bottom:0;}
+.item-header{display:flex;align-items:flex-start;gap:10px;}
+.item-info{flex:1;min-width:0;}
+.item-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:3px;word-break:break-word;}
+.item-title.done{opacity:0.4;text-decoration:line-through;}
+.item-meta{font-size:11px;color:var(--text-dim);line-height:1.4;}
+.item-actions{display:flex;gap:6px;flex-shrink:0;}
+.action-btn{width:28px;height:28px;border-radius:7px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s;}
+.action-check{background:var(--accent-glow);color:var(--accent);}
+.action-check.done{background:var(--accent);color:#fff;}
+.action-edit{background:var(--surface2);color:var(--text-mid);}
+.action-del{background:var(--red-glow);color:var(--red);}
+
+.tag-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:10px;margin-right:4px;margin-top:3px;}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-dim);}
+.empty-state .emoji{font-size:32px;margin-bottom:12px;}
+.empty-state p{font-size:13px;font-style:italic;line-height:1.6;}
+
+/* LINKS */
+.link-url{font-size:11px;color:var(--blue);margin-top:3px;word-break:break-all;text-decoration:none;display:block;}
+.link-url:hover{text-decoration:underline;}
+.link-type-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;display:inline-block;}
+.type-article{background:var(--blue-glow);color:var(--blue);}
+.type-achat{background:var(--amber-glow);color:var(--amber);}
+.type-recette{background:var(--accent-glow);color:var(--accent);}
+.type-autre{background:var(--surface2);color:var(--text-mid);}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.filter-row::-webkit-scrollbar{display:none;}
+.filter-chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);transition:all 0.2s;}
+.filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+/* LIEUX */
+.view-toggle{display:flex;gap:6px;margin-bottom:12px;}
+.view-btn{flex:1;padding:8px;font-size:11px;font-weight:600;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);cursor:pointer;transition:all 0.2s;}
+.view-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+.map-container{border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;height:260px;}
+.map-container iframe{width:100%;height:100%;border:none;}
+
+.lieu-table{width:100%;border-collapse:collapse;}
+.lieu-table th{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);padding:8px 10px;border-bottom:2px solid var(--border);text-align:left;}
+.lieu-table td{font-size:12px;color:var(--text);padding:8px 10px;border-bottom:1px solid var(--border);}
+.lieu-table tr:last-child td{border-bottom:none;}
+.lieu-table tr:hover td{background:var(--surface2);}
+
+/* IDÉES */
+.idee-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);border-left:3px solid var(--purple);}
+.idee-card.archived{border-left-color:var(--text-dim);opacity:0.6;}
+.idee-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.idee-title.archived{text-decoration:line-through;opacity:0.6;}
+.idee-note{font-size:12px;color:var(--text-mid);line-height:1.6;margin-top:6px;}
+.idee-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.status-actif{background:var(--purple-glow);color:var(--purple);}
+.status-archive{background:var(--surface2);color:var(--text-dim);}
+
+/* NOTES */
+.note-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
+.note-cat-bar{display:flex;gap:6px;margin-bottom:10px;}
+.note-cat-chip{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid transparent;}
+.note-cat-chip.perso{background:var(--amber-glow);color:var(--amber);}
+.note-cat-chip.pro{background:var(--blue-glow);color:var(--blue);}
+.note-cat-chip.projet{background:var(--purple-glow);color:var(--purple);}
+.note-cat-chip.autre{background:var(--surface2);color:var(--text-mid);}
+.note-text{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.note-date{font-size:10px;color:var(--text-dim);margin-top:8px;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.4);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.modal-overlay.visible{opacity:1;pointer-events:all;}
+.modal{width:100%;max-width:430px;margin:0 auto;background:var(--surface);border-radius:20px 20px 0 0;padding:20px 20px 40px;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);max-height:88vh;overflow-y:auto;}
+.modal-overlay.visible .modal{transform:translateY(0);}
+.modal-handle{width:36px;height:4px;background:var(--border-strong);border-radius:2px;margin:0 auto 16px;}
+.modal-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:16px;}
+.modal-field{margin-bottom:14px;}
+.modal-label{font-size:11px;font-weight:600;color:var(--text-mid);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;display:block;}
+.modal-input,.modal-textarea,.modal-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.modal-input:focus,.modal-textarea:focus,.modal-select:focus{border-color:var(--accent);}
+.modal-textarea{min-height:100px;resize:vertical;line-height:1.6;}
+.modal-actions{display:flex;gap:10px;margin-top:20px;}
+.modal-cancel{flex:1;padding:12px;font-size:13px;font-weight:600;background:var(--surface2);border:1px solid var(--border);border-radius:10px;cursor:pointer;color:var(--text-mid);}
+.modal-save{flex:2;padding:12px;font-size:13px;font-weight:600;background:var(--accent);border:none;border-radius:10px;cursor:pointer;color:#fff;}
+.modal-delete{flex:1;padding:12px;font-size:13px;font-weight:600;background:var(--red-glow);border:none;border-radius:10px;cursor:pointer;color:var(--red);}
+
+.footer{padding:28px 20px 10px;display:flex;align-items:center;justify-content:center;gap:10px;}
+.footer-line{width:20px;height:1px;background:var(--accent);opacity:0.2;}
+.footer-text{font-size:10px;font-weight:500;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim);}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <a class="back-btn" href="index.html">←</a>
+  <div class="header-text">
+    <div class="header-eyebrow">Mon Monde</div>
+    <div class="header-title">Notes & Saved</div>
+  </div>
+</div>
+
+<!-- PIN GATE -->
+<div id="pin-gate">
+  <div class="pin-gate">
+    <div class="pin-gate-title" id="pin-title">🔒 Accès privé</div>
+    <div class="pin-gate-sub" id="pin-subtitle">Entre ton PIN à 4 chiffres</div>
+    <div class="pin-display">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <div></div>
+      <button class="pin-key" onclick="pinPress('0')">0</button>
+      <button class="pin-key del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="main-content">
+
+  <!-- QUICK ADD -->
+  <div class="quick-add">
+    <div class="quick-add-row">
+      <textarea class="quick-add-input" id="qa-input" placeholder="Ajoute une note, un lien, une idée, un lieu..." rows="1"
+        oninput="autoResize(this);detectURL(this.value)"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();quickAdd();}"></textarea>
+      <button class="quick-add-btn" onclick="quickAdd()">+</button>
+    </div>
+    <div class="quick-add-cats">
+      <span class="cat-pill link active" id="cat-link" onclick="selectCat('link')">🔗 Link</span>
+      <span class="cat-pill lieu" id="cat-lieu" onclick="selectCat('lieu')">📍 Lieu</span>
+      <span class="cat-pill idee" id="cat-idee" onclick="selectCat('idee')">💡 Idée</span>
+      <span class="cat-pill note" id="cat-note" onclick="selectCat('note')">📝 Note</span>
+    </div>
+    <div id="qa-extra" style="margin-top:8px;display:none"></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-bar">
+    <button class="tab-btn active" id="tab-links" onclick="switchTab('links')">🔗 Links</button>
+    <button class="tab-btn" id="tab-lieux" onclick="switchTab('lieux')">📍 Lieux</button>
+    <button class="tab-btn" id="tab-idees" onclick="switchTab('idees')">💡 Idées</button>
+    <button class="tab-btn" id="tab-notes" onclick="switchTab('notes')">📝 Notes</button>
+  </div>
+
+  <!-- LINKS PANEL -->
+  <div class="tab-panel active" id="panel-links">
+    <div class="filter-row">
+      <span class="filter-chip active" id="lf-all" onclick="filterLinks('all')">Tous</span>
+      <span class="filter-chip" id="lf-unread" onclick="filterLinks('unread')">À lire</span>
+      <span class="filter-chip" id="lf-article" onclick="filterLinks('article')">Articles</span>
+      <span class="filter-chip" id="lf-achat" onclick="filterLinks('achat')">Achats</span>
+      <span class="filter-chip" id="lf-recette" onclick="filterLinks('recette')">Recettes</span>
+    </div>
+    <div id="links-list"></div>
+  </div>
+
+  <!-- LIEUX PANEL -->
+  <div class="tab-panel" id="panel-lieux">
+    <div class="filter-row">
+      <span class="filter-chip active" id="lief-all" onclick="filterLieux('all')">Tous</span>
+      <span class="filter-chip" id="lief-resto" onclick="filterLieux('resto')">Restos</span>
+      <span class="filter-chip" id="lief-bar" onclick="filterLieux('bar')">Bars</span>
+      <span class="filter-chip" id="lief-cafe" onclick="filterLieux('cafe')">Cafés</span>
+      <span class="filter-chip" id="lief-shop" onclick="filterLieux('shop')">Shops</span>
+      <span class="filter-chip" id="lief-autre" onclick="filterLieux('autre')">Autres</span>
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="vbtn-map" onclick="switchLieuxView('map')">🗺 Map</button>
+      <button class="view-btn" id="vbtn-table" onclick="switchLieuxView('table')">📋 Tableau</button>
+    </div>
+    <div id="lieux-map-container" class="map-container" style="display:none">
+      <iframe id="lieux-map" src="" allowfullscreen loading="lazy"></iframe>
+    </div>
+    <div id="lieux-table-container" style="display:none">
+      <table class="lieu-table">
+        <thead><tr>
+          <th>Nom</th><th>Lieu</th><th>Type</th><th>Statut</th><th></th>
+        </tr></thead>
+        <tbody id="lieux-table-body"></tbody>
+      </table>
+    </div>
+    <div id="lieux-list"></div>
+  </div>
+
+  <!-- IDÉES PANEL -->
+  <div class="tab-panel" id="panel-idees">
+    <div class="filter-row">
+      <span class="filter-chip active" id="idf-all" onclick="filterIdees('all')">Toutes</span>
+      <span class="filter-chip" id="idf-actif" onclick="filterIdees('actif')">Actives</span>
+      <span class="filter-chip" id="idf-archive" onclick="filterIdees('archive')">Archivées</span>
+    </div>
+    <div id="idees-list"></div>
+  </div>
+
+  <!-- NOTES PANEL -->
+  <div class="tab-panel" id="panel-notes">
+    <div class="filter-row">
+      <span class="filter-chip active" id="nf-all" onclick="filterNotes('all')">Toutes</span>
+      <span class="filter-chip" id="nf-perso" onclick="filterNotes('perso')">Perso</span>
+      <span class="filter-chip" id="nf-pro" onclick="filterNotes('pro')">Pro</span>
+      <span class="filter-chip" id="nf-projet" onclick="filterNotes('projet')">Projet</span>
+      <span class="filter-chip" id="nf-autre" onclick="filterNotes('autre')">Autre</span>
+    </div>
+    <div id="notes-list"></div>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <div class="footer-line"></div>
+  <div class="footer-text">Mon Monde</div>
+  <div class="footer-line"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-title">Edit</div>
+    <div id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+</div>
+<script>
+const TODAY_STR = new Date().toISOString().split('T')[0];
+
+// ── PIN ──────────────────────────────────────────────
+let pinBuffer = '';
+
+function hashPin(pin) {
+  let h = 0;
+  for (let i = 0; i < pin.length; i++) { h = ((h << 5) - h) + pin.charCodeAt(i); h |= 0; }
+  return h.toString(36);
+}
+
+function pinPress(d) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += d; updateDots();
+  if (pinBuffer.length === 4) setTimeout(checkPin, 200);
+}
+function pinDel() { pinBuffer = pinBuffer.slice(0, -1); updateDots(); }
+function updateDots() {
+  for (let i = 0; i < 4; i++)
+    document.getElementById(`pd${i}`).classList.toggle('filled', i < pinBuffer.length);
+}
+
+function checkPin() {
+  const stored = localStorage.getItem('mm_vault_pin');
+  if (!stored) {
+    // No PIN set yet — use same as vault, just unlock
+    openMain();
+    return;
+  }
+  if (hashPin(pinBuffer) === stored) {
+    openMain();
+  } else {
+    const el = document.getElementById('pin-error');
+    el.textContent = 'PIN incorrect. Réessaie.';
+    setTimeout(() => el.textContent = '', 2500);
+    pinBuffer = ''; updateDots();
+  }
+}
+
+function openMain() {
+  document.getElementById('pin-gate').style.display = 'none';
+  document.getElementById('main-content').classList.add('visible');
+  renderAll();
+}
+
+// ── STORAGE ──────────────────────────────────────────
+const KEYS = { links: 'mm_notes_links', lieux: 'mm_notes_lieux', idees: 'mm_notes_idees', notes: 'mm_notes_notes' };
+function load(key) { return JSON.parse(localStorage.getItem(KEYS[key]) || '[]'); }
+function save(key, data) { localStorage.setItem(KEYS[key], JSON.stringify(data)); }
+
+// ── MODAL ────────────────────────────────────────────
+function openModal(title, body, actions) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-actions').innerHTML = actions;
+  document.getElementById('modal-overlay').classList.add('visible');
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('visible'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+// ── QUICK ADD ────────────────────────────────────────
+let selectedCat = 'link';
+
+function selectCat(cat) {
+  selectedCat = cat;
+  ['link','lieu','idee','note'].forEach(c => {
+    document.getElementById(`cat-${c}`).classList.toggle('active', c === cat);
+  });
+  renderQAExtra();
+}
+
+function detectURL(val) {
+  const isURL = /^https?:\/\//i.test(val.trim()) || /^www\./i.test(val.trim());
+  if (isURL && selectedCat !== 'link') selectCat('link');
+}
+
+function renderQAExtra() {
+  const el = document.getElementById('qa-extra');
+  if (selectedCat === 'link') {
+    el.style.display = 'block';
+    el.innerHTML = `<select id="qa-link-type" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+      <option value="article">Article</option>
+      <option value="achat">Achat potentiel</option>
+      <option value="recette">Recette</option>
+      <option value="autre">Autre</option>
+    </select>`;
+  } else if (selectedCat === 'lieu') {
+    el.style.display = 'block';
+    el.innerHTML = `<div style="display:flex;gap:8px;">
+      <input id="qa-lieu-adresse" placeholder="Adresse ou quartier (optionnel)" style="flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;" />
+      <select id="qa-lieu-type" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+        <option value="resto">🍽 Resto</option>
+        <option value="bar">🍸 Bar</option>
+        <option value="cafe">☕ Café</option>
+        <option value="shop">🛍 Shop</option>
+        <option value="autre">📍 Autre</option>
+      </select>
+    </div>`;
+  } else if (selectedCat === 'idee') {
+    el.style.display = 'block';
+    el.innerHTML = `<textarea id="qa-idee-note" placeholder="Notes sur l'idée (optionnel)..." rows="2" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;resize:none;"></textarea>`;
+  } else if (selectedCat === 'note') {
+    el.style.display = 'block';
+    el.innerHTML = `<select id="qa-note-cat" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+      <option value="perso">Perso</option>
+      <option value="pro">Pro</option>
+      <option value="projet">Projet</option>
+      <option value="autre">Autre</option>
+    </select>`;
+  } else {
+    el.style.display = 'none';
+    el.innerHTML = '';
+  }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function quickAdd() {
+  const val = document.getElementById('qa-input').value.trim();
+  if (!val) return;
+
+  if (selectedCat === 'link') {
+    const type = document.getElementById('qa-link-type')?.value || 'article';
+    const isURL = /^https?:\/\//i.test(val) || /^www\./i.test(val);
+    const url = isURL ? (val.startsWith('http') ? val : 'https://' + val) : '';
+    const title = isURL ? 'Link sauvegardé' : val;
+    const links = load('links');
+    links.unshift({ id: Date.now(), title: url ? title : val, url, type, read: false, date: TODAY_STR });
+    save('links', links);
+    renderLinks();
+    switchTab('links');
+  } else if (selectedCat === 'lieu') {
+    const adresse = document.getElementById('qa-lieu-adresse')?.value.trim() || '';
+    const type = document.getElementById('qa-lieu-type')?.value || 'resto';
+    const lieux = load('lieux');
+    lieux.unshift({ id: Date.now(), nom: val, adresse, type, statut: 'à tester', date: TODAY_STR });
+    save('lieux', lieux);
+    renderLieux();
+    switchTab('lieux');
+  } else if (selectedCat === 'idee') {
+    const note = document.getElementById('qa-idee-note')?.value.trim() || '';
+    const idees = load('idees');
+    idees.unshift({ id: Date.now(), titre: val, note, statut: 'actif', date: TODAY_STR });
+    save('idees', idees);
+    renderIdees();
+    switchTab('idees');
+  } else if (selectedCat === 'note') {
+    const cat = document.getElementById('qa-note-cat')?.value || 'perso';
+    const notes = load('notes');
+    notes.unshift({ id: Date.now(), text: val, cat, date: TODAY_STR });
+    save('notes', notes);
+    renderNotes();
+    switchTab('notes');
+  }
+
+  document.getElementById('qa-input').value = '';
+  document.getElementById('qa-input').style.height = 'auto';
+  renderQAExtra();
+}
+
+// ── TABS ─────────────────────────────────────────────
+let currentTab = 'links';
+function switchTab(tab) {
+  currentTab = tab;
+  ['links','lieux','idees','notes'].forEach(t => {
+    document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
+    document.getElementById(`panel-${t}`).classList.toggle('active', t === tab);
+  });
+}
+
+// ── LINKS ────────────────────────────────────────────
+let linkFilter = 'all';
+function filterLinks(f) {
+  linkFilter = f;
+  ['all','unread','article','achat','recette'].forEach(x =>
+    document.getElementById(`lf-${x}`)?.classList.toggle('active', x === f));
+  renderLinks();
+}
+
+function renderLinks() {
+  const links = load('links');
+  let filtered = links;
+  if (linkFilter === 'unread') filtered = links.filter(l => !l.read);
+  else if (linkFilter !== 'all') filtered = links.filter(l => l.type === linkFilter);
+
+  const el = document.getElementById('links-list');
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state"><div class="emoji">🔗</div><p>Aucun lien sauvegardé.<br/>Colle une URL dans Quick Add !</p></div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(l => `
+    <div class="item-card">
+      <div class="item-header">
+        <div class="item-info">
+          <div class="item-title ${l.read ? 'done' : ''}">${l.title}</div>
+          ${l.url ? `<a class="link-url" href="${l.url}" target="_blank">${l.url.length > 50 ? l.url.slice(0,50)+'…' : l.url}</a>` : ''}
+          <div style="margin-top:4px">
+            <span class="link-type-badge type-${l.type}">${l.type}</span>
+            <span style="font-size:10px;color:var(--text-dim)">${l.date}</span>
+          </div>
+        </div>
+        <div class="item-actions">
+          <button class="action-btn action-check ${l.read?'done':''}" onclick="toggleLink(${l.id})" title="${l.read?'Marquer non-lu':'Marquer lu'}">✓</button>
+          <button class="action-btn action-edit" onclick="editLink(${l.id})">✎</button>
+          <button class="action-btn action-del" onclick="delLink(${l.id})">✕</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleLink(id) {
+  const links = load('links');
+  const l = links.find(x => x.id === id);
+  if (l) l.read = !l.read;
+  save('links', links); renderLinks();
+}
+
+function delLink(id) {
+  save('links', load('links').filter(l => l.id !== id)); renderLinks();
+}
+
+function editLink(id) {
+  const links = load('links');
+  const l = links.find(x => x.id === id);
+  if (!l) return;
+  openModal('Modifier le lien',
+    `<div class="modal-field"><label class="modal-label">Titre</label><input class="modal-input" id="m-title" value="${l.title}"/></div>
+    <div class="modal-field"><label class="modal-label">URL</label><input class="modal-input" id="m-url" value="${l.url||''}"/></div>
+    <div class="modal-field"><label class="modal-label">Type</label>
+    <select class="modal-select" id="m-type">
+      ${['article','achat','recette','autre'].map(t => `<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}
+    </select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
+     <button class="modal-delete" onclick="delLink(${id});closeModal()">Supprimer</button>
+     <button class="modal-save" onclick="saveLink(${id})">Sauver</button>`
+  );
+}
+
+function saveLink(id) {
+  const links = load('links');
+  const l = links.find(x => x.id === id);
+  if (!l) return;
+  l.title = document.getElementById('m-title').value.trim() || l.title;
+  l.url = document.getElementById('m-url').value.trim();
+  l.type = document.getElementById('m-type').value;
+  save('links', links); renderLinks(); closeModal();
+}
+
+// ── LIEUX ────────────────────────────────────────────
+let lieuxFilter = 'all';
+let lieuxView = 'map';
+
+function filterLieux(f) {
+  lieuxFilter = f;
+  ['all','resto','bar','cafe','shop','autre'].forEach(x =>
+    document.getElementById(`lief-${x}`)?.classList.toggle('active', x === f));
+  renderLieux();
+}
+
+function switchLieuxView(v) {
+  lieuxView = v;
+  document.getElementById('vbtn-map').classList.toggle('active', v === 'map');
+  document.getElementById('vbtn-table').classList.toggle('active', v === 'table');
+  renderLieux();
+}
+
+function renderLieux() {
+  const lieux = load('lieux');
+  let filtered = lieuxFilter === 'all' ? lieux : lieux.filter(l => l.type === lieuxFilter);
+
+  // Cards (always shown)
+  document.getElementById('lieux-list').innerHTML = '';
+
+  if (!filtered.length) {
+    document.getElementById('lieux-map-container').style.display = 'none';
+    document.getElementById('lieux-table-container').style.display = 'none';
+    document.getElementById('lieux-list').innerHTML = `<div class="empty-state"><div class="emoji">📍</div><p>Aucun lieu sauvegardé encore.<br/>Ajoute un resto, bar, café...</p></div>`;
+    return;
+  }
+
+  // MAP VIEW
+  if (lieuxView === 'map') {
+    document.getElementById('lieux-map-container').style.display = 'block';
+    document.getElementById('lieux-table-container').style.display = 'none';
+    // Build a Google Maps search query from all places
+    const query = filtered.map(l => l.adresse || `${l.nom} Paris`).join('|');
+    const firstQuery = encodeURIComponent(filtered[0].adresse ? `${filtered[0].nom} ${filtered[0].adresse}` : `${filtered[0].nom} Paris`);
+    document.getElementById('lieux-map').src = `https://maps.google.com/maps?q=${firstQuery}&output=embed&z=13`;
+  } else {
+    // TABLE VIEW
+    document.getElementById('lieux-map-container').style.display = 'none';
+    document.getElementById('lieux-table-container').style.display = 'block';
+    const typeEmoji = {resto:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',autre:'📍'};
+    document.getElementById('lieux-table-body').innerHTML = filtered.map(l => `
+      <tr>
+        <td><strong>${l.nom}</strong></td>
+        <td>${l.adresse || '—'}</td>
+        <td>${typeEmoji[l.type]||'📍'} ${l.type}</td>
+        <td><span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:10px;background:${l.statut==='testé'?'var(--accent-glow)':'var(--amber-glow)'};color:${l.statut==='testé'?'var(--accent)':'var(--amber)'}">${l.statut}</span></td>
+        <td style="white-space:nowrap">
+          <button onclick="editLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-mid);padding:2px">✎</button>
+          <button onclick="delLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--red);padding:2px">✕</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  // Cards below map/table
+  document.getElementById('lieux-list').innerHTML = filtered.map(l => {
+    const typeEmoji = {resto:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',autre:'📍'};
+    const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent((l.adresse ? l.nom + ' ' + l.adresse : l.nom + ' Paris'))}`;
+    return `<div class="item-card" style="margin-top:8px">
+      <div class="item-header">
+        <div class="item-info">
+          <div class="item-title">${typeEmoji[l.type]||'📍'} ${l.nom}</div>
+          <div class="item-meta">${l.adresse || 'Paris'} · <span style="font-weight:600;color:${l.statut==='testé'?'var(--accent)':'var(--amber)'}">${l.statut}</span></div>
+          <a href="${mapsUrl}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none;margin-top:3px;display:inline-block">📍 Ouvrir dans Maps</a>
+        </div>
+        <div class="item-actions">
+          <button class="action-btn action-check ${l.statut==='testé'?'done':''}" onclick="toggleLieu(${l.id})" title="Marquer testé">✓</button>
+          <button class="action-btn action-edit" onclick="editLieu(${l.id})">✎</button>
+          <button class="action-btn action-del" onclick="delLieu(${l.id})">✕</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleLieu(id) {
+  const lieux = load('lieux');
+  const l = lieux.find(x => x.id === id);
+  if (l) l.statut = l.statut === 'testé' ? 'à tester' : 'testé';
+  save('lieux', lieux); renderLieux();
+}
+
+function delLieu(id) {
+  save('lieux', load('lieux').filter(l => l.id !== id)); renderLieux();
+}
+
+function editLieu(id) {
+  const lieux = load('lieux');
+  const l = lieux.find(x => x.id === id);
+  if (!l) return;
+  openModal('Modifier le lieu',
+    `<div class="modal-field"><label class="modal-label">Nom</label><input class="modal-input" id="m-nom" value="${l.nom}"/></div>
+    <div class="modal-field"><label class="modal-label">Adresse ou quartier</label><input class="modal-input" id="m-adresse" value="${l.adresse||''}"/></div>
+    <div class="modal-field"><label class="modal-label">Type</label>
+    <select class="modal-select" id="m-type">
+      ${['resto','bar','cafe','shop','autre'].map(t => `<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}
+    </select></div>
+    <div class="modal-field"><label class="modal-label">Statut</label>
+    <select class="modal-select" id="m-statut">
+      <option value="à tester" ${l.statut==='à tester'?'selected':''}>À tester</option>
+      <option value="testé" ${l.statut==='testé'?'selected':''}>Testé</option>
+      <option value="recommandé" ${l.statut==='recommandé'?'selected':''}>Recommandé</option>
+    </select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
+     <button class="modal-delete" onclick="delLieu(${id});closeModal()">Supprimer</button>
+     <button class="modal-save" onclick="saveLieu(${id})">Sauver</button>`
+  );
+}
+
+function saveLieu(id) {
+  const lieux = load('lieux');
+  const l = lieux.find(x => x.id === id);
+  if (!l) return;
+  l.nom = document.getElementById('m-nom').value.trim() || l.nom;
+  l.adresse = document.getElementById('m-adresse').value.trim();
+  l.type = document.getElementById('m-type').value;
+  l.statut = document.getElementById('m-statut').value;
+  save('lieux', lieux); renderLieux(); closeModal();
+}
+
+// ── IDÉES ────────────────────────────────────────────
+let ideeFilter = 'all';
+function filterIdees(f) {
+  ideeFilter = f;
+  ['all','actif','archive'].forEach(x =>
+    document.getElementById(`idf-${x}`)?.classList.toggle('active', x === f));
+  renderIdees();
+}
+
+function renderIdees() {
+  const idees = load('idees');
+  let filtered = ideeFilter === 'all' ? idees : idees.filter(i => i.statut === ideeFilter);
+  const el = document.getElementById('idees-list');
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state"><div class="emoji">💡</div><p>Aucune idée sauvegardée.<br/>Capture tes idées avant qu'elles disparaissent !</p></div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(i => `
+    <div class="idee-card ${i.statut==='archive'?'archived':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div class="idee-title ${i.statut==='archive'?'archived':''}">${i.titre}</div>
+          ${i.note ? `<div class="idee-note">${i.note}</div>` : ''}
+        </div>
+        <div class="item-actions">
+          <button class="action-btn action-edit" onclick="editIdee(${i.id})">✎</button>
+          <button class="action-btn action-del" onclick="delIdee(${i.id})">✕</button>
+        </div>
+      </div>
+      <div class="idee-footer">
+        <span class="status-badge status-${i.statut}">${i.statut === 'actif' ? '⚡ Actif' : '📦 Archivé'}</span>
+        <span style="font-size:10px;color:var(--text-dim)">${i.date}</span>
+      </div>
+    </div>`).join('');
+}
+
+function delIdee(id) {
+  save('idees', load('idees').filter(i => i.id !== id)); renderIdees();
+}
+
+function editIdee(id) {
+  const idees = load('idees');
+  const i = idees.find(x => x.id === id);
+  if (!i) return;
+  openModal('Modifier l\'idée',
+    `<div class="modal-field"><label class="modal-label">Titre</label><input class="modal-input" id="m-titre" value="${i.titre}"/></div>
+    <div class="modal-field"><label class="modal-label">Notes</label><textarea class="modal-textarea" id="m-note">${i.note||''}</textarea></div>
+    <div class="modal-field"><label class="modal-label">Statut</label>
+    <select class="modal-select" id="m-statut">
+      <option value="actif" ${i.statut==='actif'?'selected':''}>⚡ Actif</option>
+      <option value="archive" ${i.statut==='archive'?'selected':''}>📦 Archivé</option>
+    </select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
+     <button class="modal-delete" onclick="delIdee(${id});closeModal()">Supprimer</button>
+     <button class="modal-save" onclick="saveIdee(${id})">Sauver</button>`
+  );
+}
+
+function saveIdee(id) {
+  const idees = load('idees');
+  const i = idees.find(x => x.id === id);
+  if (!i) return;
+  i.titre = document.getElementById('m-titre').value.trim() || i.titre;
+  i.note = document.getElementById('m-note').value.trim();
+  i.statut = document.getElementById('m-statut').value;
+  save('idees', idees); renderIdees(); closeModal();
+}
+
+// ── NOTES ────────────────────────────────────────────
+let noteFilter = 'all';
+function filterNotes(f) {
+  noteFilter = f;
+  ['all','perso','pro','projet','autre'].forEach(x =>
+    document.getElementById(`nf-${x}`)?.classList.toggle('active', x === f));
+  renderNotes();
+}
+
+const catColors = {
+  perso: { bg: 'var(--amber-glow)', color: 'var(--amber)' },
+  pro: { bg: 'var(--blue-glow)', color: 'var(--blue)' },
+  projet: { bg: 'var(--purple-glow)', color: 'var(--purple)' },
+  autre: { bg: 'var(--surface2)', color: 'var(--text-mid)' },
+};
+
+function renderNotes() {
+  const notes = load('notes');
+  let filtered = noteFilter === 'all' ? notes : notes.filter(n => n.cat === noteFilter);
+  const el = document.getElementById('notes-list');
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state"><div class="emoji">📝</div><p>Aucune note encore.<br/>Écris tout ce qui passe par ta tête.</p></div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(n => {
+    const c = catColors[n.cat] || catColors.autre;
+    return `<div class="note-card" style="border-left:3px solid ${c.color}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:${c.bg};color:${c.color}">${n.cat.toUpperCase()}</span>
+        <div class="item-actions">
+          <button class="action-btn action-edit" onclick="editNote(${n.id})">✎</button>
+          <button class="action-btn action-del" onclick="delNote(${n.id})">✕</button>
+        </div>
+      </div>
+      <div class="note-text">${n.text}</div>
+      <div class="note-date">${n.date}</div>
+    </div>`;
+  }).join('');
+}
+
+function delNote(id) {
+  save('notes', load('notes').filter(n => n.id !== id)); renderNotes();
+}
+
+function editNote(id) {
+  const notes = load('notes');
+  const n = notes.find(x => x.id === id);
+  if (!n) return;
+  openModal('Modifier la note',
+    `<div class="modal-field"><label class="modal-label">Note</label><textarea class="modal-textarea" id="m-text">${n.text}</textarea></div>
+    <div class="modal-field"><label class="modal-label">Catégorie</label>
+    <select class="modal-select" id="m-cat">
+      ${['perso','pro','projet','autre'].map(c => `<option value="${c}" ${c===n.cat?'selected':''}>${c}</option>`).join('')}
+    </select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
+     <button class="modal-delete" onclick="delNote(${id});closeModal()">Supprimer</button>
+     <button class="modal-save" onclick="saveNote(${id})">Sauver</button>`
+  );
+}
+
+function saveNote(id) {
+  const notes = load('notes');
+  const n = notes.find(x => x.id === id);
+  if (!n) return;
+  n.text = document.getElementById('m-text').value.trim() || n.text;
+  n.cat = document.getElementById('m-cat').value;
+  save('notes', notes); renderNotes(); closeModal();
+}
+
+// ── INIT ─────────────────────────────────────────────
+function renderAll() {
+  renderLinks();
+  renderLieux();
+  renderIdees();
+  renderNotes();
+  selectCat('link');
+  switchLieuxView('map');
+}
+
+// Check if vault PIN exists, if not just open
+if (!localStorage.getItem('mm_vault_pin')) {
+  openMain();
+}
+</script>
+</body>
+</html>
