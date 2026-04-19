@@ -24,15 +24,14 @@
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;}
 .app{max-width:430px;margin:0 auto;padding-bottom:60px;}
 
-/* HEADER */
 .header{padding:52px 20px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
 .back-btn{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-mid);text-decoration:none;flex-shrink:0;}
 .header-text{flex:1;}
 .header-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:2px;}
 .header-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--text);letter-spacing:-0.01em;}
 
-/* PIN GATE */
-.pin-gate{padding:40px 20px;text-align:center;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+/* PIN */
+.pin-gate-wrap{padding:40px 20px;text-align:center;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .pin-gate-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px;}
 .pin-gate-sub{font-size:13px;color:var(--text-dim);margin-bottom:28px;line-height:1.5;}
 .pin-display{display:flex;justify-content:center;gap:12px;margin-bottom:28px;}
@@ -44,7 +43,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .pin-key.del{font-size:14px;color:var(--text-dim);}
 .pin-error{font-size:12px;color:var(--red);margin-top:14px;height:16px;}
 
-/* MAIN CONTENT */
+/* MAIN */
 .main{display:none;}
 .main.visible{display:block;}
 
@@ -63,17 +62,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .cat-pill.note{background:var(--amber-glow);color:var(--amber);border-color:rgba(224,163,82,0.2);}
 .cat-pill.active{opacity:1;box-shadow:0 0 0 2px currentColor;}
 .cat-pill:not(.active){opacity:0.6;}
+.qa-field{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;}
+.qa-field:focus{border-color:var(--accent);}
+.qa-field::placeholder{color:var(--text-dim);}
+.qa-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;}
+.qa-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;line-height:1.5;}
+.qa-textarea:focus{border-color:var(--accent);}
 
 /* TABS */
 .tabs-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
 .tabs-bar::-webkit-scrollbar{display:none;}
 .tab-btn{flex-shrink:0;padding:11px 16px;font-size:11px;font-weight:600;color:var(--text-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;margin-bottom:-1px;white-space:nowrap;}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
-
 .tab-panel{display:none;padding:14px 16px;}
 .tab-panel.active{display:block;}
 
-/* SHARED ITEM STYLES */
+/* ITEMS */
 .item-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);}
 .item-card:last-child{margin-bottom:0;}
 .item-header{display:flex;align-items:flex-start;gap:10px;}
@@ -82,13 +86,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .item-title.done{opacity:0.4;text-decoration:line-through;}
 .item-meta{font-size:11px;color:var(--text-dim);line-height:1.4;}
 .item-actions{display:flex;gap:6px;flex-shrink:0;}
-.action-btn{width:28px;height:28px;border-radius:7px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s;}
+.action-btn{width:28px;height:28px;border-radius:7px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;}
 .action-check{background:var(--accent-glow);color:var(--accent);}
 .action-check.done{background:var(--accent);color:#fff;}
 .action-edit{background:var(--surface2);color:var(--text-mid);}
 .action-del{background:var(--red-glow);color:var(--red);}
-
-.tag-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:10px;margin-right:4px;margin-top:3px;}
 
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-dim);}
 .empty-state .emoji{font-size:32px;margin-bottom:12px;}
@@ -96,14 +98,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* LINKS */
 .link-url{font-size:11px;color:var(--blue);margin-top:3px;word-break:break-all;text-decoration:none;display:block;}
-.link-url:hover{text-decoration:underline;}
 .link-type-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;display:inline-block;}
 .type-article{background:var(--blue-glow);color:var(--blue);}
 .type-achat{background:var(--amber-glow);color:var(--amber);}
 .type-recette{background:var(--accent-glow);color:var(--accent);}
 .type-autre{background:var(--surface2);color:var(--text-mid);}
 
-/* FILTER ROW */
+/* FILTERS */
 .filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
 .filter-row::-webkit-scrollbar{display:none;}
 .filter-chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);transition:all 0.2s;}
@@ -113,10 +114,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .view-toggle{display:flex;gap:6px;margin-bottom:12px;}
 .view-btn{flex:1;padding:8px;font-size:11px;font-weight:600;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);cursor:pointer;transition:all 0.2s;}
 .view-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-
 .map-container{border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;height:260px;}
 .map-container iframe{width:100%;height:100%;border:none;}
-
 .lieu-table{width:100%;border-collapse:collapse;}
 .lieu-table th{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);padding:8px 10px;border-bottom:2px solid var(--border);text-align:left;}
 .lieu-table td{font-size:12px;color:var(--text);padding:8px 10px;border-bottom:1px solid var(--border);}
@@ -136,12 +135,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* NOTES */
 .note-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
-.note-cat-bar{display:flex;gap:6px;margin-bottom:10px;}
-.note-cat-chip{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid transparent;}
-.note-cat-chip.perso{background:var(--amber-glow);color:var(--amber);}
-.note-cat-chip.pro{background:var(--blue-glow);color:var(--blue);}
-.note-cat-chip.projet{background:var(--purple-glow);color:var(--purple);}
-.note-cat-chip.autre{background:var(--surface2);color:var(--text-mid);}
 .note-text{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
 .note-date{font-size:10px;color:var(--text-dim);margin-top:8px;}
 
@@ -180,9 +173,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <!-- PIN GATE -->
 <div id="pin-gate">
-  <div class="pin-gate">
-    <div class="pin-gate-title" id="pin-title">🔒 Accès privé</div>
-    <div class="pin-gate-sub" id="pin-subtitle">Entre ton PIN à 4 chiffres</div>
+  <div class="pin-gate-wrap">
+    <div class="pin-gate-title">🔒 Accès privé</div>
+    <div class="pin-gate-sub">Entre ton PIN à 4 chiffres</div>
     <div class="pin-display">
       <div class="pin-dot" id="pd0"></div>
       <div class="pin-dot" id="pd1"></div>
@@ -207,13 +200,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main" id="main-content">
 
   <!-- QUICK ADD -->
   <div class="quick-add">
     <div class="quick-add-row">
-      <textarea class="quick-add-input" id="qa-input" placeholder="Ajoute une note, un lien, une idée, un lieu..." rows="1"
+      <textarea class="quick-add-input" id="qa-input" placeholder="URL, texte libre..." rows="1"
         oninput="autoResize(this);detectURL(this.value)"
         onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();quickAdd();}"></textarea>
       <button class="quick-add-btn" onclick="quickAdd()">+</button>
@@ -224,7 +217,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <span class="cat-pill idee" id="cat-idee" onclick="selectCat('idee')">💡 Idée</span>
       <span class="cat-pill note" id="cat-note" onclick="selectCat('note')">📝 Note</span>
     </div>
-    <div id="qa-extra" style="margin-top:8px;display:none"></div>
+    <div id="qa-extra" style="margin-top:8px"></div>
   </div>
 
   <!-- TABS -->
@@ -235,7 +228,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <button class="tab-btn" id="tab-notes" onclick="switchTab('notes')">📝 Notes</button>
   </div>
 
-  <!-- LINKS PANEL -->
+  <!-- LINKS -->
   <div class="tab-panel active" id="panel-links">
     <div class="filter-row">
       <span class="filter-chip active" id="lf-all" onclick="filterLinks('all')">Tous</span>
@@ -247,7 +240,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div id="links-list"></div>
   </div>
 
-  <!-- LIEUX PANEL -->
+  <!-- LIEUX -->
   <div class="tab-panel" id="panel-lieux">
     <div class="filter-row">
       <span class="filter-chip active" id="lief-all" onclick="filterLieux('all')">Tous</span>
@@ -266,16 +259,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <div id="lieux-table-container" style="display:none">
       <table class="lieu-table">
-        <thead><tr>
-          <th>Nom</th><th>Lieu</th><th>Type</th><th>Statut</th><th></th>
-        </tr></thead>
+        <thead><tr><th>Nom</th><th>Lieu</th><th>Type</th><th>Statut</th><th></th></tr></thead>
         <tbody id="lieux-table-body"></tbody>
       </table>
     </div>
     <div id="lieux-list"></div>
   </div>
 
-  <!-- IDÉES PANEL -->
+  <!-- IDÉES -->
   <div class="tab-panel" id="panel-idees">
     <div class="filter-row">
       <span class="filter-chip active" id="idf-all" onclick="filterIdees('all')">Toutes</span>
@@ -285,7 +276,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div id="idees-list"></div>
   </div>
 
-  <!-- NOTES PANEL -->
+  <!-- NOTES -->
   <div class="tab-panel" id="panel-notes">
     <div class="filter-row">
       <span class="filter-chip active" id="nf-all" onclick="filterNotes('all')">Toutes</span>
@@ -297,7 +288,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div id="notes-list"></div>
   </div>
 
-</div><!-- end main -->
+</div>
 
 <div class="footer">
   <div class="footer-line"></div>
@@ -330,10 +321,13 @@ function hashPin(pin) {
 
 function pinPress(d) {
   if (pinBuffer.length >= 4) return;
-  pinBuffer += d; updateDots();
+  pinBuffer += d;
+  updateDots();
   if (pinBuffer.length === 4) setTimeout(checkPin, 200);
 }
+
 function pinDel() { pinBuffer = pinBuffer.slice(0, -1); updateDots(); }
+
 function updateDots() {
   for (let i = 0; i < 4; i++)
     document.getElementById(`pd${i}`).classList.toggle('filled', i < pinBuffer.length);
@@ -341,18 +335,16 @@ function updateDots() {
 
 function checkPin() {
   const stored = localStorage.getItem('mm_vault_pin');
-  if (!stored) {
-    // No PIN set yet — use same as vault, just unlock
-    openMain();
-    return;
-  }
+  if (!stored) { openMain(); return; }
   if (hashPin(pinBuffer) === stored) {
+    pinBuffer = '';
     openMain();
   } else {
     const el = document.getElementById('pin-error');
     el.textContent = 'PIN incorrect. Réessaie.';
     setTimeout(() => el.textContent = '', 2500);
-    pinBuffer = ''; updateDots();
+    pinBuffer = '';
+    updateDots();
   }
 }
 
@@ -363,7 +355,7 @@ function openMain() {
 }
 
 // ── STORAGE ──────────────────────────────────────────
-const KEYS = { links: 'mm_notes_links', lieux: 'mm_notes_lieux', idees: 'mm_notes_idees', notes: 'mm_notes_notes' };
+const KEYS = { links:'mm_notes_links', lieux:'mm_notes_lieux', idees:'mm_notes_idees', notes:'mm_notes_notes' };
 function load(key) { return JSON.parse(localStorage.getItem(KEYS[key]) || '[]'); }
 function save(key, data) { localStorage.setItem(KEYS[key], JSON.stringify(data)); }
 
@@ -382,9 +374,8 @@ let selectedCat = 'link';
 
 function selectCat(cat) {
   selectedCat = cat;
-  ['link','lieu','idee','note'].forEach(c => {
-    document.getElementById(`cat-${c}`).classList.toggle('active', c === cat);
-  });
+  ['link','lieu','idee','note'].forEach(c =>
+    document.getElementById(`cat-${c}`).classList.toggle('active', c === cat));
   renderQAExtra();
 }
 
@@ -393,13 +384,17 @@ function detectURL(val) {
   if (isURL && selectedCat !== 'link') selectCat('link');
 }
 
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
 function renderQAExtra() {
   const el = document.getElementById('qa-extra');
-  el.style.display = 'block';
   if (selectedCat === 'link') {
     el.innerHTML = `
-      <input id="qa-title" placeholder="Titre du lien..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
-      <select id="qa-link-type" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+      <input class="qa-field" id="qa-title" placeholder="Titre du lien..."/>
+      <select class="qa-select" id="qa-link-type">
         <option value="article">Article</option>
         <option value="achat">Achat potentiel</option>
         <option value="recette">Recette</option>
@@ -407,9 +402,9 @@ function renderQAExtra() {
       </select>`;
   } else if (selectedCat === 'lieu') {
     el.innerHTML = `
-      <input id="qa-title" placeholder="Nom du lieu..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
-      <input id="qa-lieu-adresse" placeholder="Adresse ou quartier (optionnel)..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
-      <select id="qa-lieu-type" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+      <input class="qa-field" id="qa-title" placeholder="Nom du lieu..."/>
+      <input class="qa-field" id="qa-lieu-adresse" placeholder="Adresse ou quartier (optionnel)..."/>
+      <select class="qa-select" id="qa-lieu-type">
         <option value="resto">🍽 Resto</option>
         <option value="bar">🍸 Bar</option>
         <option value="cafe">☕ Café</option>
@@ -418,11 +413,11 @@ function renderQAExtra() {
       </select>`;
   } else if (selectedCat === 'idee') {
     el.innerHTML = `
-      <input id="qa-title" placeholder="Titre de l'idée..." style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;"/>
-      <textarea id="qa-idee-note" placeholder="Détails, contexte, next steps... (optionnel)" rows="3" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;line-height:1.5;"></textarea>`;
+      <input class="qa-field" id="qa-title" placeholder="Titre de l'idée..."/>
+      <textarea class="qa-textarea" id="qa-idee-note" placeholder="Détails, contexte, next steps... (optionnel)" rows="3"></textarea>`;
   } else if (selectedCat === 'note') {
     el.innerHTML = `
-      <select id="qa-note-cat" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;">
+      <select class="qa-select" id="qa-note-cat">
         <option value="perso">Perso</option>
         <option value="pro">Pro</option>
         <option value="projet">Projet</option>
@@ -431,22 +426,16 @@ function renderQAExtra() {
   }
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-}
-
 function quickAdd() {
-  const url = document.getElementById('qa-input').value.trim();
-  if (!url && selectedCat === 'link') { alert('Colle un lien.'); return; }
+  const input = document.getElementById('qa-input').value.trim();
 
   if (selectedCat === 'link') {
-    const title = document.getElementById('qa-title')?.value.trim() || url;
+    const title = document.getElementById('qa-title')?.value.trim();
     const type = document.getElementById('qa-link-type')?.value || 'article';
-    const cleanUrl = url.startsWith('http') ? url : url ? 'https://' + url : '';
-    if (!title && !cleanUrl) return;
+    const url = input.startsWith('http') ? input : input ? 'https://' + input : '';
+    if (!title && !url) { alert('Entre un titre ou une URL.'); return; }
     const links = load('links');
-    links.unshift({ id: Date.now(), title: title || cleanUrl, url: cleanUrl, type, read: false, date: TODAY_STR });
+    links.unshift({ id: Date.now(), title: title || url, url, type, read: false, date: TODAY_STR });
     save('links', links);
     renderLinks();
     switchTab('links');
@@ -464,7 +453,7 @@ function quickAdd() {
 
   } else if (selectedCat === 'idee') {
     const titre = document.getElementById('qa-title')?.value.trim();
-    if (!titre) { alert('Entre un titre pour l\'idée.'); return; }
+    if (!titre) { alert("Entre un titre pour l'idée."); return; }
     const note = document.getElementById('qa-idee-note')?.value.trim() || '';
     const idees = load('idees');
     idees.unshift({ id: Date.now(), titre, note, statut: 'actif', date: TODAY_STR });
@@ -473,30 +462,23 @@ function quickAdd() {
     switchTab('idees');
 
   } else if (selectedCat === 'note') {
-    const text = url;
-    if (!text) { alert('Écris quelque chose.'); return; }
+    if (!input) { alert('Écris quelque chose.'); return; }
     const cat = document.getElementById('qa-note-cat')?.value || 'perso';
     const notes = load('notes');
-    notes.unshift({ id: Date.now(), text, cat, date: TODAY_STR });
+    notes.unshift({ id: Date.now(), text: input, cat, date: TODAY_STR });
     save('notes', notes);
     renderNotes();
     switchTab('notes');
   }
 
-  document.getElementById('qa-input').value = '';
-  document.getElementById('qa-input').style.height = 'auto';
-  renderQAExtra();
-}
-
+  // Reset
   document.getElementById('qa-input').value = '';
   document.getElementById('qa-input').style.height = 'auto';
   renderQAExtra();
 }
 
 // ── TABS ─────────────────────────────────────────────
-let currentTab = 'links';
 function switchTab(tab) {
-  currentTab = tab;
   ['links','lieux','idees','notes'].forEach(t => {
     document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
     document.getElementById(`panel-${t}`).classList.toggle('active', t === tab);
@@ -517,7 +499,6 @@ function renderLinks() {
   let filtered = links;
   if (linkFilter === 'unread') filtered = links.filter(l => !l.read);
   else if (linkFilter !== 'all') filtered = links.filter(l => l.type === linkFilter);
-
   const el = document.getElementById('links-list');
   if (!filtered.length) {
     el.innerHTML = `<div class="empty-state"><div class="emoji">🔗</div><p>Aucun lien sauvegardé.<br/>Colle une URL dans Quick Add !</p></div>`;
@@ -527,15 +508,15 @@ function renderLinks() {
     <div class="item-card">
       <div class="item-header">
         <div class="item-info">
-          <div class="item-title ${l.read ? 'done' : ''}">${l.title}</div>
-          ${l.url ? `<a class="link-url" href="${l.url}" target="_blank">${l.url.length > 50 ? l.url.slice(0,50)+'…' : l.url}</a>` : ''}
+          <div class="item-title ${l.read?'done':''}">${l.title}</div>
+          ${l.url?`<a class="link-url" href="${l.url}" target="_blank">${l.url.length>50?l.url.slice(0,50)+'…':l.url}</a>`:''}
           <div style="margin-top:4px">
             <span class="link-type-badge type-${l.type}">${l.type}</span>
-            <span style="font-size:10px;color:var(--text-dim)">${l.date}</span>
+            <span style="font-size:10px;color:var(--text-dim);margin-left:4px">${l.date}</span>
           </div>
         </div>
         <div class="item-actions">
-          <button class="action-btn action-check ${l.read?'done':''}" onclick="toggleLink(${l.id})" title="${l.read?'Marquer non-lu':'Marquer lu'}">✓</button>
+          <button class="action-btn action-check ${l.read?'done':''}" onclick="toggleLink(${l.id})">✓</button>
           <button class="action-btn action-edit" onclick="editLink(${l.id})">✎</button>
           <button class="action-btn action-del" onclick="delLink(${l.id})">✕</button>
         </div>
@@ -549,32 +530,20 @@ function toggleLink(id) {
   if (l) l.read = !l.read;
   save('links', links); renderLinks();
 }
-
-function delLink(id) {
-  save('links', load('links').filter(l => l.id !== id)); renderLinks();
-}
-
+function delLink(id) { save('links', load('links').filter(l => l.id !== id)); renderLinks(); }
 function editLink(id) {
-  const links = load('links');
-  const l = links.find(x => x.id === id);
-  if (!l) return;
+  const links = load('links'); const l = links.find(x => x.id === id); if (!l) return;
   openModal('Modifier le lien',
     `<div class="modal-field"><label class="modal-label">Titre</label><input class="modal-input" id="m-title" value="${l.title}"/></div>
     <div class="modal-field"><label class="modal-label">URL</label><input class="modal-input" id="m-url" value="${l.url||''}"/></div>
     <div class="modal-field"><label class="modal-label">Type</label>
-    <select class="modal-select" id="m-type">
-      ${['article','achat','recette','autre'].map(t => `<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}
-    </select></div>`,
+    <select class="modal-select" id="m-type">${['article','achat','recette','autre'].map(t=>`<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}</select></div>`,
     `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
      <button class="modal-delete" onclick="delLink(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveLink(${id})">Sauver</button>`
-  );
+     <button class="modal-save" onclick="saveLink(${id})">Sauver</button>`);
 }
-
 function saveLink(id) {
-  const links = load('links');
-  const l = links.find(x => x.id === id);
-  if (!l) return;
+  const links = load('links'); const l = links.find(x => x.id === id); if (!l) return;
   l.title = document.getElementById('m-title').value.trim() || l.title;
   l.url = document.getElementById('m-url').value.trim();
   l.type = document.getElementById('m-type').value;
@@ -601,9 +570,7 @@ function switchLieuxView(v) {
 
 function renderLieux() {
   const lieux = load('lieux');
-  let filtered = lieuxFilter === 'all' ? lieux : lieux.filter(l => l.type === lieuxFilter);
-
-  // Cards (always shown)
+  const filtered = lieuxFilter === 'all' ? lieux : lieux.filter(l => l.type === lieuxFilter);
   document.getElementById('lieux-list').innerHTML = '';
 
   if (!filtered.length) {
@@ -613,45 +580,38 @@ function renderLieux() {
     return;
   }
 
-  // MAP VIEW
   if (lieuxView === 'map') {
     document.getElementById('lieux-map-container').style.display = 'block';
     document.getElementById('lieux-table-container').style.display = 'none';
-    // Build a Google Maps search query from all places
-    const query = filtered.map(l => l.adresse || `${l.nom} Paris`).join('|');
     const firstQuery = encodeURIComponent(filtered[0].adresse ? `${filtered[0].nom} ${filtered[0].adresse}` : `${filtered[0].nom} Paris`);
     document.getElementById('lieux-map').src = `https://maps.google.com/maps?q=${firstQuery}&output=embed&z=13`;
   } else {
-    // TABLE VIEW
     document.getElementById('lieux-map-container').style.display = 'none';
     document.getElementById('lieux-table-container').style.display = 'block';
     const typeEmoji = {resto:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',autre:'📍'};
     document.getElementById('lieux-table-body').innerHTML = filtered.map(l => `
       <tr>
         <td><strong>${l.nom}</strong></td>
-        <td>${l.adresse || '—'}</td>
+        <td>${l.adresse||'—'}</td>
         <td>${typeEmoji[l.type]||'📍'} ${l.type}</td>
         <td><span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:10px;background:${l.statut==='testé'?'var(--accent-glow)':'var(--amber-glow)'};color:${l.statut==='testé'?'var(--accent)':'var(--amber)'}">${l.statut}</span></td>
-        <td style="white-space:nowrap">
-          <button onclick="editLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-mid);padding:2px">✎</button>
-          <button onclick="delLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--red);padding:2px">✕</button>
-        </td>
+        <td><button onclick="editLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-mid)">✎</button>
+            <button onclick="delLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--red)">✕</button></td>
       </tr>`).join('');
   }
 
-  // Cards below map/table
   document.getElementById('lieux-list').innerHTML = filtered.map(l => {
     const typeEmoji = {resto:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',autre:'📍'};
-    const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent((l.adresse ? l.nom + ' ' + l.adresse : l.nom + ' Paris'))}`;
+    const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(l.adresse?l.nom+' '+l.adresse:l.nom+' Paris')}`;
     return `<div class="item-card" style="margin-top:8px">
       <div class="item-header">
         <div class="item-info">
           <div class="item-title">${typeEmoji[l.type]||'📍'} ${l.nom}</div>
-          <div class="item-meta">${l.adresse || 'Paris'} · <span style="font-weight:600;color:${l.statut==='testé'?'var(--accent)':'var(--amber)'}">${l.statut}</span></div>
+          <div class="item-meta">${l.adresse||'Paris'} · <span style="font-weight:600;color:${l.statut==='testé'?'var(--accent)':'var(--amber)'}">${l.statut}</span></div>
           <a href="${mapsUrl}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none;margin-top:3px;display:inline-block">📍 Ouvrir dans Maps</a>
         </div>
         <div class="item-actions">
-          <button class="action-btn action-check ${l.statut==='testé'?'done':''}" onclick="toggleLieu(${l.id})" title="Marquer testé">✓</button>
+          <button class="action-btn action-check ${l.statut==='testé'?'done':''}" onclick="toggleLieu(${l.id})">✓</button>
           <button class="action-btn action-edit" onclick="editLieu(${l.id})">✎</button>
           <button class="action-btn action-del" onclick="delLieu(${l.id})">✕</button>
         </div>
@@ -661,27 +621,18 @@ function renderLieux() {
 }
 
 function toggleLieu(id) {
-  const lieux = load('lieux');
-  const l = lieux.find(x => x.id === id);
+  const lieux = load('lieux'); const l = lieux.find(x => x.id === id);
   if (l) l.statut = l.statut === 'testé' ? 'à tester' : 'testé';
   save('lieux', lieux); renderLieux();
 }
-
-function delLieu(id) {
-  save('lieux', load('lieux').filter(l => l.id !== id)); renderLieux();
-}
-
+function delLieu(id) { save('lieux', load('lieux').filter(l => l.id !== id)); renderLieux(); }
 function editLieu(id) {
-  const lieux = load('lieux');
-  const l = lieux.find(x => x.id === id);
-  if (!l) return;
+  const lieux = load('lieux'); const l = lieux.find(x => x.id === id); if (!l) return;
   openModal('Modifier le lieu',
     `<div class="modal-field"><label class="modal-label">Nom</label><input class="modal-input" id="m-nom" value="${l.nom}"/></div>
     <div class="modal-field"><label class="modal-label">Adresse ou quartier</label><input class="modal-input" id="m-adresse" value="${l.adresse||''}"/></div>
     <div class="modal-field"><label class="modal-label">Type</label>
-    <select class="modal-select" id="m-type">
-      ${['resto','bar','cafe','shop','autre'].map(t => `<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}
-    </select></div>
+    <select class="modal-select" id="m-type">${['resto','bar','cafe','shop','autre'].map(t=>`<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}</select></div>
     <div class="modal-field"><label class="modal-label">Statut</label>
     <select class="modal-select" id="m-statut">
       <option value="à tester" ${l.statut==='à tester'?'selected':''}>À tester</option>
@@ -690,14 +641,10 @@ function editLieu(id) {
     </select></div>`,
     `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
      <button class="modal-delete" onclick="delLieu(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveLieu(${id})">Sauver</button>`
-  );
+     <button class="modal-save" onclick="saveLieu(${id})">Sauver</button>`);
 }
-
 function saveLieu(id) {
-  const lieux = load('lieux');
-  const l = lieux.find(x => x.id === id);
-  if (!l) return;
+  const lieux = load('lieux'); const l = lieux.find(x => x.id === id); if (!l) return;
   l.nom = document.getElementById('m-nom').value.trim() || l.nom;
   l.adresse = document.getElementById('m-adresse').value.trim();
   l.type = document.getElementById('m-type').value;
@@ -716,7 +663,7 @@ function filterIdees(f) {
 
 function renderIdees() {
   const idees = load('idees');
-  let filtered = ideeFilter === 'all' ? idees : idees.filter(i => i.statut === ideeFilter);
+  const filtered = ideeFilter === 'all' ? idees : idees.filter(i => i.statut === ideeFilter);
   const el = document.getElementById('idees-list');
   if (!filtered.length) {
     el.innerHTML = `<div class="empty-state"><div class="emoji">💡</div><p>Aucune idée sauvegardée.<br/>Capture tes idées avant qu'elles disparaissent !</p></div>`;
@@ -727,7 +674,7 @@ function renderIdees() {
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
         <div style="flex:1">
           <div class="idee-title ${i.statut==='archive'?'archived':''}">${i.titre}</div>
-          ${i.note ? `<div class="idee-note">${i.note}</div>` : ''}
+          ${i.note?`<div class="idee-note">${i.note}</div>`:''}
         </div>
         <div class="item-actions">
           <button class="action-btn action-edit" onclick="editIdee(${i.id})">✎</button>
@@ -735,21 +682,16 @@ function renderIdees() {
         </div>
       </div>
       <div class="idee-footer">
-        <span class="status-badge status-${i.statut}">${i.statut === 'actif' ? '⚡ Actif' : '📦 Archivé'}</span>
+        <span class="status-badge status-${i.statut}">${i.statut==='actif'?'⚡ Actif':'📦 Archivé'}</span>
         <span style="font-size:10px;color:var(--text-dim)">${i.date}</span>
       </div>
     </div>`).join('');
 }
 
-function delIdee(id) {
-  save('idees', load('idees').filter(i => i.id !== id)); renderIdees();
-}
-
+function delIdee(id) { save('idees', load('idees').filter(i => i.id !== id)); renderIdees(); }
 function editIdee(id) {
-  const idees = load('idees');
-  const i = idees.find(x => x.id === id);
-  if (!i) return;
-  openModal('Modifier l\'idée',
+  const idees = load('idees'); const i = idees.find(x => x.id === id); if (!i) return;
+  openModal("Modifier l'idée",
     `<div class="modal-field"><label class="modal-label">Titre</label><input class="modal-input" id="m-titre" value="${i.titre}"/></div>
     <div class="modal-field"><label class="modal-label">Notes</label><textarea class="modal-textarea" id="m-note">${i.note||''}</textarea></div>
     <div class="modal-field"><label class="modal-label">Statut</label>
@@ -759,14 +701,10 @@ function editIdee(id) {
     </select></div>`,
     `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
      <button class="modal-delete" onclick="delIdee(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveIdee(${id})">Sauver</button>`
-  );
+     <button class="modal-save" onclick="saveIdee(${id})">Sauver</button>`);
 }
-
 function saveIdee(id) {
-  const idees = load('idees');
-  const i = idees.find(x => x.id === id);
-  if (!i) return;
+  const idees = load('idees'); const i = idees.find(x => x.id === id); if (!i) return;
   i.titre = document.getElementById('m-titre').value.trim() || i.titre;
   i.note = document.getElementById('m-note').value.trim();
   i.statut = document.getElementById('m-statut').value;
@@ -783,15 +721,15 @@ function filterNotes(f) {
 }
 
 const catColors = {
-  perso: { bg: 'var(--amber-glow)', color: 'var(--amber)' },
-  pro: { bg: 'var(--blue-glow)', color: 'var(--blue)' },
-  projet: { bg: 'var(--purple-glow)', color: 'var(--purple)' },
-  autre: { bg: 'var(--surface2)', color: 'var(--text-mid)' },
+  perso: { bg:'var(--amber-glow)', color:'var(--amber)' },
+  pro:   { bg:'var(--blue-glow)',  color:'var(--blue)'  },
+  projet:{ bg:'var(--purple-glow)',color:'var(--purple)' },
+  autre: { bg:'var(--surface2)',   color:'var(--text-mid)' },
 };
 
 function renderNotes() {
   const notes = load('notes');
-  let filtered = noteFilter === 'all' ? notes : notes.filter(n => n.cat === noteFilter);
+  const filtered = noteFilter === 'all' ? notes : notes.filter(n => n.cat === noteFilter);
   const el = document.getElementById('notes-list');
   if (!filtered.length) {
     el.innerHTML = `<div class="empty-state"><div class="emoji">📝</div><p>Aucune note encore.<br/>Écris tout ce qui passe par ta tête.</p></div>`;
@@ -813,30 +751,19 @@ function renderNotes() {
   }).join('');
 }
 
-function delNote(id) {
-  save('notes', load('notes').filter(n => n.id !== id)); renderNotes();
-}
-
+function delNote(id) { save('notes', load('notes').filter(n => n.id !== id)); renderNotes(); }
 function editNote(id) {
-  const notes = load('notes');
-  const n = notes.find(x => x.id === id);
-  if (!n) return;
+  const notes = load('notes'); const n = notes.find(x => x.id === id); if (!n) return;
   openModal('Modifier la note',
     `<div class="modal-field"><label class="modal-label">Note</label><textarea class="modal-textarea" id="m-text">${n.text}</textarea></div>
     <div class="modal-field"><label class="modal-label">Catégorie</label>
-    <select class="modal-select" id="m-cat">
-      ${['perso','pro','projet','autre'].map(c => `<option value="${c}" ${c===n.cat?'selected':''}>${c}</option>`).join('')}
-    </select></div>`,
+    <select class="modal-select" id="m-cat">${['perso','pro','projet','autre'].map(c=>`<option value="${c}" ${c===n.cat?'selected':''}>${c}</option>`).join('')}</select></div>`,
     `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
      <button class="modal-delete" onclick="delNote(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveNote(${id})">Sauver</button>`
-  );
+     <button class="modal-save" onclick="saveNote(${id})">Sauver</button>`);
 }
-
 function saveNote(id) {
-  const notes = load('notes');
-  const n = notes.find(x => x.id === id);
-  if (!n) return;
+  const notes = load('notes'); const n = notes.find(x => x.id === id); if (!n) return;
   n.text = document.getElementById('m-text').value.trim() || n.text;
   n.cat = document.getElementById('m-cat').value;
   save('notes', notes); renderNotes(); closeModal();
@@ -852,10 +779,10 @@ function renderAll() {
   switchLieuxView('map');
 }
 
-// Check if vault PIN exists, if not just open
 if (!localStorage.getItem('mm_vault_pin')) {
   openMain();
 }
+updateDots();
 </script>
 </body>
 </html>
