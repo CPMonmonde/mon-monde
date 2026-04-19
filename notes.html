@@ -4,15 +4,16 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="theme-color" content="#ffffff"/>
 <title>MON MONDE — Notes & Saved</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 :root {
-  --bg:#f5f5f0;--surface:#ffffff;--surface2:#f0efea;--surface3:#e8e7e1;
+  --bg:#f5f5f0;--surface:#fff;--surface2:#f0efea;--surface3:#e8e7e1;
   --border:rgba(0,0,0,0.08);--border-strong:rgba(0,0,0,0.15);
-  --accent:#3a9463;--accent-glow:rgba(92,219,149,0.12);
+  --accent:#3a9463;--accent-light:#5CDB95;--accent-glow:rgba(92,219,149,0.12);
   --red:#e05252;--red-glow:rgba(224,82,82,0.1);
   --amber:#e0a352;--amber-glow:rgba(224,163,82,0.1);
   --purple:#8b5cf6;--purple-glow:rgba(139,92,246,0.1);
@@ -24,11 +25,12 @@
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;}
 .app{max-width:430px;margin:0 auto;padding-bottom:60px;}
 
+/* HEADER */
 .header{padding:52px 20px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
 .back-btn{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text-mid);text-decoration:none;flex-shrink:0;}
 .header-text{flex:1;}
 .header-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:2px;}
-.header-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--text);letter-spacing:-0.01em;}
+.header-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--text);}
 
 /* PIN */
 .pin-gate-wrap{padding:40px 20px;text-align:center;min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
@@ -49,37 +51,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* QUICK ADD */
 .quick-add{padding:14px 16px;background:var(--surface);border-bottom:1px solid var(--border);}
-.quick-add-row{display:flex;gap:8px;align-items:flex-start;}
-.quick-add-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;min-height:40px;max-height:120px;overflow-y:auto;line-height:1.5;}
-.quick-add-input:focus{border-color:var(--accent);}
-.quick-add-input::placeholder{color:var(--text-dim);}
-.quick-add-btn{width:36px;height:40px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.quick-add-cats{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
-.cat-pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all 0.2s;}
-.cat-pill.link{background:var(--blue-glow);color:var(--blue);border-color:rgba(59,130,246,0.2);}
-.cat-pill.lieu{background:var(--accent-glow);color:var(--accent);border-color:rgba(58,148,99,0.2);}
-.cat-pill.idee{background:var(--purple-glow);color:var(--purple);border-color:rgba(139,92,246,0.2);}
-.cat-pill.note{background:var(--amber-glow);color:var(--amber);border-color:rgba(224,163,82,0.2);}
-.cat-pill.active{opacity:1;box-shadow:0 0 0 2px currentColor;}
-.cat-pill:not(.active){opacity:0.6;}
-.qa-field{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;}
-.qa-field:focus{border-color:var(--accent);}
-.qa-field::placeholder{color:var(--text-dim);}
-.qa-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text-mid);outline:none;}
-.qa-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;line-height:1.5;}
+.qa-cat-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.qa-cat-btn{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all 0.2s;background:var(--surface2);color:var(--text-dim);border-color:var(--border);}
+.qa-cat-btn.active-link{background:var(--blue-glow);color:var(--blue);border-color:rgba(59,130,246,0.3);}
+.qa-cat-btn.active-location{background:var(--accent-glow);color:var(--accent);border-color:rgba(58,148,99,0.3);}
+.qa-cat-btn.active-idea{background:var(--purple-glow);color:var(--purple);border-color:rgba(139,92,246,0.3);}
+.qa-cat-btn.active-note{background:var(--amber-glow);color:var(--amber);border-color:rgba(224,163,82,0.3);}
+.qa-fields{display:flex;flex-direction:column;gap:8px;}
+.qa-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;}
+.qa-input:focus{border-color:var(--accent);}
+.qa-input::placeholder{color:var(--text-dim);}
+.qa-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text-mid);outline:none;}
+.qa-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none;resize:none;line-height:1.5;min-height:80px;}
 .qa-textarea:focus{border-color:var(--accent);}
+.qa-add-btn{width:100%;padding:11px;background:var(--accent);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff;cursor:pointer;transition:opacity 0.2s;}
+.qa-add-btn:hover{opacity:0.88;}
 
 /* TABS */
 .tabs-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
 .tabs-bar::-webkit-scrollbar{display:none;}
-.tab-btn{flex-shrink:0;padding:11px 16px;font-size:11px;font-weight:600;color:var(--text-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;margin-bottom:-1px;white-space:nowrap;}
+.tab-btn{flex-shrink:0;padding:11px 14px;font-size:11px;font-weight:600;color:var(--text-dim);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;margin-bottom:-1px;white-space:nowrap;}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
 .tab-panel{display:none;padding:14px 16px;}
 .tab-panel.active{display:block;}
 
-/* ITEMS */
+/* SHARED ITEM */
 .item-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);}
-.item-card:last-child{margin-bottom:0;}
 .item-header{display:flex;align-items:flex-start;gap:10px;}
 .item-info{flex:1;min-width:0;}
 .item-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:3px;word-break:break-word;}
@@ -92,51 +89,80 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .action-edit{background:var(--surface2);color:var(--text-mid);}
 .action-del{background:var(--red-glow);color:var(--red);}
 
+.filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.filter-row::-webkit-scrollbar{display:none;}
+.filter-chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);transition:all 0.2s;}
+.filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-dim);}
 .empty-state .emoji{font-size:32px;margin-bottom:12px;}
 .empty-state p{font-size:13px;font-style:italic;line-height:1.6;}
 
 /* LINKS */
 .link-url{font-size:11px;color:var(--blue);margin-top:3px;word-break:break-all;text-decoration:none;display:block;}
-.link-type-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;display:inline-block;}
+.type-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;display:inline-block;}
 .type-article{background:var(--blue-glow);color:var(--blue);}
-.type-achat{background:var(--amber-glow);color:var(--amber);}
-.type-recette{background:var(--accent-glow);color:var(--accent);}
-.type-autre{background:var(--surface2);color:var(--text-mid);}
+.type-purchase{background:var(--amber-glow);color:var(--amber);}
+.type-recipe{background:var(--accent-glow);color:var(--accent);}
+.type-other{background:var(--surface2);color:var(--text-mid);}
 
-/* FILTERS */
-.filter-row{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
-.filter-row::-webkit-scrollbar{display:none;}
-.filter-chip{flex-shrink:0;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);transition:all 0.2s;}
-.filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-
-/* LIEUX */
+/* LOCATIONS — LEAFLET */
+#map{height:280px;border-radius:10px;border:1px solid var(--border);margin-bottom:12px;z-index:1;}
 .view-toggle{display:flex;gap:6px;margin-bottom:12px;}
 .view-btn{flex:1;padding:8px;font-size:11px;font-weight:600;border-radius:8px;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);cursor:pointer;transition:all 0.2s;}
 .view-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-.map-container{border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px;height:260px;}
-.map-container iframe{width:100%;height:100%;border:none;}
-.lieu-table{width:100%;border-collapse:collapse;}
-.lieu-table th{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);padding:8px 10px;border-bottom:2px solid var(--border);text-align:left;}
-.lieu-table td{font-size:12px;color:var(--text);padding:8px 10px;border-bottom:1px solid var(--border);}
-.lieu-table tr:last-child td{border-bottom:none;}
-.lieu-table tr:hover td{background:var(--surface2);}
+.loc-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;transition:border-color 0.2s;}
+.loc-card:active{border-color:var(--accent);}
+.loc-card.highlighted{border-color:var(--accent);background:var(--accent-glow);}
 
-/* IDÉES */
-.idee-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);border-left:3px solid var(--purple);}
-.idee-card.archived{border-left-color:var(--text-dim);opacity:0.6;}
-.idee-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;}
-.idee-title.archived{text-decoration:line-through;opacity:0.6;}
-.idee-note{font-size:12px;color:var(--text-mid);line-height:1.6;margin-top:6px;}
-.idee-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+/* IDEAS */
+.idea-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
+.idea-card.archived{border-left-color:var(--text-dim);opacity:0.6;}
 .status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
-.status-actif{background:var(--purple-glow);color:var(--purple);}
-.status-archive{background:var(--surface2);color:var(--text-dim);}
+.status-active{background:var(--purple-glow);color:var(--purple);}
+.status-archived{background:var(--surface2);color:var(--text-dim);}
 
 /* NOTES */
 .note-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
 .note-text{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;word-break:break-word;}
 .note-date{font-size:10px;color:var(--text-dim);margin-top:8px;}
+
+/* REFLECT */
+.reflect-section{margin-bottom:20px;}
+.reflect-label{font-size:9px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--border);}
+.checkin-btn{width:100%;padding:14px;background:var(--accent);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.checkin-done-note{font-size:12px;color:var(--text-dim);font-style:italic;text-align:center;padding:10px 0;}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
+.review-week{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--text);margin-bottom:8px;}
+.review-text{font-size:13px;color:var(--text-mid);line-height:1.75;white-space:pre-wrap;}
+.review-gen-btn{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text-mid);cursor:pointer;transition:all 0.2s;}
+.review-gen-btn:hover{background:var(--accent-glow);color:var(--accent);border-color:var(--accent);}
+.checkin-log-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.checkin-log-item:last-child{border-bottom:none;}
+.checkin-log-date{font-size:10px;font-weight:600;color:var(--text-dim);min-width:52px;padding-top:2px;}
+.checkin-log-answers{font-size:12px;color:var(--text-mid);line-height:1.6;}
+.shimmer{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--surface2) 25%,#e8e8e4 50%,var(--surface2) 75%);background-size:200% 100%;animation:shim 1.4s infinite;margin-bottom:8px;}
+.shimmer:nth-child(2){width:72%;animation-delay:0.1s;}
+.shimmer:nth-child(3){width:52%;animation-delay:0.2s;}
+@keyframes shim{0%{background-position:200% center;}100%{background-position:-200% center;}}
+
+/* CHECK-IN MODAL */
+.checkin-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.5);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.checkin-overlay.visible{opacity:1;pointer-events:all;}
+.checkin-sheet{width:100%;max-width:430px;margin:0 auto;background:var(--surface);border-radius:20px 20px 0 0;padding:24px 20px 40px;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);}
+.checkin-overlay.visible .checkin-sheet{transform:translateY(0);}
+.checkin-handle{width:36px;height:4px;background:var(--border-strong);border-radius:2px;margin:0 auto 20px;}
+.checkin-q-label{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.checkin-q-num{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:var(--accent-glow);color:var(--accent);}
+.checkin-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.checkin-opt{padding:9px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--text-mid);transition:all 0.2s;}
+.checkin-opt.selected{background:var(--accent);color:#fff;border-color:var(--accent);}
+.checkin-progress{display:flex;gap:6px;margin-bottom:24px;}
+.checkin-prog-dot{flex:1;height:3px;border-radius:2px;background:var(--surface3);transition:background 0.3s;}
+.checkin-prog-dot.active{background:var(--accent);}
+.checkin-nav{display:flex;gap:10px;}
+.checkin-nav-btn{flex:1;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text-mid);}
+.checkin-nav-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.4);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.25s;}
@@ -174,13 +200,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <!-- PIN GATE -->
 <div id="pin-gate">
   <div class="pin-gate-wrap">
-    <div class="pin-gate-title">🔒 Accès privé</div>
-    <div class="pin-gate-sub">Entre ton PIN à 4 chiffres</div>
+    <div class="pin-gate-title">🔒 Private access</div>
+    <div class="pin-gate-sub">Enter your 4-digit PIN</div>
     <div class="pin-display">
-      <div class="pin-dot" id="pd0"></div>
-      <div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div>
-      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
     </div>
     <div class="pin-keypad">
       <button class="pin-key" onclick="pinPress('1')">1</button>
@@ -205,87 +229,97 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <!-- QUICK ADD -->
   <div class="quick-add">
-    <div class="quick-add-row">
-      <textarea class="quick-add-input" id="qa-input" placeholder="URL, texte libre..." rows="1"
-        oninput="autoResize(this);detectURL(this.value)"
-        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();quickAdd();}"></textarea>
-      <button class="quick-add-btn" onclick="quickAdd()">+</button>
+    <div class="qa-cat-row">
+      <button class="qa-cat-btn" id="qcat-link" onclick="selectQACat('link')">🔗 Link</button>
+      <button class="qa-cat-btn" id="qcat-location" onclick="selectQACat('location')">📍 Location</button>
+      <button class="qa-cat-btn" id="qcat-idea" onclick="selectQACat('idea')">💡 Idea</button>
+      <button class="qa-cat-btn" id="qcat-note" onclick="selectQACat('note')">📝 Note</button>
     </div>
-    <div class="quick-add-cats">
-      <span class="cat-pill link active" id="cat-link" onclick="selectCat('link')">🔗 Link</span>
-      <span class="cat-pill lieu" id="cat-lieu" onclick="selectCat('lieu')">📍 Lieu</span>
-      <span class="cat-pill idee" id="cat-idee" onclick="selectCat('idee')">💡 Idée</span>
-      <span class="cat-pill note" id="cat-note" onclick="selectCat('note')">📝 Note</span>
-    </div>
-    <div id="qa-extra" style="margin-top:8px"></div>
+    <div class="qa-fields" id="qa-fields"></div>
   </div>
 
   <!-- TABS -->
   <div class="tabs-bar">
     <button class="tab-btn active" id="tab-links" onclick="switchTab('links')">🔗 Links</button>
-    <button class="tab-btn" id="tab-lieux" onclick="switchTab('lieux')">📍 Lieux</button>
-    <button class="tab-btn" id="tab-idees" onclick="switchTab('idees')">💡 Idées</button>
+    <button class="tab-btn" id="tab-locations" onclick="switchTab('locations')">📍 Locations</button>
+    <button class="tab-btn" id="tab-ideas" onclick="switchTab('ideas')">💡 Ideas</button>
     <button class="tab-btn" id="tab-notes" onclick="switchTab('notes')">📝 Notes</button>
+    <button class="tab-btn" id="tab-reflect" onclick="switchTab('reflect')">🪞 Reflect</button>
   </div>
 
   <!-- LINKS -->
   <div class="tab-panel active" id="panel-links">
     <div class="filter-row">
-      <span class="filter-chip active" id="lf-all" onclick="filterLinks('all')">Tous</span>
-      <span class="filter-chip" id="lf-unread" onclick="filterLinks('unread')">À lire</span>
+      <span class="filter-chip active" id="lf-all" onclick="filterLinks('all')">All</span>
+      <span class="filter-chip" id="lf-unread" onclick="filterLinks('unread')">Unread</span>
       <span class="filter-chip" id="lf-article" onclick="filterLinks('article')">Articles</span>
-      <span class="filter-chip" id="lf-achat" onclick="filterLinks('achat')">Achats</span>
-      <span class="filter-chip" id="lf-recette" onclick="filterLinks('recette')">Recettes</span>
+      <span class="filter-chip" id="lf-purchase" onclick="filterLinks('purchase')">Purchases</span>
+      <span class="filter-chip" id="lf-recipe" onclick="filterLinks('recipe')">Recipes</span>
     </div>
     <div id="links-list"></div>
   </div>
 
-  <!-- LIEUX -->
-  <div class="tab-panel" id="panel-lieux">
+  <!-- LOCATIONS -->
+  <div class="tab-panel" id="panel-locations">
     <div class="filter-row">
-      <span class="filter-chip active" id="lief-all" onclick="filterLieux('all')">Tous</span>
-      <span class="filter-chip" id="lief-resto" onclick="filterLieux('resto')">Restos</span>
-      <span class="filter-chip" id="lief-bar" onclick="filterLieux('bar')">Bars</span>
-      <span class="filter-chip" id="lief-cafe" onclick="filterLieux('cafe')">Cafés</span>
-      <span class="filter-chip" id="lief-shop" onclick="filterLieux('shop')">Shops</span>
-      <span class="filter-chip" id="lief-autre" onclick="filterLieux('autre')">Autres</span>
+      <span class="filter-chip active" id="locf-all" onclick="filterLocations('all')">All</span>
+      <span class="filter-chip" id="locf-restaurant" onclick="filterLocations('restaurant')">Restaurants</span>
+      <span class="filter-chip" id="locf-bar" onclick="filterLocations('bar')">Bars</span>
+      <span class="filter-chip" id="locf-cafe" onclick="filterLocations('cafe')">Cafés</span>
+      <span class="filter-chip" id="locf-shop" onclick="filterLocations('shop')">Shops</span>
+      <span class="filter-chip" id="locf-other" onclick="filterLocations('other')">Other</span>
     </div>
     <div class="view-toggle">
-      <button class="view-btn active" id="vbtn-map" onclick="switchLieuxView('map')">🗺 Map</button>
-      <button class="view-btn" id="vbtn-table" onclick="switchLieuxView('table')">📋 Tableau</button>
+      <button class="view-btn active" id="vbtn-map" onclick="switchLocView('map')">🗺 Map</button>
+      <button class="view-btn" id="vbtn-list" onclick="switchLocView('list')">📋 List</button>
     </div>
-    <div id="lieux-map-container" class="map-container" style="display:none">
-      <iframe id="lieux-map" src="" allowfullscreen loading="lazy"></iframe>
-    </div>
-    <div id="lieux-table-container" style="display:none">
-      <table class="lieu-table">
-        <thead><tr><th>Nom</th><th>Lieu</th><th>Type</th><th>Statut</th><th></th></tr></thead>
-        <tbody id="lieux-table-body"></tbody>
-      </table>
-    </div>
-    <div id="lieux-list"></div>
+    <div id="map" style="display:none"></div>
+    <div id="locations-list"></div>
   </div>
 
-  <!-- IDÉES -->
-  <div class="tab-panel" id="panel-idees">
+  <!-- IDEAS -->
+  <div class="tab-panel" id="panel-ideas">
     <div class="filter-row">
-      <span class="filter-chip active" id="idf-all" onclick="filterIdees('all')">Toutes</span>
-      <span class="filter-chip" id="idf-actif" onclick="filterIdees('actif')">Actives</span>
-      <span class="filter-chip" id="idf-archive" onclick="filterIdees('archive')">Archivées</span>
+      <span class="filter-chip active" id="idf-all" onclick="filterIdeas('all')">All</span>
+      <span class="filter-chip" id="idf-active" onclick="filterIdeas('active')">Active</span>
+      <span class="filter-chip" id="idf-archived" onclick="filterIdeas('archived')">Archived</span>
     </div>
-    <div id="idees-list"></div>
+    <div id="ideas-list"></div>
   </div>
 
   <!-- NOTES -->
   <div class="tab-panel" id="panel-notes">
     <div class="filter-row">
-      <span class="filter-chip active" id="nf-all" onclick="filterNotes('all')">Toutes</span>
-      <span class="filter-chip" id="nf-perso" onclick="filterNotes('perso')">Perso</span>
-      <span class="filter-chip" id="nf-pro" onclick="filterNotes('pro')">Pro</span>
-      <span class="filter-chip" id="nf-projet" onclick="filterNotes('projet')">Projet</span>
-      <span class="filter-chip" id="nf-autre" onclick="filterNotes('autre')">Autre</span>
+      <span class="filter-chip active" id="nf-all" onclick="filterNotes('all')">All</span>
+      <span class="filter-chip" id="nf-personal" onclick="filterNotes('personal')">Personal</span>
+      <span class="filter-chip" id="nf-work" onclick="filterNotes('work')">Work</span>
+      <span class="filter-chip" id="nf-project" onclick="filterNotes('project')">Project</span>
+      <span class="filter-chip" id="nf-other" onclick="filterNotes('other')">Other</span>
     </div>
     <div id="notes-list"></div>
+  </div>
+
+  <!-- REFLECT -->
+  <div class="tab-panel" id="panel-reflect">
+
+    <!-- Daily check-in -->
+    <div class="reflect-section">
+      <div class="reflect-label">Daily Check-in</div>
+      <div id="checkin-status"></div>
+    </div>
+
+    <!-- Weekly review -->
+    <div class="reflect-section">
+      <div class="reflect-label">Weekly Review</div>
+      <div id="weekly-review-section"></div>
+    </div>
+
+    <!-- Check-in history -->
+    <div class="reflect-section">
+      <div class="reflect-label">Recent Check-ins</div>
+      <div id="checkin-history"></div>
+    </div>
+
   </div>
 
 </div>
@@ -294,6 +328,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="footer-line"></div>
   <div class="footer-text">Mon Monde</div>
   <div class="footer-line"></div>
+</div>
+
+<!-- CHECK-IN SHEET -->
+<div class="checkin-overlay" id="checkin-overlay">
+  <div class="checkin-sheet">
+    <div class="checkin-handle"></div>
+    <div class="checkin-progress" id="checkin-progress">
+      <div class="checkin-prog-dot active" id="cpd0"></div>
+      <div class="checkin-prog-dot" id="cpd1"></div>
+      <div class="checkin-prog-dot" id="cpd2"></div>
+    </div>
+    <div class="checkin-q-label">
+      <span class="checkin-q-num" id="checkin-q-num">1 / 3</span>
+      <span id="checkin-q-text"></span>
+    </div>
+    <div class="checkin-options" id="checkin-options"></div>
+    <div class="checkin-nav">
+      <button class="checkin-nav-btn" id="checkin-back-btn" onclick="checkinBack()" style="display:none">Back</button>
+      <button class="checkin-nav-btn primary" id="checkin-next-btn" onclick="checkinNext()">Next →</button>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL -->
@@ -306,212 +361,142 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-</div>
 <script>
 const TODAY_STR = new Date().toISOString().split('T')[0];
+const KEYS = { links:'mm_notes_links', locations:'mm_notes_lieux', ideas:'mm_notes_idees', notes:'mm_notes_notes', checkins:'mm_checkins', reviews:'mm_weekly_reviews' };
+function load(k){ return JSON.parse(localStorage.getItem(KEYS[k])||'[]'); }
+function save(k,d){ localStorage.setItem(KEYS[k],JSON.stringify(d)); }
 
 // ── PIN ──────────────────────────────────────────────
-let pinBuffer = '';
-
-function hashPin(pin) {
-  let h = 0;
-  for (let i = 0; i < pin.length; i++) { h = ((h << 5) - h) + pin.charCodeAt(i); h |= 0; }
-  return h.toString(36);
-}
-
-function pinPress(d) {
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += d;
-  updateDots();
-  if (pinBuffer.length === 4) setTimeout(checkPin, 200);
-}
-
-function pinDel() { pinBuffer = pinBuffer.slice(0, -1); updateDots(); }
-
-function updateDots() {
-  for (let i = 0; i < 4; i++)
-    document.getElementById(`pd${i}`).classList.toggle('filled', i < pinBuffer.length);
-}
-
-function checkPin() {
-  const stored = localStorage.getItem('mm_vault_pin');
-  if (!stored) { openMain(); return; }
-  if (hashPin(pinBuffer) === stored) {
-    pinBuffer = '';
-    openMain();
-  } else {
-    const el = document.getElementById('pin-error');
-    el.textContent = 'PIN incorrect. Réessaie.';
-    setTimeout(() => el.textContent = '', 2500);
-    pinBuffer = '';
-    updateDots();
+let pinBuf='';
+function hashPin(p){ let h=0; for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0;} return h.toString(36); }
+function pinPress(d){ if(pinBuf.length>=4)return; pinBuf+=d; updateDots(); if(pinBuf.length===4)setTimeout(checkPin,200); }
+function pinDel(){ pinBuf=pinBuf.slice(0,-1); updateDots(); }
+function updateDots(){ for(let i=0;i<4;i++) document.getElementById(`pd${i}`).classList.toggle('filled',i<pinBuf.length); }
+function checkPin(){
+  const stored=localStorage.getItem('mm_vault_pin');
+  if(!stored||hashPin(pinBuf)===stored){ pinBuf=''; openMain(); }
+  else{
+    const el=document.getElementById('pin-error'); el.textContent='Incorrect PIN. Try again.';
+    setTimeout(()=>el.textContent='',2500); pinBuf=''; updateDots();
   }
 }
-
-function openMain() {
-  document.getElementById('pin-gate').style.display = 'none';
+function openMain(){
+  document.getElementById('pin-gate').style.display='none';
   document.getElementById('main-content').classList.add('visible');
   renderAll();
+  checkEveningCheckin();
 }
-
-// ── STORAGE ──────────────────────────────────────────
-const KEYS = { links:'mm_notes_links', lieux:'mm_notes_lieux', idees:'mm_notes_idees', notes:'mm_notes_notes' };
-function load(key) { return JSON.parse(localStorage.getItem(KEYS[key]) || '[]'); }
-function save(key, data) { localStorage.setItem(KEYS[key], JSON.stringify(data)); }
 
 // ── MODAL ────────────────────────────────────────────
-function openModal(title, body, actions) {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal-actions').innerHTML = actions;
+function openModal(title,body,actions){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=body;
+  document.getElementById('modal-actions').innerHTML=actions;
   document.getElementById('modal-overlay').classList.add('visible');
 }
-function closeModal() { document.getElementById('modal-overlay').classList.remove('visible'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('visible'); }
+function closeModalOutside(e){ if(e.target===document.getElementById('modal-overlay'))closeModal(); }
+
+// ── TABS ─────────────────────────────────────────────
+let currentTab='links';
+function switchTab(tab){
+  currentTab=tab;
+  ['links','locations','ideas','notes','reflect'].forEach(t=>{
+    document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
+    document.getElementById(`panel-${t}`).classList.toggle('active',t===tab);
+  });
+  if(tab==='locations') initMap();
+  if(tab==='reflect'){ renderReflect(); }
+}
 
 // ── QUICK ADD ────────────────────────────────────────
-let selectedCat = 'link';
-
-function selectCat(cat) {
-  selectedCat = cat;
-  ['link','lieu','idee','note'].forEach(c =>
-    document.getElementById(`cat-${c}`).classList.toggle('active', c === cat));
-  renderQAExtra();
+let qaCat='link';
+function selectQACat(cat){
+  qaCat=cat;
+  ['link','location','idea','note'].forEach(c=>{
+    const btn=document.getElementById(`qcat-${c}`);
+    btn.className='qa-cat-btn';
+    if(c===cat) btn.classList.add(`active-${c}`);
+  });
+  renderQAFields();
 }
 
-function detectURL(val) {
-  const isURL = /^https?:\/\//i.test(val.trim()) || /^www\./i.test(val.trim());
-  if (isURL && selectedCat !== 'link') selectCat('link');
-}
-
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-}
-
-function renderQAExtra() {
-  const el = document.getElementById('qa-extra');
-  if (selectedCat === 'link') {
-    el.innerHTML = `
-      <input class="qa-field" id="qa-title" placeholder="Titre du lien..."/>
+function renderQAFields(){
+  const el=document.getElementById('qa-fields');
+  if(qaCat==='link'){
+    el.innerHTML=`
+      <input class="qa-input" id="qa-url" placeholder="Paste URL..." type="url"/>
+      <input class="qa-input" id="qa-link-title" placeholder="Title (optional — auto-filled if blank)"/>
       <select class="qa-select" id="qa-link-type">
-        <option value="article">Article</option>
-        <option value="achat">Achat potentiel</option>
-        <option value="recette">Recette</option>
-        <option value="autre">Autre</option>
-      </select>`;
-  } else if (selectedCat === 'lieu') {
-    el.innerHTML = `
-      <input class="qa-field" id="qa-title" placeholder="Nom du lieu..."/>
-      <input class="qa-field" id="qa-lieu-adresse" placeholder="Adresse ou quartier (optionnel)..."/>
-      <select class="qa-select" id="qa-lieu-type">
-        <option value="resto">🍽 Resto</option>
+        <option value="article">📰 Article</option>
+        <option value="purchase">🛍 Purchase to consider</option>
+        <option value="recipe">🍽 Recipe</option>
+        <option value="other">🔗 Other</option>
+      </select>
+      <button class="qa-add-btn" onclick="addLink()">Save link</button>`;
+  } else if(qaCat==='location'){
+    el.innerHTML=`
+      <input class="qa-input" id="qa-loc-name" placeholder="Name of the place..."/>
+      <input class="qa-input" id="qa-loc-address" placeholder="Address or neighbourhood (Paris if blank)"/>
+      <select class="qa-select" id="qa-loc-type">
+        <option value="restaurant">🍽 Restaurant</option>
         <option value="bar">🍸 Bar</option>
         <option value="cafe">☕ Café</option>
         <option value="shop">🛍 Shop</option>
-        <option value="autre">📍 Autre</option>
-      </select>`;
-  } else if (selectedCat === 'idee') {
-    el.innerHTML = `
-      <input class="qa-field" id="qa-title" placeholder="Titre de l'idée..."/>
-      <textarea class="qa-textarea" id="qa-idee-note" placeholder="Détails, contexte, next steps... (optionnel)" rows="3"></textarea>`;
-  } else if (selectedCat === 'note') {
-    el.innerHTML = `
+        <option value="other">📍 Other</option>
+      </select>
+      <input class="qa-input" id="qa-loc-note" placeholder="Note (optional — recommended by, occasion...)"/>
+      <button class="qa-add-btn" onclick="addLocation()">Save location</button>`;
+  } else if(qaCat==='idea'){
+    el.innerHTML=`
+      <input class="qa-input" id="qa-idea-title" placeholder="Idea title..."/>
+      <textarea class="qa-textarea" id="qa-idea-note" placeholder="Context, details, next steps... (optional)" rows="3"></textarea>
+      <button class="qa-add-btn" onclick="addIdea()">Save idea</button>`;
+  } else if(qaCat==='note'){
+    el.innerHTML=`
+      <textarea class="qa-textarea" id="qa-note-text" placeholder="Write anything..." rows="4"></textarea>
       <select class="qa-select" id="qa-note-cat">
-        <option value="perso">Perso</option>
-        <option value="pro">Pro</option>
-        <option value="projet">Projet</option>
-        <option value="autre">Autre</option>
-      </select>`;
+        <option value="personal">Personal</option>
+        <option value="work">Work</option>
+        <option value="project">Project</option>
+        <option value="other">Other</option>
+      </select>
+      <button class="qa-add-btn" onclick="addNote()">Save note</button>`;
   }
-}
-
-function quickAdd() {
-  const input = document.getElementById('qa-input').value.trim();
-
-  if (selectedCat === 'link') {
-    const title = document.getElementById('qa-title')?.value.trim();
-    const type = document.getElementById('qa-link-type')?.value || 'article';
-    const url = input.startsWith('http') ? input : input ? 'https://' + input : '';
-    if (!title && !url) { alert('Entre un titre ou une URL.'); return; }
-    const links = load('links');
-    links.unshift({ id: Date.now(), title: title || url, url, type, read: false, date: TODAY_STR });
-    save('links', links);
-    renderLinks();
-    switchTab('links');
-
-  } else if (selectedCat === 'lieu') {
-    const nom = document.getElementById('qa-title')?.value.trim();
-    if (!nom) { alert('Entre le nom du lieu.'); return; }
-    const adresse = document.getElementById('qa-lieu-adresse')?.value.trim() || '';
-    const type = document.getElementById('qa-lieu-type')?.value || 'resto';
-    const lieux = load('lieux');
-    lieux.unshift({ id: Date.now(), nom, adresse, type, statut: 'à tester', date: TODAY_STR });
-    save('lieux', lieux);
-    renderLieux();
-    switchTab('lieux');
-
-  } else if (selectedCat === 'idee') {
-    const titre = document.getElementById('qa-title')?.value.trim();
-    if (!titre) { alert("Entre un titre pour l'idée."); return; }
-    const note = document.getElementById('qa-idee-note')?.value.trim() || '';
-    const idees = load('idees');
-    idees.unshift({ id: Date.now(), titre, note, statut: 'actif', date: TODAY_STR });
-    save('idees', idees);
-    renderIdees();
-    switchTab('idees');
-
-  } else if (selectedCat === 'note') {
-    if (!input) { alert('Écris quelque chose.'); return; }
-    const cat = document.getElementById('qa-note-cat')?.value || 'perso';
-    const notes = load('notes');
-    notes.unshift({ id: Date.now(), text: input, cat, date: TODAY_STR });
-    save('notes', notes);
-    renderNotes();
-    switchTab('notes');
-  }
-
-  // Reset
-  document.getElementById('qa-input').value = '';
-  document.getElementById('qa-input').style.height = 'auto';
-  renderQAExtra();
-}
-
-// ── TABS ─────────────────────────────────────────────
-function switchTab(tab) {
-  ['links','lieux','idees','notes'].forEach(t => {
-    document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
-    document.getElementById(`panel-${t}`).classList.toggle('active', t === tab);
-  });
 }
 
 // ── LINKS ────────────────────────────────────────────
-let linkFilter = 'all';
-function filterLinks(f) {
-  linkFilter = f;
-  ['all','unread','article','achat','recette'].forEach(x =>
-    document.getElementById(`lf-${x}`)?.classList.toggle('active', x === f));
+let linkFilter='all';
+function filterLinks(f){
+  linkFilter=f;
+  ['all','unread','article','purchase','recipe'].forEach(x=>document.getElementById(`lf-${x}`)?.classList.toggle('active',x===f));
   renderLinks();
 }
-
-function renderLinks() {
-  const links = load('links');
-  let filtered = links;
-  if (linkFilter === 'unread') filtered = links.filter(l => !l.read);
-  else if (linkFilter !== 'all') filtered = links.filter(l => l.type === linkFilter);
-  const el = document.getElementById('links-list');
-  if (!filtered.length) {
-    el.innerHTML = `<div class="empty-state"><div class="emoji">🔗</div><p>Aucun lien sauvegardé.<br/>Colle une URL dans Quick Add !</p></div>`;
-    return;
-  }
-  el.innerHTML = filtered.map(l => `
+function addLink(){
+  const url=document.getElementById('qa-url')?.value.trim();
+  const title=document.getElementById('qa-link-title')?.value.trim()||url||'Untitled';
+  const type=document.getElementById('qa-link-type')?.value||'article';
+  if(!url&&!title){alert('Enter a URL or title.');return;}
+  const links=load('links');
+  links.unshift({id:Date.now(),title,url:url||'',type,read:false,date:TODAY_STR});
+  save('links',links); renderLinks(); switchTab('links'); renderQAFields();
+}
+function renderLinks(){
+  const links=load('links');
+  let filtered=links;
+  if(linkFilter==='unread') filtered=links.filter(l=>!l.read);
+  else if(linkFilter!=='all') filtered=links.filter(l=>l.type===linkFilter);
+  const el=document.getElementById('links-list');
+  if(!filtered.length){el.innerHTML=`<div class="empty-state"><div class="emoji">🔗</div><p>No links saved yet.<br/>Paste a URL in Quick Add!</p></div>`;return;}
+  el.innerHTML=filtered.map(l=>`
     <div class="item-card">
       <div class="item-header">
         <div class="item-info">
           <div class="item-title ${l.read?'done':''}">${l.title}</div>
           ${l.url?`<a class="link-url" href="${l.url}" target="_blank">${l.url.length>50?l.url.slice(0,50)+'…':l.url}</a>`:''}
           <div style="margin-top:4px">
-            <span class="link-type-badge type-${l.type}">${l.type}</span>
+            <span class="type-badge type-${l.type}">${l.type}</span>
             <span style="font-size:10px;color:var(--text-dim);margin-left:4px">${l.date}</span>
           </div>
         </div>
@@ -523,220 +508,278 @@ function renderLinks() {
       </div>
     </div>`).join('');
 }
-
-function toggleLink(id) {
-  const links = load('links');
-  const l = links.find(x => x.id === id);
-  if (l) l.read = !l.read;
-  save('links', links); renderLinks();
-}
-function delLink(id) { save('links', load('links').filter(l => l.id !== id)); renderLinks(); }
-function editLink(id) {
-  const links = load('links'); const l = links.find(x => x.id === id); if (!l) return;
-  openModal('Modifier le lien',
-    `<div class="modal-field"><label class="modal-label">Titre</label><input class="modal-input" id="m-title" value="${l.title}"/></div>
+function toggleLink(id){const links=load('links');const l=links.find(x=>x.id===id);if(l)l.read=!l.read;save('links',links);renderLinks();}
+function delLink(id){save('links',load('links').filter(l=>l.id!==id));renderLinks();}
+function editLink(id){
+  const links=load('links');const l=links.find(x=>x.id===id);if(!l)return;
+  openModal('Edit link',
+    `<div class="modal-field"><label class="modal-label">Title</label><input class="modal-input" id="m-title" value="${l.title}"/></div>
     <div class="modal-field"><label class="modal-label">URL</label><input class="modal-input" id="m-url" value="${l.url||''}"/></div>
     <div class="modal-field"><label class="modal-label">Type</label>
-    <select class="modal-select" id="m-type">${['article','achat','recette','autre'].map(t=>`<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}</select></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
-     <button class="modal-delete" onclick="delLink(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveLink(${id})">Sauver</button>`);
+    <select class="modal-select" id="m-type">${['article','purchase','recipe','other'].map(t=>`<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}</select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
+     <button class="modal-delete" onclick="delLink(${id});closeModal()">Delete</button>
+     <button class="modal-save" onclick="saveLink(${id})">Save</button>`);
 }
-function saveLink(id) {
-  const links = load('links'); const l = links.find(x => x.id === id); if (!l) return;
-  l.title = document.getElementById('m-title').value.trim() || l.title;
-  l.url = document.getElementById('m-url').value.trim();
-  l.type = document.getElementById('m-type').value;
-  save('links', links); renderLinks(); closeModal();
-}
-
-// ── LIEUX ────────────────────────────────────────────
-let lieuxFilter = 'all';
-let lieuxView = 'map';
-
-function filterLieux(f) {
-  lieuxFilter = f;
-  ['all','resto','bar','cafe','shop','autre'].forEach(x =>
-    document.getElementById(`lief-${x}`)?.classList.toggle('active', x === f));
-  renderLieux();
+function saveLink(id){
+  const links=load('links');const l=links.find(x=>x.id===id);if(!l)return;
+  l.title=document.getElementById('m-title').value.trim()||l.title;
+  l.url=document.getElementById('m-url').value.trim();
+  l.type=document.getElementById('m-type').value;
+  save('links',links);renderLinks();closeModal();
 }
 
-function switchLieuxView(v) {
-  lieuxView = v;
-  document.getElementById('vbtn-map').classList.toggle('active', v === 'map');
-  document.getElementById('vbtn-table').classList.toggle('active', v === 'table');
-  renderLieux();
+// ── LOCATIONS + LEAFLET ──────────────────────────────
+let map=null, markers=[], locFilter='all', locView='map';
+
+function initMap(){
+  if(map) return;
+  const mapEl=document.getElementById('map');
+  if(!mapEl||mapEl.style.display==='none') return;
+  map=L.map('map').setView([48.8566,2.3522],13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors', maxZoom:19
+  }).addTo(map);
+  renderLocationMarkers();
 }
 
-function renderLieux() {
-  const lieux = load('lieux');
-  const filtered = lieuxFilter === 'all' ? lieux : lieux.filter(l => l.type === lieuxFilter);
-  document.getElementById('lieux-list').innerHTML = '';
+function renderLocationMarkers(){
+  if(!map) return;
+  markers.forEach(m=>m.remove());
+  markers=[];
+  const locs=getFilteredLocations();
+  const typeEmoji={restaurant:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',other:'📍'};
+  locs.forEach(loc=>{
+    if(loc.lat&&loc.lng){
+      const marker=L.marker([loc.lat,loc.lng]).addTo(map);
+      marker.bindPopup(`<strong>${loc.name}</strong><br/>${typeEmoji[loc.type]||'📍'} ${loc.type}<br/><small>${loc.status}</small>`);
+      marker.locId=loc.id;
+      markers.push(marker);
+    }
+  });
+  if(markers.length>0){
+    const group=L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.2));
+  }
+}
 
-  if (!filtered.length) {
-    document.getElementById('lieux-map-container').style.display = 'none';
-    document.getElementById('lieux-table-container').style.display = 'none';
-    document.getElementById('lieux-list').innerHTML = `<div class="empty-state"><div class="emoji">📍</div><p>Aucun lieu sauvegardé encore.<br/>Ajoute un resto, bar, café...</p></div>`;
+function centerMapOn(id){
+  const locs=load('locations');
+  const loc=locs.find(l=>l.id===id);
+  if(!loc||!loc.lat||!loc.lng||!map) return;
+  map.setView([loc.lat,loc.lng],16);
+  const marker=markers.find(m=>m.locId===id);
+  if(marker) marker.openPopup();
+  switchLocView('map');
+  document.querySelectorAll('.loc-card').forEach(c=>c.classList.remove('highlighted'));
+  const card=document.querySelector(`[data-loc-id="${id}"]`);
+  if(card){card.classList.add('highlighted');card.scrollIntoView({behavior:'smooth',block:'nearest'});}
+}
+
+async function geocode(name,address){
+  const q=encodeURIComponent((address&&address.length>3?address+' ':'')+name+' Paris France');
+  try{
+    const r=await fetch(`https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`);
+    const d=await r.json();
+    if(d&&d[0]) return {lat:parseFloat(d[0].lat),lng:parseFloat(d[0].lon)};
+  }catch(e){}
+  return null;
+}
+
+function filterLocations(f){
+  locFilter=f;
+  ['all','restaurant','bar','cafe','shop','other'].forEach(x=>document.getElementById(`locf-${x}`)?.classList.toggle('active',x===f));
+  renderLocations();
+  renderLocationMarkers();
+}
+
+function switchLocView(v){
+  locView=v;
+  document.getElementById('vbtn-map').classList.toggle('active',v==='map');
+  document.getElementById('vbtn-list').classList.toggle('active',v==='list');
+  const mapEl=document.getElementById('map');
+  mapEl.style.display=v==='map'?'block':'none';
+  if(v==='map'){
+    if(!map) initMap();
+    else setTimeout(()=>map.invalidateSize(),100);
+  }
+  renderLocations();
+}
+
+function getFilteredLocations(){
+  const locs=load('locations');
+  return locFilter==='all'?locs:locs.filter(l=>l.type===locFilter);
+}
+
+function renderLocations(){
+  const filtered=getFilteredLocations();
+  const el=document.getElementById('locations-list');
+  const typeEmoji={restaurant:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',other:'📍'};
+  if(!filtered.length){
+    el.innerHTML=`<div class="empty-state"><div class="emoji">📍</div><p>No locations saved yet.<br/>Add a restaurant, bar, café...</p></div>`;
     return;
   }
-
-  if (lieuxView === 'map') {
-    document.getElementById('lieux-map-container').style.display = 'block';
-    document.getElementById('lieux-table-container').style.display = 'none';
-    const firstQuery = encodeURIComponent(filtered[0].adresse ? `${filtered[0].nom} ${filtered[0].adresse}` : `${filtered[0].nom} Paris`);
-    document.getElementById('lieux-map').src = `https://maps.google.com/maps?q=${firstQuery}&output=embed&z=13`;
-  } else {
-    document.getElementById('lieux-map-container').style.display = 'none';
-    document.getElementById('lieux-table-container').style.display = 'block';
-    const typeEmoji = {resto:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',autre:'📍'};
-    document.getElementById('lieux-table-body').innerHTML = filtered.map(l => `
-      <tr>
-        <td><strong>${l.nom}</strong></td>
-        <td>${l.adresse||'—'}</td>
-        <td>${typeEmoji[l.type]||'📍'} ${l.type}</td>
-        <td><span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:10px;background:${l.statut==='testé'?'var(--accent-glow)':'var(--amber-glow)'};color:${l.statut==='testé'?'var(--accent)':'var(--amber)'}">${l.statut}</span></td>
-        <td><button onclick="editLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-mid)">✎</button>
-            <button onclick="delLieu(${l.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--red)">✕</button></td>
-      </tr>`).join('');
-  }
-
-  document.getElementById('lieux-list').innerHTML = filtered.map(l => {
-    const typeEmoji = {resto:'🍽',bar:'🍸',cafe:'☕',shop:'🛍',autre:'📍'};
-    const mapsUrl = `https://maps.google.com/?q=${encodeURIComponent(l.adresse?l.nom+' '+l.adresse:l.nom+' Paris')}`;
-    return `<div class="item-card" style="margin-top:8px">
+  el.innerHTML=filtered.map(l=>`
+    <div class="loc-card" data-loc-id="${l.id}" onclick="centerMapOn(${l.id})">
       <div class="item-header">
         <div class="item-info">
-          <div class="item-title">${typeEmoji[l.type]||'📍'} ${l.nom}</div>
-          <div class="item-meta">${l.adresse||'Paris'} · <span style="font-weight:600;color:${l.statut==='testé'?'var(--accent)':'var(--amber)'}">${l.statut}</span></div>
-          <a href="${mapsUrl}" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none;margin-top:3px;display:inline-block">📍 Ouvrir dans Maps</a>
+          <div class="item-title">${typeEmoji[l.type]||'📍'} ${l.name}</div>
+          <div class="item-meta">${l.address||'Paris'}${l.note?' · '+l.note:''}</div>
+          <div style="margin-top:4px">
+            <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:${l.status==='visited'?'var(--accent-glow)':'var(--amber-glow)'};color:${l.status==='visited'?'var(--accent)':'var(--amber)'}">${l.status}</span>
+            ${!l.lat?'<span style="font-size:10px;color:var(--red);margin-left:6px">⚠ No coordinates</span>':''}
+          </div>
         </div>
-        <div class="item-actions">
-          <button class="action-btn action-check ${l.statut==='testé'?'done':''}" onclick="toggleLieu(${l.id})">✓</button>
-          <button class="action-btn action-edit" onclick="editLieu(${l.id})">✎</button>
-          <button class="action-btn action-del" onclick="delLieu(${l.id})">✕</button>
+        <div class="item-actions" onclick="event.stopPropagation()">
+          <button class="action-btn action-check ${l.status==='visited'?'done':''}" onclick="toggleLocation(${l.id})">✓</button>
+          <button class="action-btn action-edit" onclick="editLocation(${l.id})">✎</button>
+          <button class="action-btn action-del" onclick="delLocation(${l.id})">✕</button>
         </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function toggleLieu(id) {
-  const lieux = load('lieux'); const l = lieux.find(x => x.id === id);
-  if (l) l.statut = l.statut === 'testé' ? 'à tester' : 'testé';
-  save('lieux', lieux); renderLieux();
-}
-function delLieu(id) { save('lieux', load('lieux').filter(l => l.id !== id)); renderLieux(); }
-function editLieu(id) {
-  const lieux = load('lieux'); const l = lieux.find(x => x.id === id); if (!l) return;
-  openModal('Modifier le lieu',
-    `<div class="modal-field"><label class="modal-label">Nom</label><input class="modal-input" id="m-nom" value="${l.nom}"/></div>
-    <div class="modal-field"><label class="modal-label">Adresse ou quartier</label><input class="modal-input" id="m-adresse" value="${l.adresse||''}"/></div>
-    <div class="modal-field"><label class="modal-label">Type</label>
-    <select class="modal-select" id="m-type">${['resto','bar','cafe','shop','autre'].map(t=>`<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}</select></div>
-    <div class="modal-field"><label class="modal-label">Statut</label>
-    <select class="modal-select" id="m-statut">
-      <option value="à tester" ${l.statut==='à tester'?'selected':''}>À tester</option>
-      <option value="testé" ${l.statut==='testé'?'selected':''}>Testé</option>
-      <option value="recommandé" ${l.statut==='recommandé'?'selected':''}>Recommandé</option>
-    </select></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
-     <button class="modal-delete" onclick="delLieu(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveLieu(${id})">Sauver</button>`);
-}
-function saveLieu(id) {
-  const lieux = load('lieux'); const l = lieux.find(x => x.id === id); if (!l) return;
-  l.nom = document.getElementById('m-nom').value.trim() || l.nom;
-  l.adresse = document.getElementById('m-adresse').value.trim();
-  l.type = document.getElementById('m-type').value;
-  l.statut = document.getElementById('m-statut').value;
-  save('lieux', lieux); renderLieux(); closeModal();
-}
-
-// ── IDÉES ────────────────────────────────────────────
-let ideeFilter = 'all';
-function filterIdees(f) {
-  ideeFilter = f;
-  ['all','actif','archive'].forEach(x =>
-    document.getElementById(`idf-${x}`)?.classList.toggle('active', x === f));
-  renderIdees();
-}
-
-function renderIdees() {
-  const idees = load('idees');
-  const filtered = ideeFilter === 'all' ? idees : idees.filter(i => i.statut === ideeFilter);
-  const el = document.getElementById('idees-list');
-  if (!filtered.length) {
-    el.innerHTML = `<div class="empty-state"><div class="emoji">💡</div><p>Aucune idée sauvegardée.<br/>Capture tes idées avant qu'elles disparaissent !</p></div>`;
-    return;
-  }
-  el.innerHTML = filtered.map(i => `
-    <div class="idee-card ${i.statut==='archive'?'archived':''}">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-        <div style="flex:1">
-          <div class="idee-title ${i.statut==='archive'?'archived':''}">${i.titre}</div>
-          ${i.note?`<div class="idee-note">${i.note}</div>`:''}
-        </div>
-        <div class="item-actions">
-          <button class="action-btn action-edit" onclick="editIdee(${i.id})">✎</button>
-          <button class="action-btn action-del" onclick="delIdee(${i.id})">✕</button>
-        </div>
-      </div>
-      <div class="idee-footer">
-        <span class="status-badge status-${i.statut}">${i.statut==='actif'?'⚡ Actif':'📦 Archivé'}</span>
-        <span style="font-size:10px;color:var(--text-dim)">${i.date}</span>
       </div>
     </div>`).join('');
 }
 
-function delIdee(id) { save('idees', load('idees').filter(i => i.id !== id)); renderIdees(); }
-function editIdee(id) {
-  const idees = load('idees'); const i = idees.find(x => x.id === id); if (!i) return;
-  openModal("Modifier l'idée",
-    `<div class="modal-field"><label class="modal-label">Titre</label><input class="modal-input" id="m-titre" value="${i.titre}"/></div>
-    <div class="modal-field"><label class="modal-label">Notes</label><textarea class="modal-textarea" id="m-note">${i.note||''}</textarea></div>
-    <div class="modal-field"><label class="modal-label">Statut</label>
-    <select class="modal-select" id="m-statut">
-      <option value="actif" ${i.statut==='actif'?'selected':''}>⚡ Actif</option>
-      <option value="archive" ${i.statut==='archive'?'selected':''}>📦 Archivé</option>
-    </select></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
-     <button class="modal-delete" onclick="delIdee(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveIdee(${id})">Sauver</button>`);
-}
-function saveIdee(id) {
-  const idees = load('idees'); const i = idees.find(x => x.id === id); if (!i) return;
-  i.titre = document.getElementById('m-titre').value.trim() || i.titre;
-  i.note = document.getElementById('m-note').value.trim();
-  i.statut = document.getElementById('m-statut').value;
-  save('idees', idees); renderIdees(); closeModal();
+async function addLocation(){
+  const name=document.getElementById('qa-loc-name')?.value.trim();
+  if(!name){alert('Enter a location name.');return;}
+  const address=document.getElementById('qa-loc-address')?.value.trim()||'';
+  const type=document.getElementById('qa-loc-type')?.value||'restaurant';
+  const note=document.getElementById('qa-loc-note')?.value.trim()||'';
+  const locs=load('locations');
+  const coords=await geocode(name,address);
+  locs.unshift({id:Date.now(),name,address,type,note,status:'to visit',lat:coords?.lat||null,lng:coords?.lng||null,date:TODAY_STR});
+  save('locations',locs);
+  renderLocations();
+  renderLocationMarkers();
+  switchTab('locations');
+  renderQAFields();
 }
 
-// ── NOTES ────────────────────────────────────────────
-let noteFilter = 'all';
-function filterNotes(f) {
-  noteFilter = f;
-  ['all','perso','pro','projet','autre'].forEach(x =>
-    document.getElementById(`nf-${x}`)?.classList.toggle('active', x === f));
+function toggleLocation(id){
+  const locs=load('locations');const l=locs.find(x=>x.id===id);
+  if(l) l.status=l.status==='visited'?'to visit':'visited';
+  save('locations',locs);renderLocations();renderLocationMarkers();
+}
+function delLocation(id){save('locations',load('locations').filter(l=>l.id!==id));renderLocations();renderLocationMarkers();}
+function editLocation(id){
+  const locs=load('locations');const l=locs.find(x=>x.id===id);if(!l)return;
+  openModal('Edit location',
+    `<div class="modal-field"><label class="modal-label">Name</label><input class="modal-input" id="m-name" value="${l.name}"/></div>
+    <div class="modal-field"><label class="modal-label">Address</label><input class="modal-input" id="m-address" value="${l.address||''}"/></div>
+    <div class="modal-field"><label class="modal-label">Note</label><input class="modal-input" id="m-note" value="${l.note||''}"/></div>
+    <div class="modal-field"><label class="modal-label">Type</label>
+    <select class="modal-select" id="m-type">${['restaurant','bar','cafe','shop','other'].map(t=>`<option value="${t}" ${t===l.type?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div class="modal-field"><label class="modal-label">Status</label>
+    <select class="modal-select" id="m-status">
+      <option value="to visit" ${l.status==='to visit'?'selected':''}>To visit</option>
+      <option value="visited" ${l.status==='visited'?'selected':''}>Visited</option>
+      <option value="recommended" ${l.status==='recommended'?'selected':''}>Recommended</option>
+    </select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
+     <button class="modal-delete" onclick="delLocation(${id});closeModal()">Delete</button>
+     <button class="modal-save" onclick="saveLocation(${id})">Save</button>`);
+}
+async function saveLocation(id){
+  const locs=load('locations');const l=locs.find(x=>x.id===id);if(!l)return;
+  const newName=document.getElementById('m-name').value.trim()||l.name;
+  const newAddr=document.getElementById('m-address').value.trim();
+  if(newName!==l.name||newAddr!==l.address){
+    const coords=await geocode(newName,newAddr);
+    if(coords){l.lat=coords.lat;l.lng=coords.lng;}
+  }
+  l.name=newName;l.address=newAddr;
+  l.note=document.getElementById('m-note').value.trim();
+  l.type=document.getElementById('m-type').value;
+  l.status=document.getElementById('m-status').value;
+  save('locations',locs);renderLocations();renderLocationMarkers();closeModal();
+}
+
+// ── IDEAS ─────────────────────────────────────────────
+let ideaFilter='all';
+function filterIdeas(f){
+  ideaFilter=f;
+  ['all','active','archived'].forEach(x=>document.getElementById(`idf-${x}`)?.classList.toggle('active',x===f));
+  renderIdeas();
+}
+function addIdea(){
+  const title=document.getElementById('qa-idea-title')?.value.trim();
+  if(!title){alert('Enter an idea title.');return;}
+  const note=document.getElementById('qa-idea-note')?.value.trim()||'';
+  const ideas=load('ideas');
+  ideas.unshift({id:Date.now(),title,note,status:'active',date:TODAY_STR});
+  save('ideas',ideas);renderIdeas();switchTab('ideas');renderQAFields();
+}
+function renderIdeas(){
+  const ideas=load('ideas');
+  const filtered=ideaFilter==='all'?ideas:ideas.filter(i=>i.status===ideaFilter);
+  const el=document.getElementById('ideas-list');
+  if(!filtered.length){el.innerHTML=`<div class="empty-state"><div class="emoji">💡</div><p>No ideas saved yet.<br/>Capture them before they disappear!</p></div>`;return;}
+  el.innerHTML=filtered.map(i=>`
+    <div class="idea-card ${i.status==='archived'?'archived':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:${i.note?'6px':'0'};${i.status==='archived'?'text-decoration:line-through;opacity:0.6':''}">
+            ${i.title}
+          </div>
+          ${i.note?`<div style="font-size:12px;color:var(--text-mid);line-height:1.6">${i.note}</div>`:''}
+        </div>
+        <div class="item-actions">
+          <button class="action-btn action-edit" onclick="editIdea(${i.id})">✎</button>
+          <button class="action-btn action-del" onclick="delIdea(${i.id})">✕</button>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+        <span class="status-badge status-${i.status==='active'?'active':'archived'}">${i.status==='active'?'⚡ Active':'📦 Archived'}</span>
+        <span style="font-size:10px;color:var(--text-dim)">${i.date}</span>
+      </div>
+    </div>`).join('');
+}
+function delIdea(id){save('ideas',load('ideas').filter(i=>i.id!==id));renderIdeas();}
+function editIdea(id){
+  const ideas=load('ideas');const i=ideas.find(x=>x.id===id);if(!i)return;
+  openModal('Edit idea',
+    `<div class="modal-field"><label class="modal-label">Title</label><input class="modal-input" id="m-title" value="${i.title}"/></div>
+    <div class="modal-field"><label class="modal-label">Notes</label><textarea class="modal-textarea" id="m-note">${i.note||''}</textarea></div>
+    <div class="modal-field"><label class="modal-label">Status</label>
+    <select class="modal-select" id="m-status">
+      <option value="active" ${i.status==='active'?'selected':''}>⚡ Active</option>
+      <option value="archived" ${i.status==='archived'?'selected':''}>📦 Archived</option>
+    </select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
+     <button class="modal-delete" onclick="delIdea(${id});closeModal()">Delete</button>
+     <button class="modal-save" onclick="saveIdea(${id})">Save</button>`);
+}
+function saveIdea(id){
+  const ideas=load('ideas');const i=ideas.find(x=>x.id===id);if(!i)return;
+  i.title=document.getElementById('m-title').value.trim()||i.title;
+  i.note=document.getElementById('m-note').value.trim();
+  i.status=document.getElementById('m-status').value;
+  save('ideas',ideas);renderIdeas();closeModal();
+}
+
+// ── NOTES ─────────────────────────────────────────────
+let noteFilter='all';
+const noteCatColors={personal:{bg:'var(--amber-glow)',color:'var(--amber)'},work:{bg:'var(--blue-glow)',color:'var(--blue)'},project:{bg:'var(--purple-glow)',color:'var(--purple)'},other:{bg:'var(--surface2)',color:'var(--text-mid)'}};
+function filterNotes(f){
+  noteFilter=f;
+  ['all','personal','work','project','other'].forEach(x=>document.getElementById(`nf-${x}`)?.classList.toggle('active',x===f));
   renderNotes();
 }
-
-const catColors = {
-  perso: { bg:'var(--amber-glow)', color:'var(--amber)' },
-  pro:   { bg:'var(--blue-glow)',  color:'var(--blue)'  },
-  projet:{ bg:'var(--purple-glow)',color:'var(--purple)' },
-  autre: { bg:'var(--surface2)',   color:'var(--text-mid)' },
-};
-
-function renderNotes() {
-  const notes = load('notes');
-  const filtered = noteFilter === 'all' ? notes : notes.filter(n => n.cat === noteFilter);
-  const el = document.getElementById('notes-list');
-  if (!filtered.length) {
-    el.innerHTML = `<div class="empty-state"><div class="emoji">📝</div><p>Aucune note encore.<br/>Écris tout ce qui passe par ta tête.</p></div>`;
-    return;
-  }
-  el.innerHTML = filtered.map(n => {
-    const c = catColors[n.cat] || catColors.autre;
+function addNote(){
+  const text=document.getElementById('qa-note-text')?.value.trim();
+  if(!text){alert('Write something first.');return;}
+  const cat=document.getElementById('qa-note-cat')?.value||'personal';
+  const notes=load('notes');
+  notes.unshift({id:Date.now(),text,cat,date:TODAY_STR});
+  save('notes',notes);renderNotes();switchTab('notes');renderQAFields();
+}
+function renderNotes(){
+  const notes=load('notes');
+  const filtered=noteFilter==='all'?notes:notes.filter(n=>n.cat===noteFilter);
+  const el=document.getElementById('notes-list');
+  if(!filtered.length){el.innerHTML=`<div class="empty-state"><div class="emoji">📝</div><p>No notes yet.<br/>Write whatever's on your mind.</p></div>`;return;}
+  el.innerHTML=filtered.map(n=>{
+    const c=noteCatColors[n.cat]||noteCatColors.other;
     return `<div class="note-card" style="border-left:3px solid ${c.color}">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
         <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:${c.bg};color:${c.color}">${n.cat.toUpperCase()}</span>
@@ -750,39 +793,215 @@ function renderNotes() {
     </div>`;
   }).join('');
 }
-
-function delNote(id) { save('notes', load('notes').filter(n => n.id !== id)); renderNotes(); }
-function editNote(id) {
-  const notes = load('notes'); const n = notes.find(x => x.id === id); if (!n) return;
-  openModal('Modifier la note',
+function delNote(id){save('notes',load('notes').filter(n=>n.id!==id));renderNotes();}
+function editNote(id){
+  const notes=load('notes');const n=notes.find(x=>x.id===id);if(!n)return;
+  openModal('Edit note',
     `<div class="modal-field"><label class="modal-label">Note</label><textarea class="modal-textarea" id="m-text">${n.text}</textarea></div>
-    <div class="modal-field"><label class="modal-label">Catégorie</label>
-    <select class="modal-select" id="m-cat">${['perso','pro','projet','autre'].map(c=>`<option value="${c}" ${c===n.cat?'selected':''}>${c}</option>`).join('')}</select></div>`,
-    `<button class="modal-cancel" onclick="closeModal()">Annuler</button>
-     <button class="modal-delete" onclick="delNote(${id});closeModal()">Supprimer</button>
-     <button class="modal-save" onclick="saveNote(${id})">Sauver</button>`);
+    <div class="modal-field"><label class="modal-label">Category</label>
+    <select class="modal-select" id="m-cat">${['personal','work','project','other'].map(c=>`<option value="${c}" ${c===n.cat?'selected':''}>${c}</option>`).join('')}</select></div>`,
+    `<button class="modal-cancel" onclick="closeModal()">Cancel</button>
+     <button class="modal-delete" onclick="delNote(${id});closeModal()">Delete</button>
+     <button class="modal-save" onclick="saveNote(${id})">Save</button>`);
 }
-function saveNote(id) {
-  const notes = load('notes'); const n = notes.find(x => x.id === id); if (!n) return;
-  n.text = document.getElementById('m-text').value.trim() || n.text;
-  n.cat = document.getElementById('m-cat').value;
-  save('notes', notes); renderNotes(); closeModal();
+function saveNote(id){
+  const notes=load('notes');const n=notes.find(x=>x.id===id);if(!n)return;
+  n.text=document.getElementById('m-text').value.trim()||n.text;
+  n.cat=document.getElementById('m-cat').value;
+  save('notes',notes);renderNotes();closeModal();
 }
 
-// ── INIT ─────────────────────────────────────────────
-function renderAll() {
+// ── REFLECT ───────────────────────────────────────────
+
+// CHECK-IN
+const CHECKIN_QUESTIONS=[
+  {q:'How did you move today?',opts:['🧘 Rest day','🚶 Walked','💪 Full workout','🏃 Run','🧗 Other']},
+  {q:'Did you connect with someone?',opts:['Yes, meaningfully','Quick message','Not today']},
+  {q:'One thing for future-you today?',opts:['📈 Invested / saved','📝 Applied / reached out','📚 Learned something','✨ Created','🛌 Rested intentionally','— Nothing today']}
+];
+let checkinStep=0, checkinAnswers=[];
+
+function checkEveningCheckin(){
+  const now=new Date();
+  const h=now.getHours();
+  const lastDone=localStorage.getItem('mm_checkin_done_date');
+  if(h>=21&&lastDone!==TODAY_STR){
+    setTimeout(()=>openCheckinSheet(),1500);
+  }
+}
+
+function openCheckinSheet(){
+  checkinStep=0; checkinAnswers=[];
+  renderCheckinStep();
+  document.getElementById('checkin-overlay').classList.add('visible');
+}
+
+function renderCheckinStep(){
+  const q=CHECKIN_QUESTIONS[checkinStep];
+  document.getElementById('checkin-q-num').textContent=`${checkinStep+1} / ${CHECKIN_QUESTIONS.length}`;
+  document.getElementById('checkin-q-text').textContent=q.q;
+  for(let i=0;i<3;i++) document.getElementById(`cpd${i}`).classList.toggle('active',i<=checkinStep);
+  document.getElementById('checkin-options').innerHTML=q.opts.map((o,i)=>
+    `<button class="checkin-opt ${checkinAnswers[checkinStep]===o?'selected':''}" onclick="selectCheckinOpt('${o.replace(/'/g,"\\'")}',this)">${o}</button>`
+  ).join('');
+  document.getElementById('checkin-back-btn').style.display=checkinStep>0?'block':'none';
+  document.getElementById('checkin-next-btn').textContent=checkinStep===CHECKIN_QUESTIONS.length-1?'Done ✓':'Next →';
+}
+
+function selectCheckinOpt(opt,btn){
+  checkinAnswers[checkinStep]=opt;
+  document.querySelectorAll('.checkin-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function checkinNext(){
+  if(!checkinAnswers[checkinStep]){alert('Please select an option.');return;}
+  if(checkinStep<CHECKIN_QUESTIONS.length-1){
+    checkinStep++;
+    renderCheckinStep();
+  } else {
+    saveCheckin();
+  }
+}
+
+function checkinBack(){
+  if(checkinStep>0){checkinStep--;renderCheckinStep();}
+}
+
+function saveCheckin(){
+  const checkins=load('checkins');
+  checkins.unshift({date:TODAY_STR,answers:checkinAnswers,ts:Date.now()});
+  save('checkins',checkins);
+  localStorage.setItem('mm_checkin_done_date',TODAY_STR);
+  document.getElementById('checkin-overlay').classList.remove('visible');
+  renderReflect();
+  // Invalidate today's home insight so it regenerates with new check-in data
+  localStorage.removeItem('mm_insight_date');
+}
+
+function renderReflect(){
+  renderCheckinStatus();
+  renderWeeklyReviews();
+  renderCheckinHistory();
+}
+
+function renderCheckinStatus(){
+  const done=localStorage.getItem('mm_checkin_done_date')===TODAY_STR;
+  const el=document.getElementById('checkin-status');
+  if(done){
+    const checkins=load('checkins');
+    const today=checkins[0];
+    el.innerHTML=`<div class="checkin-done-note">✓ Done today — ${today?.answers?.join(' · ')||''}</div>
+    <button onclick="openCheckinSheet()" style="background:none;border:none;font-size:11px;color:var(--accent);cursor:pointer;display:block;margin:0 auto">Redo check-in</button>`;
+  } else {
+    el.innerHTML=`<button class="checkin-btn" onclick="openCheckinSheet()">✦ Daily check-in — 30 seconds</button>
+    <div style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:6px">Appears automatically after 9pm</div>`;
+  }
+}
+
+function renderCheckinHistory(){
+  const checkins=load('checkins').slice(0,10);
+  const el=document.getElementById('checkin-history');
+  if(!checkins.length){el.innerHTML='<div class="empty-state" style="padding:20px 0"><p>No check-ins yet. They\'ll appear here after your first one.</p></div>';return;}
+  el.innerHTML=checkins.map(c=>`
+    <div class="checkin-log-item">
+      <div class="checkin-log-date">${c.date}</div>
+      <div class="checkin-log-answers">${c.answers?.join(' · ')||'—'}</div>
+    </div>`).join('');
+}
+
+// WEEKLY REVIEW
+function renderWeeklyReviews(){
+  const reviews=load('reviews');
+  const el=document.getElementById('weekly-review-section');
+  const isSunday=new Date().getDay()===0;
+  const thisWeek=getWeekKey();
+  const hasThisWeek=reviews.find(r=>r.week===thisWeek);
+
+  let html='';
+  if(isSunday&&!hasThisWeek){
+    html+=`<button class="review-gen-btn" onclick="generateWeeklyReview()">⚡ Generate this week's review</button>`;
+  } else if(!isSunday&&!hasThisWeek){
+    html+=`<div style="font-size:12px;color:var(--text-dim);font-style:italic;margin-bottom:10px">Weekly review generates on Sundays.</div>`;
+  }
+  if(!reviews.length){
+    html+=`<div class="empty-state" style="padding:20px 0"><p>No weekly reviews yet.<br/>Your first one generates this Sunday.</p></div>`;
+  } else {
+    html+=reviews.slice(0,4).map(r=>`
+      <div class="review-card">
+        <div class="review-week">Week of ${r.week}</div>
+        <div class="review-text">${r.text}</div>
+      </div>`).join('');
+  }
+  el.innerHTML=html;
+}
+
+function getWeekKey(){
+  const now=new Date();
+  const mon=new Date(now);
+  mon.setDate(now.getDate()-((now.getDay()+6)%7));
+  return mon.toISOString().split('T')[0];
+}
+
+async function generateWeeklyReview(){
+  const btn=document.querySelector('.review-gen-btn');
+  if(btn){btn.textContent='Generating...';btn.disabled=true;}
+  const context=buildWeekContext();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:800,
+        system:'You are a personal intelligence assistant. Write a warm but honest weekly review. Use 3 short paragraphs: (1) What you did, (2) What you didn\'t do or what needs attention, (3) One thing to carry into next week. Be specific, not generic. Write in second person. Max 200 words total.',
+        messages:[{role:'user',content:`Here is my week data:\n${context}\n\nWrite my weekly review.`}]
+      })
+    });
+    const d=await r.json();
+    const text=d.content?.find(b=>b.type==='text')?.text||'Could not generate review.';
+    const reviews=load('reviews');
+    reviews.unshift({week:getWeekKey(),text,date:TODAY_STR});
+    save('reviews',reviews);
+    // Also save as insight seed for next week
+    localStorage.setItem('mm_weekly_seed',text);
+    localStorage.setItem('mm_weekly_seed_date',getWeekKey());
+    renderWeeklyReviews();
+  }catch(e){
+    if(btn){btn.textContent='⚡ Generate this week\'s review';btn.disabled=false;}
+  }
+}
+
+function buildWeekContext(){
+  const tasks=JSON.parse(localStorage.getItem('mm_tasks')||'[]');
+  const workout=JSON.parse(localStorage.getItem('mm_workout')||'{}');
+  const checkins=load('checkins').slice(0,7);
+  const deadlines=JSON.parse(localStorage.getItem('mm_admin_deadlines')||'[]');
+  const budget=JSON.parse(localStorage.getItem('mm_budget')||'[]');
+  const doneTasks=tasks.filter(t=>t.done).slice(0,10).map(t=>t.text);
+  const overdueDl=deadlines.filter(d=>!d.done&&new Date(d.date)<new Date()).map(d=>d.text);
+  const weekKey=Object.keys(workout).sort().pop();
+  const sessions=weekKey?Object.entries(workout[weekKey]||{}).filter(([,v])=>v).map(([k])=>k):[];
+  const budgetOverruns=budget.filter(b=>b.actual>b.target).map(b=>`${b.cat}: €${b.actual}/€${b.target}`);
+  return `Tasks completed this week: ${doneTasks.join(', ')||'none'}
+Overdue deadlines: ${overdueDl.join(', ')||'none'}
+Workouts this week: ${sessions.join(', ')||'none logged'}
+Check-ins this week: ${checkins.map(c=>c.answers?.join('/')).join(' | ')||'none'}
+Budget overruns: ${budgetOverruns.join(', ')||'none'}`;
+}
+
+// ── INIT ──────────────────────────────────────────────
+function renderAll(){
   renderLinks();
-  renderLieux();
-  renderIdees();
+  renderLocations();
+  renderIdeas();
   renderNotes();
-  selectCat('link');
-  switchLieuxView('map');
+  selectQACat('link');
 }
 
-if (!localStorage.getItem('mm_vault_pin')) {
+if(!localStorage.getItem('mm_vault_pin')){
   openMain();
+} else {
+  updateDots();
 }
-updateDots();
 </script>
 </body>
 </html>
