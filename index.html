@@ -569,29 +569,24 @@
       </div>
     </div>
 
-    <!-- TODAY'S MEALS -->
-    <div class="card">
-      <div class="card-header" onclick="toggle('meals')">
-        <div class="card-header-left">
-          <div class="card-icon">◈</div>
-          <div class="card-title">Today's Meals</div>
-        </div>
-        <div class="card-chevron open" id="chev-meals">▾</div>
-      </div>
-      <div class="card-collapse open" id="col-meals">
-        <div class="meals-row">
-          <div class="meal-card">
-            <div class="meal-time-label">Midi</div>
-            <div class="meal-empty" id="meal-lunch-content">Not planned yet</div>
-          </div>
-          <div class="meal-card">
-            <div class="meal-time-label">Soir</div>
-            <div class="meal-empty" id="meal-dinner-content">Not planned yet</div>
-          </div>
-        </div>
-      </div>
+    <!-- UPCOMING MEAL -->
+<div class="card">
+  <div class="card-header" onclick="toggle('meals')">
+    <div class="card-header-left">
+      <div class="card-icon">◈</div>
+      <div class="card-title" id="meals-card-title">Upcoming Meal</div>
     </div>
-
+    <div class="card-chevron open" id="chev-meals">▾</div>
+  </div>
+  <div class="card-collapse open" id="col-meals">
+    <div class="meals-row" id="meals-row"></div>
+    <div id="workout-today-row" style="padding:0 16px 14px;display:none">
+      <div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Today's Workout</div>
+      <div id="workout-today-content"></div>
+    </div>
+  </div>
+</div>
+    
     <!-- NAV BUTTONS -->
     <div class="nav-buttons">
       <a class="nav-btn" href="food.html">
@@ -792,7 +787,10 @@ function switchTab(tab) {
 
 function renderTasks() {
   const el = document.getElementById('task-list');
-  const filtered = S.tasks.filter(t => S.currentTab === 'today' ? isToday(t) : !isToday(t));
+  const filtered = S.tasks.filter(t => {
+    if (t.done) return false; // masquer les tâches done
+    return S.currentTab === 'today' ? isToday(t) : !isToday(t);
+  });
   if (!filtered.length) {
     el.innerHTML = `<div class="task-empty">${S.currentTab === 'today' ? 'Nothing for today 🎉' : 'Nothing scheduled later'}</div>`;
     return;
@@ -802,9 +800,9 @@ function renderTasks() {
     const dateLabel = formatDate(t.date);
     const dateClass = getDateClass(t.date);
     return `<div class="task-item">
-      <div class="task-box ${t.done?'done':''}" onclick="toggleTask(${i})"></div>
+      <div class="task-box" onclick="toggleTask(${i})"></div>
       <div class="task-info">
-        <div class="task-label ${t.done?'done':''}">${t.text}</div>
+        <div class="task-label">${t.text}</div>
         ${dateLabel ? `<div class="task-date-badge ${dateClass}">${dateLabel}</div>` : ''}
       </div>
       <button class="task-del" onclick="delTask(${i})">✕</button>
@@ -821,7 +819,11 @@ function addTask() {
   inp.value = ''; inp.focus();
 }
 
-function toggleTask(i) { S.tasks[i].done = !S.tasks[i].done; saveTasks(); renderTasks(); }
+function toggleTask(i) {
+  S.tasks[i].done = true; // toujours done, jamais toggle
+  saveTasks();
+  renderTasks();
+}
 function delTask(i) { S.tasks.splice(i, 1); saveTasks(); renderTasks(); }
 
 // ── ASTRO ─────────────────────────────────────────────
@@ -954,24 +956,60 @@ if ('serviceWorker' in navigator) {
 // ── TODAY'S MEALS FROM FOOD PAGE ──────────────────────
 function loadTodayMeals() {
   const saved = localStorage.getItem('mm_today_meals');
-  if (!saved) return;
-  const meals = JSON.parse(saved);
-  
+  const now = new Date();
+  const hour = now.getHours();
+  const isWeekend = now.getDay() === 0 || now.getDay() === 6;
+  const meals = saved ? JSON.parse(saved) : {};
   const lunch = meals.lunch;
   const dinner = meals.dinner;
 
-  if (lunch?.name) {
-    document.getElementById('meal-lunch-content').innerHTML = `
-      <div class="meal-name">${lunch.name}</div>
-      <div class="meal-details">${Array.isArray(lunch.ingredients) ? lunch.ingredients.slice(0,3).join(', ') : ''}</div>
-      <div class="meal-kcal">${lunch.kcal || 0} kcal · ${lunch.protein || 0}g protein</div>`;
+  // Determine which meal(s) to show
+  let slots = [];
+  if (isWeekend) {
+    // Weekend: show both lunch and dinner
+    if (hour < 14) slots = ['lunch','dinner'];
+    else slots = ['dinner'];
+  } else {
+    // Weekday: dinner only
+    slots = ['dinner'];
   }
 
-  if (dinner?.name) {
-    document.getElementById('meal-dinner-content').innerHTML = `
-      <div class="meal-name">${dinner.name}</div>
-      <div class="meal-details">${Array.isArray(dinner.ingredients) ? dinner.ingredients.slice(0,3).join(', ') : ''}</div>
-      <div class="meal-kcal">${dinner.kcal || 0} kcal · ${dinner.protein || 0}g protein</div>`;
+  const mealHTML = slot => {
+    const meal = meals[slot];
+    const label = slot === 'lunch' ? 'Midi' : 'Soir';
+    if (!meal?.name) return `<div class="meal-card"><div class="meal-time-label">${label}</div><div class="meal-empty">Not planned yet</div></div>`;
+    return `<div class="meal-card">
+      <div class="meal-time-label">${label}</div>
+      <div class="meal-name">${meal.name}</div>
+      <div class="meal-details">${Array.isArray(meal.ingredients) ? meal.ingredients.slice(0,3).join(', ') : ''}</div>
+      <div class="meal-kcal">${meal.kcal||0} kcal · ${meal.protein||0}g protein</div>
+    </div>`;
+  };
+
+  document.getElementById('meals-row').innerHTML = slots.map(mealHTML).join('');
+
+  // Workout today
+  const workout = JSON.parse(localStorage.getItem('mm_workout') || '{}');
+  const weekKey = (() => {
+    const n = new Date(); const m = new Date(n);
+    m.setDate(n.getDate() - ((n.getDay()+6)%7));
+    return m.toISOString().split('T')[0];
+  })();
+  const dayNames = ['wkd','mon','','wed','','','wkd']; // Sun,Mon,Tue,Wed,Thu,Fri,Sat
+  const todaySession = dayNames[now.getDay()];
+  const SESSION_LABELS = {mon:'Neoness · Monday',wed:'Neoness · Wednesday',wkd:'Neoness · Weekend 12:00–13:00'};
+  const workoutEl = document.getElementById('workout-today-row');
+  const workoutContent = document.getElementById('workout-today-content');
+  if (todaySession && SESSION_LABELS[todaySession]) {
+    const done = workout[weekKey]?.[todaySession];
+    workoutEl.style.display = 'block';
+    workoutContent.innerHTML = `<div style="display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:8px;padding:10px 12px;border:1px solid var(--border)">
+      <div style="width:22px;height:22px;border-radius:50%;background:${done?'var(--accent)':'transparent'};border:2px solid ${done?'var(--accent)':'var(--border-strong)'};display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">${done?'✓':''}</div>
+      <div style="font-size:13px;color:var(--text);font-weight:500">${SESSION_LABELS[todaySession]}</div>
+      ${done?'<span style="font-size:10px;color:var(--accent);margin-left:auto">Done ✓</span>':'<span style="font-size:10px;color:var(--text-dim);margin-left:auto">Scheduled</span>'}
+    </div>`;
+  } else {
+    workoutEl.style.display = 'none';
   }
 }
 // ── FOR YOU ───────────────────────────────────────────
@@ -1000,35 +1038,48 @@ function loadForYou(force=false) {
   const doneTasks = tasks.filter(t => t.done).length;
   const urgentDl = deadlines.filter(d => !d.done && Math.round((new Date(d.date) - today) / 86400000) <= 7 && Math.round((new Date(d.date) - today) / 86400000) >= 0).sort((a,b) => new Date(a.date) - new Date(b.date));
   const overBudget = budget.filter(b => b.actual > b.target);
-  const lastCheckin = checkins[0];
   const weekKey = Object.keys(workout).sort().pop();
   const sessions = weekKey ? Object.values(workout[weekKey] || {}).filter(Boolean).length : 0;
 
-  // Build insight
+  // Check-in data
+  const checkinToday = checkins.find(c => c.date === TODAY_DATE);
+  const movementToday = checkinToday?.answers?.[0] || '';
+  const connectionToday = checkinToday?.answers?.[1] || '';
+  const actionToday = checkinToday?.answers?.[2] || '';
+
   let insight = '';
   let action = '';
 
-  // Pick the most relevant insight based on data
   if (urgentDl.length > 0) {
     const next = urgentDl[0];
     const days = Math.round((new Date(next.date) - today) / 86400000);
-    insight = `You have <strong>${urgentDl.length} deadline${urgentDl.length > 1 ? 's' : ''}</strong> coming up this week. The most urgent: <strong>${next.text}</strong> — ${days === 0 ? 'due today' : days === 1 ? 'due tomorrow' : `in ${days} days`}.`;
+    insight = `You have <strong>${urgentDl.length} deadline${urgentDl.length > 1 ? 's' : ''}</strong> this week. Most urgent: <strong>${next.text}</strong> — ${days === 0 ? 'due today' : days === 1 ? 'due tomorrow' : `in ${days} days`}.${movementToday ? ` You checked in: ${movementToday}.` : ''}`;
     action = `Handle "${next.text}" today`;
   } else if (overBudget.length > 0) {
     const cat = overBudget[0];
-    insight = `Your <strong>${cat.cat}</strong> budget is over — €${cat.actual} spent vs €${cat.target} planned. ${overBudget.length > 1 ? `${overBudget.length - 1} other categor${overBudget.length > 2 ? 'ies' : 'y'} also over.` : ''}`;
+    insight = `<strong>${cat.cat}</strong> budget over — €${cat.actual} vs €${cat.target} planned.${movementToday ? ` Today you ${movementToday.toLowerCase()}.` : ''}`;
     action = `Review ${cat.cat} spending in Admin`;
+  } else if (checkinToday) {
+    const workoutMsg = movementToday.includes('workout') || movementToday.includes('Run')
+      ? `You worked out today — great consistency`
+      : movementToday.includes('Rest') ? `Rest day today`
+      : `You ${movementToday.toLowerCase()} today`;
+    const connectionMsg = connectionToday === 'Yes, meaningfully' ? ', connected meaningfully with someone'
+      : connectionToday === 'Quick message' ? ', stayed in touch' : '';
+    const actionMsg = actionToday && !actionToday.includes('Nothing') ? `. You also: ${actionToday.toLowerCase()}` : '';
+    insight = `${workoutMsg}${connectionMsg}${actionMsg}. ${sessions >= 3 ? 'Workout goal hit this week 💪' : sessions >= 2 ? `${sessions} sessions this week — one more to hit your goal.` : `${sessions} workout${sessions !== 1 ? 's' : ''} this week so far.`}`;
+    action = sessions < 3 && today.getDay() >= 4 ? 'Log a workout in Food & Wellness' : 'Review your weekly plan';
   } else if (sessions < 2 && today.getDay() >= 4) {
-    insight = `Only <strong>${sessions} workout${sessions !== 1 ? 's' : ''}</strong> logged this week and it's ${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][today.getDay()]}. Your Neoness goal is 3 sessions.`;
+    insight = `Only <strong>${sessions} workout${sessions !== 1 ? 's' : ''}</strong> this week and it's ${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][today.getDay()]}. Your Neoness goal is 3 sessions.`;
     action = `Log a workout session in Food & Wellness`;
   } else if (todayTasks.length > 0) {
-    insight = `You have <strong>${todayTasks.length} task${todayTasks.length > 1 ? 's' : ''}</strong> for today: ${todayTasks.slice(0,2).join(', ')}${todayTasks.length > 2 ? '...' : ''}. ${doneTasks > 0 ? `${doneTasks} already completed this week — keep it up.` : ''}`;
+    insight = `You have <strong>${todayTasks.length} task${todayTasks.length > 1 ? 's' : ''}</strong> for today: ${todayTasks.slice(0,2).join(', ')}${todayTasks.length > 2 ? '...' : ''}.`;
     action = todayTasks[0];
   } else if (weeklySeed) {
     insight = weeklySeed.split('\n')[2] || weeklySeed.slice(0, 120) + '...';
     action = 'Review your weekly plan';
   } else {
-    insight = `All clear today — no urgent deadlines, budget on track${sessions >= 2 ? ', workouts on point' : ''}. A good day to get ahead.`;
+    insight = `All clear — no urgent deadlines, budget on track${sessions >= 2 ? ', workouts on point' : ''}. A good day to get ahead.`;
     action = sessions < 2 ? 'Consider a workout today' : 'Plan something for next week';
   }
 
