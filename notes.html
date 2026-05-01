@@ -115,9 +115,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .loc-card:active{border-color:var(--accent);}
 .loc-card.highlighted{border-color:var(--accent);background:var(--accent-glow);}
 
-/* IDEAS */
-.idea-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
-.idea-card.archived{border-left-color:var(--text-dim);opacity:0.6;}
+/* PROJECTS */
+.project-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
+.project-card.archived{border-left-color:var(--text-dim);opacity:0.6;}
+.project-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.project-subtasks{margin-bottom:10px;}
+.subtask-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+.subtask-item:last-child{border-bottom:none;}
+.subtask-box{width:16px;height:16px;border:1.5px solid var(--border-strong);border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.subtask-box.done{background:var(--purple);border-color:var(--purple);}
+.subtask-box.done::after{content:'✓';font-size:9px;color:#fff;font-weight:700;}
+.subtask-label{font-size:12px;color:var(--text);flex:1;line-height:1.4;}
+.subtask-label.done{opacity:0.4;text-decoration:line-through;}
+.subtask-del{font-size:11px;color:var(--text-dim);background:none;border:none;cursor:pointer;opacity:0.4;padding:2px;}
+.subtask-add-row{display:flex;gap:6px;margin-top:8px;}
+.subtask-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;}
+.subtask-input:focus{border-color:var(--purple);}
+.subtask-add-btn{width:28px;height:28px;background:var(--purple);border:none;border-radius:6px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.project-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
 .status-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
 .status-active{background:var(--purple-glow);color:var(--purple);}
 .status-archived{background:var(--surface2);color:var(--text-dim);}
@@ -207,7 +222,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="qa-cat-row">
       <button class="qa-cat-btn" id="qcat-link" onclick="selectQACat('link')">🔗 Link</button>
       <button class="qa-cat-btn" id="qcat-location" onclick="selectQACat('location')">📍 Location</button>
-      <button class="qa-cat-btn" id="qcat-idea" onclick="selectQACat('idea')">💡 Idea</button>
+      <button class="qa-cat-btn" id="qcat-idea" onclick="selectQACat('idea')">📋 Project</button>
       <button class="qa-cat-btn" id="qcat-note" onclick="selectQACat('note')">📝 Note</button>
     </div>
     <div class="qa-fields" id="qa-fields"></div>
@@ -217,7 +232,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="tabs-bar">
     <button class="tab-btn active" id="tab-links" onclick="switchTab('links')">🔗 Links</button>
     <button class="tab-btn" id="tab-locations" onclick="switchTab('locations')">📍 Locations</button>
-    <button class="tab-btn" id="tab-ideas" onclick="switchTab('ideas')">💡 Ideas</button>
+    <button class="tab-btn" id="tab-ideas" onclick="switchTab('ideas')">📋 Projects</button>
     <button class="tab-btn" id="tab-notes" onclick="switchTab('notes')">📝 Notes</button>
     <button class="tab-btn" id="tab-reflect" onclick="switchTab('reflect')">🪞 Reflect</button>
   </div>
@@ -248,15 +263,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div id="locations-list"></div>
   </div>
 
-  <!-- IDEAS -->
-  <div class="tab-panel" id="panel-ideas">
-    <div class="filter-row">
-      <span class="filter-chip active" id="idf-all" onclick="filterIdeas('all')">All</span>
-      <span class="filter-chip" id="idf-active" onclick="filterIdeas('active')">Active</span>
-      <span class="filter-chip" id="idf-archived" onclick="filterIdeas('archived')">Archived</span>
-    </div>
-    <div id="ideas-list"></div>
+<!-- PROJECTS -->
+<div class="tab-panel" id="panel-ideas">
+  <div class="filter-row">
+    <span class="filter-chip active" id="idf-all" onclick="filterIdeas('all')">All</span>
+    <span class="filter-chip" id="idf-active" onclick="filterIdeas('active')">Active</span>
+    <span class="filter-chip" id="idf-archived" onclick="filterIdeas('archived')">Archived</span>
   </div>
+  <div id="ideas-list"></div>
 
   <!-- NOTES -->
   <div class="tab-panel" id="panel-notes">
@@ -418,11 +432,11 @@ function renderQAFields(){
       </select>
       <input class="qa-input" id="qa-loc-note" placeholder="Note (optional — recommended by, occasion...)"/>
       <button class="qa-add-btn" onclick="addLocation()">Save location</button>`;
-  } else if(qaCat==='idea'){
+} else if(qaCat==='idea'){
     el.innerHTML=`
-      <input class="qa-input" id="qa-idea-title" placeholder="Idea title..."/>
-      <textarea class="qa-textarea" id="qa-idea-note" placeholder="Context, details, next steps... (optional)" rows="3"></textarea>
-      <button class="qa-add-btn" onclick="addIdea()">Save idea</button>`;
+      <input class="qa-input" id="qa-idea-title" placeholder="Project title..."/>
+      <textarea class="qa-textarea" id="qa-idea-note" placeholder="First subtask or context... (optionnel)" rows="2"></textarea>
+      <button class="qa-add-btn" onclick="addIdea()">Save project</button>`;
   } else if(qaCat==='note'){
     el.innerHTML=`
       <textarea class="qa-textarea" id="qa-note-text" placeholder="Write anything..." rows="4"></textarea>
@@ -671,52 +685,90 @@ async function saveLocation(id){
   save('locations',locs);renderLocations();renderLocationMarkers();closeModal();
 }
 
-// ── IDEAS ─────────────────────────────────────────────
+// ── PROJECTS ─────────────────────────────────────────
 let ideaFilter='all';
 function filterIdeas(f){
   ideaFilter=f;
   ['all','active','archived'].forEach(x=>document.getElementById(`idf-${x}`)?.classList.toggle('active',x===f));
   renderIdeas();
 }
+
 function addIdea(){
   const title=document.getElementById('qa-idea-title')?.value.trim();
-  if(!title){alert('Enter an idea title.');return;}
-  const note=document.getElementById('qa-idea-note')?.value.trim()||'';
+  if(!title){alert('Enter a project title.');return;}
+  const firstNote=document.getElementById('qa-idea-note')?.value.trim()||'';
   const ideas=load('ideas');
-  ideas.unshift({id:Date.now(),title,note,status:'active',date:TODAY_STR});
+  const subtasks = firstNote ? [{id:Date.now(),text:firstNote,done:false}] : [];
+  ideas.unshift({id:Date.now(),title,subtasks,status:'active',date:TODAY_STR});
   save('ideas',ideas);renderIdeas();switchTab('ideas');renderQAFields();
 }
+
 function renderIdeas(){
   const ideas=load('ideas');
   const filtered=ideaFilter==='all'?ideas:ideas.filter(i=>i.status===ideaFilter);
   const el=document.getElementById('ideas-list');
-  if(!filtered.length){el.innerHTML=`<div class="empty-state"><div class="emoji">💡</div><p>No ideas saved yet.<br/>Capture them before they disappear!</p></div>`;return;}
-  el.innerHTML=filtered.map(i=>`
-    <div class="idea-card ${i.status==='archived'?'archived':''}">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
-        <div style="flex:1">
-          <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:${i.note?'6px':'0'};${i.status==='archived'?'text-decoration:line-through;opacity:0.6':''}">
-            ${i.title}
-          </div>
-          ${i.note?`<div style="font-size:12px;color:var(--text-mid);line-height:1.6">${i.note}</div>`:''}
-        </div>
+  if(!filtered.length){
+    el.innerHTML=`<div class="empty-state"><div class="emoji">📋</div><p>No projects yet.<br/>Capture your next project above!</p></div>`;
+    return;
+  }
+  el.innerHTML=filtered.map(i=>{
+    const subtasks = i.subtasks || [];
+    const doneCount = subtasks.filter(s=>s.done).length;
+    const subtaskHTML = subtasks.map((s,si)=>`
+      <div class="subtask-item">
+        <div class="subtask-box ${s.done?'done':''}" onclick="toggleSubtask(${i.id},${si})"></div>
+        <div class="subtask-label ${s.done?'done':''}">${s.text}</div>
+        <button class="subtask-del" onclick="delSubtask(${i.id},${si})">✕</button>
+      </div>`).join('');
+    return `<div class="project-card ${i.status==='archived'?'archived':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px">
+        <div class="project-title">${i.title}</div>
         <div class="item-actions">
           <button class="action-btn action-edit" onclick="editIdea(${i.id})">✎</button>
           <button class="action-btn action-del" onclick="delIdea(${i.id})">✕</button>
         </div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
-        <span class="status-badge status-${i.status==='active'?'active':'archived'}">${i.status==='active'?'⚡ Active':'📦 Archived'}</span>
+      <div class="project-subtasks">${subtaskHTML}</div>
+      <div class="subtask-add-row">
+        <input class="subtask-input" id="st-input-${i.id}" placeholder="Add a subtask..." onkeydown="if(event.key==='Enter')addSubtask(${i.id})"/>
+        <button class="subtask-add-btn" onclick="addSubtask(${i.id})">+</button>
+      </div>
+      <div class="project-footer">
+        <span class="status-badge status-${i.status==='active'?'active':'archived'}">${i.status==='active'?'⚡ Active':'📦 Archived'}${subtasks.length>0?' · '+doneCount+'/'+subtasks.length:''}</span>
         <span style="font-size:10px;color:var(--text-dim)">${i.date}</span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
+
+function toggleSubtask(id, si){
+  const ideas=load('ideas');const i=ideas.find(x=>x.id===id);if(!i)return;
+  if(!i.subtasks)i.subtasks=[];
+  i.subtasks[si].done=!i.subtasks[si].done;
+  save('ideas',ideas);renderIdeas();
+}
+
+function addSubtask(id){
+  const inp=document.getElementById(`st-input-${id}`);
+  const text=inp?.value.trim();if(!text)return;
+  const ideas=load('ideas');const i=ideas.find(x=>x.id===id);if(!i)return;
+  if(!i.subtasks)i.subtasks=[];
+  i.subtasks.push({id:Date.now(),text,done:false});
+  save('ideas',ideas);renderIdeas();
+}
+
+function delSubtask(id,si){
+  const ideas=load('ideas');const i=ideas.find(x=>x.id===id);if(!i)return;
+  i.subtasks.splice(si,1);
+  save('ideas',ideas);renderIdeas();
+}
+
 function delIdea(id){save('ideas',load('ideas').filter(i=>i.id!==id));renderIdeas();}
+
 function editIdea(id){
   const ideas=load('ideas');const i=ideas.find(x=>x.id===id);if(!i)return;
-  openModal('Edit idea',
+  openModal('Edit project',
     `<div class="modal-field"><label class="modal-label">Title</label><input class="modal-input" id="m-title" value="${i.title}"/></div>
-    <div class="modal-field"><label class="modal-label">Notes</label><textarea class="modal-textarea" id="m-note">${i.note||''}</textarea></div>
     <div class="modal-field"><label class="modal-label">Status</label>
     <select class="modal-select" id="m-status">
       <option value="active" ${i.status==='active'?'selected':''}>⚡ Active</option>
@@ -726,10 +778,10 @@ function editIdea(id){
      <button class="modal-delete" onclick="delIdea(${id});closeModal()">Delete</button>
      <button class="modal-save" onclick="saveIdea(${id})">Save</button>`);
 }
+
 function saveIdea(id){
   const ideas=load('ideas');const i=ideas.find(x=>x.id===id);if(!i)return;
   i.title=document.getElementById('m-title').value.trim()||i.title;
-  i.note=document.getElementById('m-note').value.trim();
   i.status=document.getElementById('m-status').value;
   save('ideas',ideas);renderIdeas();closeModal();
 }
@@ -889,30 +941,26 @@ function renderCheckinHistory(){
 
 // WEEKLY REVIEW
 function renderWeeklyReviews(){
-  const reviews=load('reviews');
-  const el=document.getElementById('weekly-review-section');
-  const isSunday=new Date().getDay()===0;
-  const thisWeek=getWeekKey();
-  const hasThisWeek=reviews.find(r=>r.week===thisWeek);
+  const reviews = load('reviews');
+  const el = document.getElementById('weekly-review-section');
+  const thisWeek = getWeekKey();
+  const hasThisWeek = reviews.find(r => r.week === thisWeek);
 
-  let html='';
-  if(isSunday&&!hasThisWeek){
-    html+=`<button class="review-gen-btn" onclick="generateWeeklyReview()">⚡ Generate this week's review</button>`;
-  } else if(!isSunday&&!hasThisWeek){
-    html+=`<div style="font-size:12px;color:var(--text-dim);font-style:italic;margin-bottom:10px">Weekly review generates on Sundays.</div>`;
+  let html = '';
+  if (!hasThisWeek) {
+    html += `<button class="review-gen-btn" onclick="generateWeeklyReview()">⚡ Generate this week's review</button>`;
   }
-  if(!reviews.length){
-    html+=`<div class="empty-state" style="padding:20px 0"><p>No weekly reviews yet.<br/>Your first one generates this Sunday.</p></div>`;
+  if (!reviews.length) {
+    html += `<div class="empty-state" style="padding:20px 0"><p>No weekly reviews yet.<br/>Generate your first one above.</p></div>`;
   } else {
-    html+=reviews.slice(0,4).map(r=>`
-      <div class="review-card">
+    html += reviews.slice(0,4).map(r => `
+      <div class="review-card" style="margin-top:10px">
         <div class="review-week">Week of ${r.week}</div>
         <div class="review-text">${r.text}</div>
       </div>`).join('');
   }
-  el.innerHTML=html;
+  el.innerHTML = html;
 }
-
 function getWeekKey(){
   const now=new Date();
   const mon=new Date(now);
