@@ -624,7 +624,7 @@ let finTab = 'overview';
 let finMonthOffset = 0;
 
 const FIN_KEY = 'mm_finance';
-const DEFAULT_FIN = {income_salary:0, income_allocation:1995, income_rental:1200};
+const DEFAULT_FIN = {income_salary:4000, income_rental:1200};
 function getFin() { return JSON.parse(localStorage.getItem(FIN_KEY) || JSON.stringify(DEFAULT_FIN)); }
 function saveFin(f) { localStorage.setItem(FIN_KEY, JSON.stringify(f)); }
 
@@ -680,7 +680,7 @@ function renderOverview() {
   const fixedTotal = getFixed().reduce((s,c) => s + c.amount, 0);
   const budgetSpent = getBudget().reduce((s,b) => s + (b.actual||0), 0);
   const budgetTarget = getBudget().reduce((s,b) => s + (b.target||0), 0);
-  const totalIncome = (f.income_salary||0) + (f.income_allocation||0) + (f.income_rental||0);
+  const totalIncome = (f.income_salary||0) + (f.income_rental||0);
   const remaining = totalIncome - fixedTotal - budgetSpent;
   const el = document.getElementById('bal-remaining');
   el.textContent = `€${remaining.toFixed(0)}`;
@@ -688,9 +688,8 @@ function renderOverview() {
   document.getElementById('bal-sub').textContent = `after fixed + variable spending`;
   const budgetPct = budgetTarget > 0 ? Math.round((budgetSpent/budgetTarget)*100) : 0;
   const budgetColor = budgetPct > 100 ? 'var(--red)' : budgetPct > 80 ? 'var(--amber)' : 'var(--accent)';
-  document.getElementById('fin-overview-rows').innerHTML = `
+document.getElementById('fin-overview-rows').innerHTML = `
     <div class="finance-row"><span class="finance-row-label income">↑ Salary</span><span class="finance-row-value positive editable" onclick="editFin('income_salary','Salary (€/month)')">€${f.income_salary||0}</span></div>
-    <div class="finance-row"><span class="finance-row-label income">↑ France Travail</span><span class="finance-row-value positive editable" onclick="editFin('income_allocation','France Travail (€/month)')">€${f.income_allocation||0}</span></div>
     <div class="finance-row"><span class="finance-row-label income">↑ Rental income</span><span class="finance-row-value positive editable" onclick="editFin('income_rental','Rental income (€/month)')">€${f.income_rental||0}</span></div>
     <div class="finance-row"><span class="finance-row-label">↓ Fixed charges</span><span class="finance-row-value negative">−€${fixedTotal.toFixed(0)}</span></div>
     <div class="finance-row"><span class="finance-row-label">↓ Variable spending <span style="font-size:10px;color:${budgetColor}">${budgetPct}% of budget</span></span><span class="finance-row-value negative">−€${budgetSpent.toFixed(0)}</span></div>
