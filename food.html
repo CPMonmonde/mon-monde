@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -411,9 +411,12 @@ function renderMealView() {
   const dayMeals = S.meals?.meals?.[day];
   const lunch = dayMeals?.lunch || null;
   const dinner = dayMeals?.dinner || null;
-  const total = (lunch?.kcal||0) + (dinner?.kcal||0);
+
+  const isWeekend = S.currentDay === 5 || S.currentDay === 6; // Sam=5, Dim=6
+  const total = (isWeekend ? (lunch?.kcal||0) : 0) + (dinner?.kcal||0);
+
   el.innerHTML = `
-    ${renderMealSlot('Midi', lunch, day, 'lunch')}
+    ${isWeekend ? renderMealSlot('Midi', lunch, day, 'lunch') : ''}
     ${renderMealSlot('Soir', dinner, day, 'dinner')}
     ${total > 0 ? `<div class="day-total"><div class="day-total-label">Total du jour</div><div class="day-total-val">${total} kcal</div></div>` : ''}`;
 }
@@ -538,18 +541,22 @@ function categorize(ing) {
  
 function generateCourses() {
   if (!S.meals?.meals) { alert('No meal plan loaded. Please refresh first.'); return; }
-  const allIng = new Set();
+  const seen = new Map();
   Object.values(S.meals.meals).forEach(day => {
     ['lunch','dinner'].forEach(slot => {
       const meal = day?.[slot];
       if (meal?.ingredients) {
         const arr = Array.isArray(meal.ingredients) ? meal.ingredients : [meal.ingredients];
-        arr.forEach(ing => { if (ing?.trim()) allIng.add(ing.trim()); });
+        arr.forEach(ing => {
+          if (!ing?.trim()) return;
+          const key = ing.trim().toLowerCase();
+          if (!seen.has(key)) seen.set(key, ing.trim());
+        });
       }
     });
   });
   const manual = S.courses.filter(c => c.manual);
-  S.courses = [...[...allIng].map(ing => ({ text: ing, done: false, rayon: categorize(ing), manual: false })), ...manual];
+  S.courses = [...[...seen.values()].map(ing => ({ text: ing, done: false, rayon: categorize(ing), manual: false })), ...manual];
   saveCourses(); renderCourses();
 }
  
